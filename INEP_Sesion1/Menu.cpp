@@ -11,8 +11,15 @@ void procesarRegistroUsuario()
     cout << "Escriba su nombre completo: ";
     cin >> nombre;
 
-    cout << "El registre de l'usuari " << nombre << " (" << alias << ") " << 
+    if (alias.empty() || nombre.empty())
+    {
+        cout << "Usuario no registrado por falta de datos." << endl;
+    }
+    else
+    {
+        cout << "El registre de l'usuari " << nombre << " (" << alias << ") " << 
             "s'ha processat correctament" << endl;
+    }
 }
 void GestionUsuarios()
 {
