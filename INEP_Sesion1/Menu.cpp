@@ -152,3 +152,4 @@ int main()
     cout << "Bye bye" << endl;
     return 0;
 }
+// editado por Guillem-Sancho
