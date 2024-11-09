@@ -1,5 +1,10 @@
 #include <iostream>
 #include <string>
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/statement.h>
+#include <mysql_connection.h>
+#include <mysql_driver.h>
 
 using namespace std;
 
@@ -21,6 +26,7 @@ void procesarRegistroUsuario()
             "s'ha processat correctament" << endl;
     }
 }
+
 void GestionUsuarios()
 {
     cout << "1. Gestió usuari" << "\n" <<
@@ -55,6 +61,7 @@ void GestionUsuarios()
     }
     cout << "-----------------------------" << endl;
 }
+
 void GestionContenidos()
 {
     cout << "2. Gestió continguts" << "\n" <<
@@ -81,6 +88,7 @@ void GestionContenidos()
     }
     cout << "-----------------------------" << endl;
 }
+
 void Consultas()
 {
     cout << "3. Consultes" << "\n" <<
