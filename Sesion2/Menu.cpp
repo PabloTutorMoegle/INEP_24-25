@@ -27,6 +27,48 @@ void procesarRegistroUsuario()
     }
 }
 
+void cosnultarUsuario()
+{
+    sql::mysql::MySQL_Driver *driver = NULL;
+    sql::Connection *con = NULL;
+    sql::Statement *stmt = NULL;
+
+    try
+    {
+        driver = sql::mysql::get_mysql_driver_instance();
+        con = driver->connect("ubiwan.epsevg.upc.edu:3306", "inep11", "gahKaek6choo2a");
+        con->setSchema("inep11");
+        stmt = con->createStatement();
+
+        string sobrenom_usuari;
+        cout << "Escriba el sobrenom del usuario: ";
+        cin >> sobrenom_usuari;
+
+        string sql = "SELECT * FROM Usuari WHERE sobrenom = 'sobrenom_usuari'";
+        sql::ResultSet *res = stmt->executeQuery(sql);
+
+        if (res->next())
+        {
+            cout << "----------" << "\n"
+            << "Sobrenom: " << res->getString("sobrenom") << "\n"
+            << "Nom: " << res->getString("nom") << "\n"
+            << "Correu electronic: " << res->getString("correu_electronic") 
+            << endl;
+        }
+        else
+        {
+            cout << "----------" << "\n"
+            << "No s'ha trobat cap usuari amb aquest sobrenom." << endl;
+        }
+        cout << "----------" << endl;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << "SQL Error: " << e.what() << endl;
+        if(con != NULL) con->close();
+    }    
+}
+
 void GestionUsuarios()
 {
     cout << "1. Gestió usuari" << "\n" <<
@@ -42,6 +84,10 @@ void GestionUsuarios()
         if (numGU == 1)
         {
             procesarRegistroUsuario();
+        }
+        if (numGU == 2)
+        {
+            cosnultarUsuario();
         }
         else if (numGU > 5)
         {
