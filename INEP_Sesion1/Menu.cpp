@@ -127,7 +127,7 @@ int main()
     {    
         if(num == 1)
         {
-         GestionUsuarios();  
+            GestionUsuarios();  
         }
         else if (num == 2)
         {
