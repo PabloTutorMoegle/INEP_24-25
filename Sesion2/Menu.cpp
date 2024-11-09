@@ -10,21 +10,43 @@ using namespace std;
 
 void procesarRegistroUsuario()
 {
-    string alias, nombre;
-    cout << "Escriba su alias: ";
-    cin >> alias;
-    cout << "Escriba su nombre completo: ";
-    cin >> nombre;
+    sql::mysql::MySQL_Driver *driver = NULL;
+    sql::Connection *con = NULL;
+    sql::Statement *stmt = NULL;
 
-    if (alias.empty() || nombre.empty())
+    try
     {
-        cout << "Usuario no registrado por falta de datos." << endl;
+        driver = sql::mysql::get_mysql_driver_instance();
+        con = driver->connect("ubiwan.epsevg.upc.edu:3306", "inep11", "gahKaek6choo2a");
+        con->setSchema("inep11");
+        stmt = con->createStatement();
+
+        string sobrenom_usuari;
+        string nom_usuari;
+        string correu_electronic_usuari;
+
+        cout << "Escriba el sobrenom del usuario: ";
+        cin >> sobrenom_usuari;
+        cout << "Escriba el nom del usuario: ";
+        //el nombre del usuario puede tener espacios
+        cin.ignore();
+        getline(cin, nom_usuari);
+        cout << "Escriba el correu electronic del usuario: ";
+        cin >> correu_electronic_usuari;
+
+        string sql = "INSERT INTO Usuari (sobrenom, nom, correu_electronic) VALUES ('" + sobrenom_usuari + "', '" + nom_usuari + "', '" + correu_electronic_usuari + "')";
+        stmt->execute(sql);
+        cout << "----------" << "\n"
+        << "Usuari registrat correctament." << endl;
+        cout << "----------" << endl;
     }
-    else
+    catch(const std::exception& e)
     {
-        cout << "El registre de l'usuari " << nombre << " (" << alias << ") " << 
-            "s'ha processat correctament" << endl;
-    }
+        std::cerr << "SQL Error: " << e.what() << endl;
+        if(con != NULL) con->close();
+    }    
+    delete stmt;
+    delete con;
 }
 
 void cosnultarUsuario()
@@ -44,7 +66,7 @@ void cosnultarUsuario()
         cout << "Escriba el sobrenom del usuario: ";
         cin >> sobrenom_usuari;
 
-        string sql = "SELECT * FROM Usuari WHERE sobrenom = 'sobrenom_usuari'";
+        string sql = "SELECT * FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
         sql::ResultSet *res = stmt->executeQuery(sql);
 
         if (res->next())
@@ -67,6 +89,102 @@ void cosnultarUsuario()
         std::cerr << "SQL Error: " << e.what() << endl;
         if(con != NULL) con->close();
     }    
+    delete stmt;
+    delete con;
+}
+
+void modificaUsuario()
+{
+    sql::mysql::MySQL_Driver *driver = NULL;
+    sql::Connection *con = NULL;
+    sql::Statement *stmt = NULL;
+
+    try
+    {
+        driver = sql::mysql::get_mysql_driver_instance();
+        con = driver->connect("ubiwan.epsevg.upc.edu:3306", "inep11", "gahKaek6choo2a");
+        con->setSchema("inep11");
+        stmt = con->createStatement();
+
+        string sobrenom_usuari;
+        cout << "Escriba el sobrenom del usuario: ";
+        cin >> sobrenom_usuari;
+
+        string sql = "SELECT * FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
+        sql::ResultSet *res = stmt->executeQuery(sql);
+
+        if (res->next())
+        {
+            cout << "----------" << "\n"
+            << "El usuario actualmente tiene los siguientes datos: " << "\n"
+            << "Sobrenom: " << res->getString("sobrenom") << "\n"
+            << "Nom: " << res->getString("nom") << "\n"
+            << "Correu electronic: " << res->getString("correu_electronic") 
+            << endl;
+            cout << "----------" << endl;
+            cout << "Escriba el nuevo nom del usuario: ";
+            string nom_usuari;
+            cin.ignore();
+            getline(cin, nom_usuari);
+            cout << "Escriba el nuevo correu electronic del usuario: ";
+            string correu_electronic_usuari;
+            cin >> correu_electronic_usuari;
+
+            sql = "UPDATE Usuari SET nom = '" + nom_usuari + "', correu_electronic = '" 
+            + correu_electronic_usuari + "' WHERE sobrenom = '" + sobrenom_usuari + "'";
+            stmt->execute(sql);
+            cout << "----------" << "\n"
+            << "Usuari modificat correctament." << endl;
+            cout << "----------" << endl;
+        }
+        else
+        {
+            cout << "----------" << "\n"
+            << "No s'ha trobat cap usuari amb aquest sobrenom." << endl;
+        }
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << "SQL Error: " << e.what() << endl;
+        if(con != NULL) con->close();
+    }    
+    delete stmt;
+    delete con;
+}
+
+void eliminarUsuario()
+{
+    sql::mysql::MySQL_Driver *driver = NULL;
+    sql::Connection *con = NULL;
+    sql::Statement *stmt = NULL;
+
+    try
+    {
+        driver = sql::mysql::get_mysql_driver_instance();
+        con = driver->connect("ubiwan.epsevg.upc.edu:3306", "inep11", "gahKaek6choo2a");
+        con->setSchema("inep11");
+        stmt = con->createStatement();
+
+        string sobrenom_usuari;
+        cout << "Escriba el sobrenom del usuario: ";
+        cin >> sobrenom_usuari;
+
+        string sql = "SELECT * FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
+        sql::ResultSet *res = stmt->executeQuery(sql);
+
+        sql = "DELETE FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
+        stmt->execute(sql);
+        cout << "----------" << "\n"
+        << "Usuari eliminat correctament." << endl;
+        cout << "----------" << endl;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << "SQL Error: " << e.what() << endl;
+        if(con != NULL) con->close();
+    }    
+    delete stmt;
+    delete con;
 }
 
 void GestionUsuarios()
@@ -89,13 +207,17 @@ void GestionUsuarios()
         {
             cosnultarUsuario();
         }
-        else if (numGU > 5)
+        if (numGU == 3)
+        {
+            modificaUsuario();
+        }
+        if (numGU == 4)
+        {
+            eliminarUsuario();
+        }
+        if (numGU > 5)
         {
             cout << "Ese numero no es valido." << endl;
-        }
-        else 
-        {
-            cout << "Algo pasa al clickar el " << numGU << endl;
         }
         cout << "1. Gestió usuari" << "\n" <<
                 "   1. Registre usuari" << "\n" <<
@@ -206,4 +328,3 @@ int main()
     cout << "Bye bye" << endl;
     return 0;
 }
-// editado por Guillem-Sancho
