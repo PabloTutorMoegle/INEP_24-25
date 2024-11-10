@@ -35,3 +35,4 @@ catch(const std::exception& e)
 Para compilar el codigo 
 
 g++ (nombre del archivo .cpp) -o (nombre del archivo para ejecutar) -lmysqlcppconn
+g++ Menu.cpp -o Menu -lmysqlcppconn
