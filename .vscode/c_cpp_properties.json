@@ -3,13 +3,26 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "C:/MinGW/include/mysql-connector-c++-9.1.0-winx64/include/jdbc"
             ],
             "defines": [],
-            "compilerPath": "/usr/bin/clang-14",
+            "compilerPath": "C:/MinGW/bin/g++.exe",
             "cStandard": "c17",
-            "cppStandard": "c++14",
-            "intelliSenseMode": "linux-clang-x64"
+            "cppStandard": "c++11",
+            "intelliSenseMode": "${default}"
+        },
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "C:\\Program Files\\MySQL\\mysql-connector-c++-9.1.0-winx64\\lib64"
         }
     ],
     "version": 4
