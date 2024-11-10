@@ -14,15 +14,15 @@ class ConnexioDB
         sql::mysql::MySQL_Driver *driver = NULL;
         sql::Connection *con = NULL;
         sql::Statement *stmt = NULL;
-        
+
     public:
         // Constructor
         ConnexioDB();
         // Destructor
         ~ConnexioDB();
         // Metodos
-        void procesarRegistroUsuario();
-        void cosnultarUsuario();
-        void modificaUsuario();
-        void eliminarUsuario();
+        void procesarRegistroUsuario(string sql);
+        void cosnultarUsuario(string sql);
+        void modificaUsuario(string sql);
+        void eliminarUsuario(string sql);
 };

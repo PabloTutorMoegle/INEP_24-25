@@ -26,19 +26,79 @@ void GestionUsuarios()
     {
         if (numGU == 1)
         {
-            connexioDB.procesarRegistroUsuario();
+            string sobrenom_usuari;
+            string nom_usuari;
+            string correu_electronic_usuari;
+
+            cout << "Escriba el sobrenom del usuario: ";
+            cin >> sobrenom_usuari;
+            cout << "Escriba el nom del usuario: ";
+            //el nombre del usuario puede tener espacios
+            cin.ignore();
+            getline(cin, nom_usuari);
+            cout << "Escriba el correu electronic del usuario: ";
+            cin >> correu_electronic_usuari;
+
+            string sql = "INSERT INTO Usuari (sobrenom, nom, correu_electronic) VALUES ('" + sobrenom_usuari + 
+            "', '" + nom_usuari + "', '" + correu_electronic_usuari + "')";
+            try
+            {
+                connexioDB.procesarRegistroUsuario(sql);
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
         }
         if (numGU == 2)
         {
-            connexioDB.cosnultarUsuario();
+            string sobrenom_usuari;
+            cout << "Escriba el sobrenom del usuario: ";
+            cin >> sobrenom_usuari;
+
+            string sql = "SELECT * FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
+            try
+            {
+                connexioDB.cosnultarUsuario(sql);
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
         }
         if (numGU == 3)
         {
-            connexioDB.modificaUsuario();
+            string sobrenom_usuari;
+            cout << "Escriba el sobrenom del usuario: ";
+            cin >> sobrenom_usuari;
+
+            string sql = "SELECT * FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
+
+            try
+            {
+                connexioDB.modificaUsuario(sql);
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
         }
         if (numGU == 4)
         {
-            connexioDB.eliminarUsuario();
+            string sobrenom_usuari;
+            cout << "Escriba el sobrenom del usuario: ";
+            cin >> sobrenom_usuari;
+
+            string sql = "DELETE FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
+
+            try
+            {
+                connexioDB.eliminarUsuario(sql);
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
         }
         if (numGU > 5)
         {
