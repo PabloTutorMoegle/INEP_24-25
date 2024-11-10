@@ -113,6 +113,7 @@ void GestionUsuarios()
         cout << "Escriba uno de los numero del menu Gestió usuari" << endl; 
     }
     cout << "-----------------------------" << endl;
+    connexioDB.~ConnexioDB();
 }
 
 void GestionContenidos()
