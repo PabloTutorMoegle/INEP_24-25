@@ -1,3 +1,6 @@
+#ifndef CONNEXIODB_HPP
+#define CONNEXIODB_HPP
+
 #include <iostream>
 #include <string>
 #include <cppconn/driver.h>
@@ -26,3 +29,5 @@ class ConnexioDB
         void modificaUsuario(string sql);
         void eliminarUsuario(string sql);
 };
+
+#endif
