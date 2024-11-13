@@ -8,7 +8,7 @@ using namespace std;
 ConnexioDB::ConnexioDB()
 {
     driver = sql::mysql::get_mysql_driver_instance();
-    con = driver->connect("ubiwan.epsevg.upc.edu:3306", "inep11", "gahKaek6choo2a"); //hay que hacer un gitignore con el archivo de configuracion
+    con = driver->connect("ubiwan.epsevg.upc.edu:3306", "inep11", "gahKaek6choo2a");
     con->setSchema("inep11");
     stmt = con->createStatement();
 }
