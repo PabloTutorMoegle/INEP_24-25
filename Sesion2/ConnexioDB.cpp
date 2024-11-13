@@ -46,10 +46,7 @@ ConnexioDB::ConnexioDB()
 
 // Destructor
 ConnexioDB::~ConnexioDB()
-{
-    delete stmt;
-    delete con;
-}
+{}
 
 // Metodos
 void ConnexioDB::procesarRegistroUsuario(string sql)
