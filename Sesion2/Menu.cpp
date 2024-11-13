@@ -73,18 +73,13 @@ void GestionUsuarios()
             cin >> sobrenom_usuari;
             
             string sql = "SELECT * FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
-
-            if (connexioDB.cosnultarUsuario(sql))
+            try
             {
-                sql = "SELECT * FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
-                try
-                {
-                    connexioDB.modificaUsuario(sql);
-                }
-                catch(const std::exception& e)
-                {
-                    std::cerr << e.what() << '\n';
-                }
+                connexioDB.modificaUsuario(sql);
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
             }
         }
         if (numGU == 4)
@@ -93,23 +88,11 @@ void GestionUsuarios()
             cout << "Escriba el sobrenom del usuario: ";
             cin >> sobrenom_usuari;
 
-            string sql = "SELECT * FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
+            string sql = "DELETE FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
 
             try
             {
-                if(connexioDB.cosnultarUsuario(sql))
-                {
-                    sql = "DELETE FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
-
-                    try
-                    {
-                        connexioDB.eliminarUsuario(sql);
-                    }
-                    catch(const std::exception& e)
-                    {
-                        std::cerr << e.what() << '\n';
-                    }
-                }
+                connexioDB.eliminarUsuario(sql);
             }
             catch(const std::exception& e)
             {

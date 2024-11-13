@@ -60,7 +60,7 @@ void ConnexioDB::procesarRegistroUsuario(string sql)
     cout << "----------" << endl;
 }
 
-bool ConnexioDB::cosnultarUsuario(string sql)
+void ConnexioDB::cosnultarUsuario(string sql)
 {   //hacer que retorne en modo bool si existe o no 
     sql::ResultSet *res = stmt->executeQuery(sql);
 
@@ -71,13 +71,11 @@ bool ConnexioDB::cosnultarUsuario(string sql)
         << "Nom: " << res->getString("nom") << "\n"
         << "Correu electronic: " << res->getString("correu_electronic") 
         << endl;
-        return true;
     }
     else
     {
         cout << "----------" << "\n"
         << "No s'ha trobat cap usuari amb aquest sobrenom." << endl;
-        return false;
     }
     cout << "----------" << endl;
 }
