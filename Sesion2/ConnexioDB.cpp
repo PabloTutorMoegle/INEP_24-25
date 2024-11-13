@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 #include "ConnexioDB.hpp"
 
 using namespace std;
@@ -8,8 +9,38 @@ using namespace std;
 ConnexioDB::ConnexioDB()
 {
     driver = sql::mysql::get_mysql_driver_instance();
-    con = driver->connect("ubiwan.epsevg.upc.edu:3306", "inep11", "gahKaek6choo2a");
-    con->setSchema("inep11");
+    string portHost, user, pasword;
+
+    ifstream archivo("accesoDB.txt");
+    if (archivo.is_open())
+    {
+        string linea;
+        int i = 0;
+        while (getline(archivo, linea))
+        {
+            if (i == 0)
+            {
+                portHost = linea;
+            }
+            else if (i == 1)
+            {
+                user = linea;
+            }
+            else if (i == 2)
+            {
+                pasword = linea;
+            }
+            i++;
+        }
+        archivo.close();
+    }
+    else
+    {
+        cout << "No se pudo abrir el archivo." << endl;
+    }
+
+    con = driver->connect(portHost, user, pasword);
+    con->setSchema(user);
     stmt = con->createStatement();
 }
 
@@ -29,8 +60,8 @@ void ConnexioDB::procesarRegistroUsuario(string sql)
     cout << "----------" << endl;
 }
 
-void ConnexioDB::cosnultarUsuario(string sql)
-{
+bool ConnexioDB::cosnultarUsuario(string sql)
+{   //hacer que retorne en modo bool si existe o no 
     sql::ResultSet *res = stmt->executeQuery(sql);
 
     if (res->next())
@@ -40,11 +71,13 @@ void ConnexioDB::cosnultarUsuario(string sql)
         << "Nom: " << res->getString("nom") << "\n"
         << "Correu electronic: " << res->getString("correu_electronic") 
         << endl;
+        return true;
     }
     else
     {
         cout << "----------" << "\n"
         << "No s'ha trobat cap usuari amb aquest sobrenom." << endl;
+        return false;
     }
     cout << "----------" << endl;
 }

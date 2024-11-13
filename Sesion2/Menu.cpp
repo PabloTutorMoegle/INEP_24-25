@@ -71,16 +71,20 @@ void GestionUsuarios()
             string sobrenom_usuari;
             cout << "Escriba el sobrenom del usuario: ";
             cin >> sobrenom_usuari;
-
+            
             string sql = "SELECT * FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
 
-            try
+            if (connexioDB.cosnultarUsuario(sql))
             {
-                connexioDB.modificaUsuario(sql);
-            }
-            catch(const std::exception& e)
-            {
-                std::cerr << e.what() << '\n';
+                sql = "SELECT * FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
+                try
+                {
+                    connexioDB.modificaUsuario(sql);
+                }
+                catch(const std::exception& e)
+                {
+                    std::cerr << e.what() << '\n';
+                }
             }
         }
         if (numGU == 4)
@@ -89,11 +93,23 @@ void GestionUsuarios()
             cout << "Escriba el sobrenom del usuario: ";
             cin >> sobrenom_usuari;
 
-            string sql = "DELETE FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
+            string sql = "SELECT * FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
 
             try
             {
-                connexioDB.eliminarUsuario(sql);
+                if(connexioDB.cosnultarUsuario(sql))
+                {
+                    sql = "DELETE FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
+
+                    try
+                    {
+                        connexioDB.eliminarUsuario(sql);
+                    }
+                    catch(const std::exception& e)
+                    {
+                        std::cerr << e.what() << '\n';
+                    }
+                }
             }
             catch(const std::exception& e)
             {
@@ -113,7 +129,7 @@ void GestionUsuarios()
         cout << "Escriba uno de los numero del menu Gestió usuari" << endl; 
     }
     cout << "-----------------------------" << endl;
-    connexioDB.~ConnexioDB();
+    //connexioDB.~ConnexioDB();
 }
 
 void GestionContenidos()

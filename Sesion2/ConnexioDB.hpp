@@ -25,7 +25,7 @@ class ConnexioDB
         ~ConnexioDB();
         // Metodos
         void procesarRegistroUsuario(string sql);
-        void cosnultarUsuario(string sql);
+        bool cosnultarUsuario(string sql);
         void modificaUsuario(string sql);
         void eliminarUsuario(string sql);
 };
