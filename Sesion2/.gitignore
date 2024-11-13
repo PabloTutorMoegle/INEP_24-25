@@ -1,1 +1,3 @@
-accesoDB.txt
+*.txt
+*.o
+*.exe
