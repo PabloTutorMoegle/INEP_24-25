@@ -38,7 +38,6 @@ ConnexioDB::ConnexioDB()
     {
         cout << "No se pudo abrir el archivo." << endl;
     }
-
     con = driver->connect(portHost, user, pasword);
     con->setSchema(user);
     stmt = con->createStatement();
