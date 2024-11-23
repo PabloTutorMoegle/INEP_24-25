@@ -1,0 +1,38 @@
+Codigo para consultar todos los usurios de la base de datos
+
+sql::mysql::MySQL_Driver *driver = NULL;
+sql::Connection *con = NULL;
+sql::Statement *stmt = NULL;
+
+try
+{
+    driver = sql::mysql::get_mysql_driver_instance();
+    con = driver->connect("ubiwan.epsevg.upc.edu:3306", "inep11", "gahKaek6choo2a");
+    con->setSchema("inep11");
+    stmt = con->createStatement();
+
+    string sql = "SELECT * FROM Usuari";
+    sql::ResultSet *res = stmt->executeQuery(sql);
+
+    while (res->next())
+    {
+        cout << "----------" << "\n"
+        << "Sobrenom: " << res->getString("sobrenom") << "\n"
+        << "Nom: " << res->getString("nom") << "\n"
+        << "Correu electronic: " << res->getString("correu_electronic") 
+        << endl;
+    }
+    cout << "----------" << endl;
+}
+catch(const std::exception& e)
+{
+    std::cerr << "SQL Error: " << e.what() << endl;
+    if(con != NULL) con->close();
+}
+
+
+
+Para compilar el codigo 
+
+g++ (nombre del archivo .cpp) -o (nombre del archivo para ejecutar) -lmysqlcppconn
+g++ Menu.cpp -o Menu -lmysqlcppconn
