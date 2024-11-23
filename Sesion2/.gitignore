@@ -1,4 +1,4 @@
 *.txt
 *.o
 *.exe
-singleton.cpp
+singleton.hpp

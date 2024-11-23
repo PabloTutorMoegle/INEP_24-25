@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include "ConnexioDB.hpp"
+#include "Singleton.hpp"
 
 using namespace std;
 
@@ -11,33 +12,13 @@ ConnexioDB::ConnexioDB()
     driver = sql::mysql::get_mysql_driver_instance();
     string portHost, user, pasword;
 
-    ifstream archivo("accesoDB.txt");
-    if (archivo.is_open())
-    {
-        string linea;
-        int i = 0;
-        while (getline(archivo, linea))
-        {
-            if (i == 0)
-            {
-                portHost = linea;
-            }
-            else if (i == 1)
-            {
-                user = linea;
-            }
-            else if (i == 2)
-            {
-                pasword = linea;
-            }
-            i++;
-        }
-        archivo.close();
-    }
-    else
-    {
-        cout << "No se pudo abrir el archivo." << endl;
-    }
+    // uso de fichero de configuracion singleton.cpp
+
+    Singleton *singleton = Singleton::getInstance();
+    portHost = singleton->getHostPort();
+    user = singleton->getUser();
+    pasword = singleton->getPassword();
+
     con = driver->connect(portHost, user, pasword);
     con->setSchema(user);
     stmt = con->createStatement();
