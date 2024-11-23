@@ -2,7 +2,7 @@
 #include <string>
 #include <fstream>
 #include "ConnexioDB.hpp"
-#include "Singleton.hpp"
+#include "singleton.hpp"
 
 using namespace std;
 
@@ -12,9 +12,7 @@ ConnexioDB::ConnexioDB()
     driver = sql::mysql::get_mysql_driver_instance();
     string portHost, user, pasword;
 
-    // uso de fichero de configuracion singleton.cpp
-
-    Singleton *singleton = Singleton::getInstance();
+    singleton *singleton = singleton::getInstance();
     portHost = singleton->getHostPort();
     user = singleton->getUser();
     pasword = singleton->getPassword();
