@@ -4,7 +4,7 @@ CXXFLAGS = -D_JUDGE_ -D_GLIBCXX_DEBUG -O2 -Wall -Wextra -Werror -Wno-sign-compar
 # List of source files
 SRCS = Menu.cpp ConnexioDB.cpp singleton.cpp
 
-TARGET = Menu
+TARGET = Menu.exe
 # Compile and link
 $(TARGET): $(SRCS)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRCS) -lmysqlcppconn
