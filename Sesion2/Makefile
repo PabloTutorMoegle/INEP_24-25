@@ -12,3 +12,4 @@ $(TARGET): $(SRCS)
 # Clean up
 clean:
 	rm -f $(TARGET) *.o
+
