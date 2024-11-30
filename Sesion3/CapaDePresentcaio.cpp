@@ -1,6 +1,7 @@
 //La capa de presentacion es un singleton
-
+#include <iostream>
 #include "CapaDePresentacio.hpp"
+#include "ConnexioDB.hpp"
 
 using namespace std;
 
@@ -20,17 +21,84 @@ CapaDePresentacio::CapaDePresentacio() {
 
 void registraUsuari()
 {
+    ConnexioDB connexioDB;
+    string sobrenom_usuari;
+    string nom_usuari;
+    string correu_electronic_usuari;
 
+    cout << "Escriba el sobrenom del usuario: ";
+    cin >> sobrenom_usuari;
+    cout << "Escriba el nom del usuario: ";
+    //el nombre del usuario puede tener espacios
+    cin.ignore();
+    getline(cin, nom_usuari);
+    cout << "Escriba el correu electronic del usuario: ";
+    cin >> correu_electronic_usuari;
+
+    string sql = "INSERT INTO Usuari (sobrenom, nom, correu_electronic) VALUES ('" + sobrenom_usuari + 
+    "', '" + nom_usuari + "', '" + correu_electronic_usuari + "')";
+    try
+    {
+        connexioDB.procesarRegistroUsuario(sql);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    connexioDB.~ConnexioDB();
 }
 void consultaUsuari()
 {
+    ConnexioDB connexioDB;
+    string sobrenom_usuari;
+    cout << "Escriba el sobrenom del usuario: ";
+    cin >> sobrenom_usuari;
 
+    string sql = "SELECT * FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
+    try
+    {
+        connexioDB.cosnultarUsuario(sql);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    connexioDB.~ConnexioDB();
 }
 void modificaUsuari()
 {
+    ConnexioDB connexioDB;
+    string sobrenom_usuari;
+    cout << "Escriba el sobrenom del usuario: ";
+    cin >> sobrenom_usuari;
 
+    string sql = "SELECT * FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
+    try
+    {
+        connexioDB.modificaUsuario(sql);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    connexioDB.~ConnexioDB();
 }
 void eliminarUsuari()
 {
+    ConnexioDB connexioDB;
+    string sobrenom_usuari;
+    cout << "Escriba el sobrenom del usuario: ";
+    cin >> sobrenom_usuari;
 
+    string sql = "DELETE FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
+
+    try
+    {
+        connexioDB.eliminarUsuario(sql);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    connexioDB.~ConnexioDB();
 }
