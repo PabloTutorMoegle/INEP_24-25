@@ -15,7 +15,7 @@ using namespace std;
 
 class CapaDePresentacio {
 private:
-    CapaDePresentacio() {}
+    CapaDePresentacio();
     static CapaDePresentacio* instance;
     ConnexioDB connexioDB;
     

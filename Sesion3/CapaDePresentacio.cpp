@@ -15,9 +15,8 @@ CapaDePresentacio* CapaDePresentacio::getInstance() {
     return instance;
 }
 
-CapaDePresentacio::CapaDePresentacio() {
+CapaDePresentacio::CapaDePresentacio() {}
     // Initialize with default values or read from a config file
-}
 
 void registraUsuari()
 {

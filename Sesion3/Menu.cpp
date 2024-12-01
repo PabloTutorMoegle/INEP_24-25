@@ -6,7 +6,6 @@
 #include <mysql_connection.h>
 #include <mysql_driver.h>
 
-#include "ConnexioDB.hpp"
 #include "CapaDePresentacio.hpp"
 
 using namespace std;
