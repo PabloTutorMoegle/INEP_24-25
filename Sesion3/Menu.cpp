@@ -20,23 +20,25 @@ void GestionUsuarios()
             "   5. Tornar" << endl;
     int numGU;
     cout << "Escriba uno de los numero del menu Gestió usuari" << endl; 
+    cout << "-----------------------------" << endl;
+
     cin >> numGU;
 
-    CapaDePresentacio* presentacio = CapaDePresentacio::getInstance();
+    CapaDePresentacio& presentacio = CapaDePresentacio::getInstance();
     
     switch (numGU)
     {
     case 1:
-        presentacio->registraUsuari();
+        presentacio.registraUsuari();
         break;
     case 2:
-        presentacio->consultaUsuari();
+        presentacio.consultaUsuari();
         break;
     case 3:
-        presentacio->modificaUsuari();
+        presentacio.modificaUsuari();
         break;
     case 4:
-        presentacio->eliminarUsuari();
+        presentacio.eliminarUsuari();
         break;
     case 5:
         break;

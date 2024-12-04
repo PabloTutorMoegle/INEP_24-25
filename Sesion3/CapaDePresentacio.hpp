@@ -15,12 +15,15 @@ using namespace std;
 
 class CapaDePresentacio {
 private:
-    CapaDePresentacio();
-    static CapaDePresentacio* instance;
-    ConnexioDB connexioDB;
-    
+    //ConnexioDB connexioDB;
+
 public:
-    static CapaDePresentacio* getInstance();
+    static CapaDePresentacio& getInstance()
+    {
+        static CapaDePresentacio instance;
+        return instance;
+    }
+
     void registraUsuari();
     void consultaUsuari();
     void modificaUsuari();

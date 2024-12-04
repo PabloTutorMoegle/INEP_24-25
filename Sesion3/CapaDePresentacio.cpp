@@ -1,22 +1,8 @@
 //La capa de presentacion es un singleton
 #include <iostream>
 #include "CapaDePresentacio.hpp"
-#include "ConnexioDB.hpp"
 
 using namespace std;
-
-CapaDePresentacio* CapaDePresentacio::instance = nullptr;
-
-
-CapaDePresentacio* CapaDePresentacio::getInstance() {
-    if (instance == nullptr) {
-        instance = new CapaDePresentacio();
-    }
-    return instance;
-}
-
-CapaDePresentacio::CapaDePresentacio() {}
-    // Initialize with default values or read from a config file
 
 void registraUsuari()
 {
