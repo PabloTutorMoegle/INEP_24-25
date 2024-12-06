@@ -4,7 +4,20 @@
 
 using namespace std;
 
-void registraUsuari()
+CapaDePresentacio* CapaDePresentacio::instance = nullptr;
+
+CapaDePresentacio::CapaDePresentacio()
+{}
+
+CapaDePresentacio* CapaDePresentacio::getInstance()
+{
+    if (instance == nullptr) {
+        instance = new CapaDePresentacio();
+    }
+    return instance;
+}
+
+void CapaDePresentacio::registraUsuari()
 {
     ConnexioDB connexioDB;
     string sobrenom_usuari;
@@ -31,8 +44,10 @@ void registraUsuari()
         std::cerr << e.what() << '\n';
     }
     connexioDB.~ConnexioDB();
+
+    return;
 }
-void consultaUsuari()
+void CapaDePresentacio::consultaUsuari()
 {
     ConnexioDB connexioDB;
     string sobrenom_usuari;
@@ -49,8 +64,10 @@ void consultaUsuari()
         std::cerr << e.what() << '\n';
     }
     connexioDB.~ConnexioDB();
+
+    return;
 }
-void modificaUsuari()
+void CapaDePresentacio::modificaUsuari()
 {
     ConnexioDB connexioDB;
     string sobrenom_usuari;
@@ -67,8 +84,10 @@ void modificaUsuari()
         std::cerr << e.what() << '\n';
     }
     connexioDB.~ConnexioDB();
+
+    return;
 }
-void eliminarUsuari()
+void CapaDePresentacio::eliminarUsuari()
 {
     ConnexioDB connexioDB;
     string sobrenom_usuari;
@@ -86,4 +105,6 @@ void eliminarUsuari()
         std::cerr << e.what() << '\n';
     }
     connexioDB.~ConnexioDB();
+
+    return;
 }

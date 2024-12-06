@@ -6,7 +6,9 @@
 #include <mysql_connection.h>
 #include <mysql_driver.h>
 
+// Assuming CapaDePresentacio is defined in CapaDePresentacio.h
 #include "CapaDePresentacio.hpp"
+
 
 using namespace std;
 
@@ -24,21 +26,21 @@ void GestionUsuarios()
 
     cin >> numGU;
 
-    CapaDePresentacio& presentacio = CapaDePresentacio::getInstance();
+    CapaDePresentacio* CapaDePresentacio = CapaDePresentacio::getInstance();
     
     switch (numGU)
     {
     case 1:
-        presentacio.registraUsuari();
+        CapaDePresentacio->registraUsuari();
         break;
     case 2:
-        presentacio.consultaUsuari();
+        CapaDePresentacio->consultaUsuari();
         break;
     case 3:
-        presentacio.modificaUsuari();
+        CapaDePresentacio->modificaUsuari();
         break;
     case 4:
-        presentacio.eliminarUsuari();
+        CapaDePresentacio->eliminarUsuari();
         break;
     case 5:
         break;

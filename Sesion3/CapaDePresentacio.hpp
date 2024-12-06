@@ -14,21 +14,18 @@
 using namespace std;
 
 class CapaDePresentacio {
-private:
-    //ConnexioDB connexioDB;
 
 public:
-    static CapaDePresentacio& getInstance()
-    {
-        static CapaDePresentacio instance;
-        return instance;
-    }
+    static CapaDePresentacio* getInstance();
 
     void registraUsuari();
     void consultaUsuari();
     void modificaUsuari();
     void eliminarUsuari();
 
+private:
+    CapaDePresentacio();
+    static CapaDePresentacio* instance;
 };
 
 #endif
