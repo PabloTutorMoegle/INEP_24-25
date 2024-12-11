@@ -19,7 +19,6 @@ CapaDePresentacio* CapaDePresentacio::getInstance()
 
 void CapaDePresentacio::registraUsuari()
 {
-    ConnexioDB connexioDB;
     string sobrenom_usuari;
     string nom_usuari;
     string correu_electronic_usuari;
@@ -33,37 +32,17 @@ void CapaDePresentacio::registraUsuari()
     cout << "Escriba el correu electronic del usuario: ";
     cin >> correu_electronic_usuari;
 
-    string sql = "INSERT INTO Usuari (sobrenom, nom, correu_electronic) VALUES ('" + sobrenom_usuari + 
-    "', '" + nom_usuari + "', '" + correu_electronic_usuari + "')";
-    try
-    {
-        connexioDB.procesarRegistroUsuario(sql);
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-    connexioDB.~ConnexioDB();
+    capaDeDomini->registraUsuari(nom_usuari, sobrenom_usuari, correu_electronic_usuari);
 
     return;
 }
 void CapaDePresentacio::consultaUsuari()
 {
-    ConnexioDB connexioDB;
     string sobrenom_usuari;
     cout << "Escriba el sobrenom del usuario: ";
     cin >> sobrenom_usuari;
 
-    string sql = "SELECT * FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
-    try
-    {
-        connexioDB.cosnultarUsuario(sql);
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-    connexioDB.~ConnexioDB();
+    capaDeDomini->consultaUsuari(sobrenom_usuari);
 
     return;
 }

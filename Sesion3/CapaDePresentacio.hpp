@@ -10,6 +10,7 @@
 #include <mysql_driver.h>
 
 #include "ConnexioDB.hpp"
+#include "CapaDeDomini.hpp"
 
 using namespace std;
 
@@ -26,6 +27,7 @@ public:
 private:
     CapaDePresentacio();
     static CapaDePresentacio* instance;
+    CapaDeDomini *capaDeDomini = CapaDeDomini::getInstance();
 };
 
 #endif

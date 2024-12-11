@@ -1,12 +1,6 @@
 #include <iostream>
 #include <string>
-#include <cppconn/driver.h>
-#include <cppconn/exception.h>
-#include <cppconn/statement.h>
-#include <mysql_connection.h>
-#include <mysql_driver.h>
 
-// Assuming CapaDePresentacio is defined in CapaDePresentacio.h
 #include "CapaDePresentacio.hpp"
 
 
@@ -24,38 +18,39 @@ void GestionUsuarios()
     cout << "Escriba uno de los numero del menu Gestió usuari" << endl; 
     cout << "-----------------------------" << endl;
 
-    cin >> numGU;
-
     CapaDePresentacio* CapaDePresentacio = CapaDePresentacio::getInstance();
     
-    switch (numGU)
-    {
-    case 1:
-        CapaDePresentacio->registraUsuari();
-        break;
-    case 2:
-        CapaDePresentacio->consultaUsuari();
-        break;
-    case 3:
-        CapaDePresentacio->modificaUsuari();
-        break;
-    case 4:
-        CapaDePresentacio->eliminarUsuari();
-        break;
-    case 5:
-        break;
-    default:
-        cout << "Ese numero no es valido." << endl;
-        break;
+    while(cin >> numGU && numGU != 5)
+    { 
+        switch (numGU)
+        {
+        case 1:
+            CapaDePresentacio->registraUsuari();
+            break;
+        case 2:
+            CapaDePresentacio->consultaUsuari();
+            break;
+        case 3:
+            CapaDePresentacio->modificaUsuari();
+            break;
+        case 4:
+            CapaDePresentacio->eliminarUsuari();
+            break;
+        case 5:
+            break;
+        default:
+            cout << "Ese numero no es valido." << endl;
+            break;
+        }
+        cout << "1. Gestió usuari" << "\n" <<
+                "   1. Registre usuari" << "\n" <<
+                "   2. Consulta usuari" << "\n" <<
+                "   3. Modifica usuari" << "\n" <<
+                "   4. Esborra usuari" << "\n" <<
+                "   5. Tornar" << endl;
+        cout << "Escriba uno de los numero del menu Gestió usuari" << endl; 
+        cout << "-----------------------------" << endl;
     }
-    cout << "1. Gestió usuari" << "\n" <<
-            "   1. Registre usuari" << "\n" <<
-            "   2. Consulta usuari" << "\n" <<
-            "   3. Modifica usuari" << "\n" <<
-            "   4. Esborra usuari" << "\n" <<
-            "   5. Tornar" << endl;
-    cout << "Escriba uno de los numero del menu Gestió usuari" << endl; 
-    cout << "-----------------------------" << endl;
 }
 
 int main()
