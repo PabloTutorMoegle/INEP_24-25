@@ -1,19 +1,14 @@
-#include <iostream>
-using namespace std;
-
-#include <cppconn/driver.h>
-#include <cppconn/exception.h>
-#include <cppconn/statement.h>
-#include <mysql_connection.h>
-#include <mysql_driver.h>
 #include <string>
+using std::string;
 
-#include "ConnexioDB.hpp"
+#include <iostream>
+using std::cin;
+using std::cout;
+using std::endl;
 
-using namespace std;
-
+// TODO: Moure a 
 void GestionUsuarios() {
-    ConnexioDB connexioDB;
+    // ConnexioDB connexioDB;
 
     cout << "1. Gestió usuari"
          << "\n"
@@ -47,11 +42,11 @@ void GestionUsuarios() {
                          "correu_electronic) VALUES ('" +
                          sobrenom_usuari + "', '" + nom_usuari + "', '" +
                          correu_electronic_usuari + "')";
-            try {
-                connexioDB.procesarRegistroUsuario(sql);
-            } catch (const std::exception &e) {
-                std::cerr << e.what() << '\n';
-            }
+            // try {
+            //     connexioDB.procesarRegistroUsuario(sql);
+            // } catch (const std::exception &e) {
+            //     std::cerr << e.what() << '\n';
+            // }
         }
         if (numGU == 2) {
             string sobrenom_usuari;
@@ -60,11 +55,11 @@ void GestionUsuarios() {
 
             string sql = "SELECT * FROM Usuari WHERE sobrenom = '" +
                          sobrenom_usuari + "'";
-            try {
-                connexioDB.cosnultarUsuario(sql);
-            } catch (const std::exception &e) {
-                std::cerr << e.what() << '\n';
-            }
+            // try {
+            //     connexioDB.cosnultarUsuario(sql);
+            // } catch (const std::exception &e) {
+            //     std::cerr << e.what() << '\n';
+            // }
         }
         if (numGU == 3) {
             string sobrenom_usuari;
@@ -73,11 +68,11 @@ void GestionUsuarios() {
 
             string sql = "SELECT * FROM Usuari WHERE sobrenom = '" +
                          sobrenom_usuari + "'";
-            try {
-                connexioDB.modificaUsuario(sql);
-            } catch (const std::exception &e) {
-                std::cerr << e.what() << '\n';
-            }
+            // try {
+            //     connexioDB.modificaUsuario(sql);
+            // } catch (const std::exception &e) {
+            //     std::cerr << e.what() << '\n';
+            // }
         }
         if (numGU == 4) {
             string sobrenom_usuari;
@@ -87,11 +82,11 @@ void GestionUsuarios() {
             string sql =
                 "DELETE FROM Usuari WHERE sobrenom = '" + sobrenom_usuari + "'";
 
-            try {
-                connexioDB.eliminarUsuario(sql);
-            } catch (const std::exception &e) {
-                std::cerr << e.what() << '\n';
-            }
+            // try {
+            //     connexioDB.eliminarUsuario(sql);
+            // } catch (const std::exception &e) {
+            //     std::cerr << e.what() << '\n';
+            // }
         }
         if (numGU > 5) {
             cout << "Ese numero no es valido." << endl;
@@ -110,7 +105,6 @@ void GestionUsuarios() {
         cout << "Escriba uno de los numero del menu Gestió usuari" << endl;
     }
     cout << "-----------------------------" << endl;
-    connexioDB.~ConnexioDB();
 }
 
 void GestionContenidos() {

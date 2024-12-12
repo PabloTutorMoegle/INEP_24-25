@@ -1,60 +1,67 @@
 #include "ConnexioBDD.hpp"
 
-#include <fstream>
-#include <sstream>
-#include <unordered_map>
+ConnexioBDD* ConnexioBDD::_instance = nullptr;
 
-// Define the static member
-singleton *singleton::instance = nullptr;
-
-singleton *singleton::getInstance() {
-    if (instance == nullptr) {
-        instance = new singleton();
+ConnexioBDD* ConnexioBDD::getInstance() {
+    if (_instance == nullptr) {
+        _instance = new ConnexioBDD();
     }
-    return instance;
+    return _instance;
 }
 
-singleton::singleton() {
-    ifstream envFile(".env");
+void ConnexioBDD::execute(string query) {
+    _statement->execute(query);
+}
+
+ResultSet* ConnexioBDD::execute_query(string query) {
+    return _statement->executeQuery(query);
+}
+
+ConnexioBDD::ConnexioBDD() {
+    ifstream env_file(".env");
     string line;
 
-    if (!envFile.is_open()) {
-        cerr << "Could not open the .env file." << endl;
+    if (!env_file.is_open()) {
+        throw "Could not open the .env file.";
         return;
     }
+    
+    string host = "";
+    string user = "";
+    string password = "";
 
-    while (getline(envFile, line)) {
-        // Ignore comments and empty lines
+    while (getline(env_file, line)) {
         if (line.empty() || line[0] == '#') {
             continue;
         }
 
-        // Split the line into key and value
         size_t delimiterPos = line.find('=');
         if (delimiterPos != string::npos) {
             string key = line.substr(0, delimiterPos);
             string value = line.substr(delimiterPos + 1);
 
-            // Trim whitespace
             key.erase(key.find_last_not_of(" \n\r\t") + 1);
             value.erase(0, value.find_first_not_of(" \n\r\t"));
 
-            // Set the values based on keys
             if (key == "HOST") {
-                _host = value;
+                host = value;
             } else if (key == "USER") {
-                _user = value;
+                user = value;
             } else if (key == "PASSWORD") {
-                _password = value;
+                password = value;
             }
         }
     }
 
-    envFile.close();
+    env_file.close();
+
+    if (host == "" || user == "" || password == "") {
+        throw "No s'ha trobat els credencials al fitxer .env";
+    }
+
+    _driver = get_mysql_driver_instance();
+    _connection = _driver->connect(host, user, password);
+    _connection->setSchema(user);
+    _statement = _connection->createStatement();
+
 }
-
-std::string singleton::getHost() { return _host; }
-
-std::string singleton::getUser() { return _user; }
-
-std::string singleton::getPassword() { return _password; }
