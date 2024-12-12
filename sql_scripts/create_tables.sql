@@ -52,6 +52,7 @@ CREATE TABLE pelicula (
 
 CREATE TABLE serie (
     ser_titol varchar(200) PRIMARY KEY,
+    ser_data_estrena DATETIME NOT NULL,
 
     FOREIGN KEY (ser_titol) 
         REFERENCES contingut (con_titol)
