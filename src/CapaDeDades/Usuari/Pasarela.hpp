@@ -27,4 +27,10 @@ class PasarelaUsuari {
         void insereix();
         void modifica();
         void esborra();
+
+        string obte_sobrenom();
+        string obte_nom();
+        string obte_correu_electronic();
+        time_t obte_data_naixement();
+        ModalitatSubscripcio obte_modalitat_subscripcio();
 };
