@@ -1,18 +1,17 @@
 #include <string>
 #include <time.h>
 
-using namespace std;
-
-class Pasarela {
+class PasarelaVisualitzarSerie {
     private:
-        string _sobrenom;
-        string _titolSerie;
+        std::string _sobrenom;
+        std::string _titolSerie;
         int _numVicialitzacions;
         int _numTemporada;
         int _numCapitol;
         time_t _data;
 
     public:
+        PasarelaVisualitzarSerie();
         void Insereix();
         void Modifica();
         void Esborra();

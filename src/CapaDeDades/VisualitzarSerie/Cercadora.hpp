@@ -1,10 +1,8 @@
-// TODO
 #include <string>
 
-using namespace std;
+#include "Pasarela.hpp"
 
 class Cercadora {
-
-public:
-    string CercaVisualitzarSeriePerSobrenom(string sobreNom);
+    public:
+        PasarelaVisualitzarSerie CercaVisualitzarSeriePerSobrenom(std::string sobreNom);
 };

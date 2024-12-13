@@ -9,26 +9,32 @@ ConnexioBDD* ConnexioBDD::getInstance() {
     return _instance;
 }
 
-void ConnexioBDD::execute(string query) {
+void ConnexioBDD::execute(std::string query) {
     _statement->execute(query);
 }
 
-ResultSet* ConnexioBDD::execute_query(string query) {
-    return _statement->executeQuery(query);
+std::unique_ptr<ResultSet> ConnexioBDD::execute_query(std::string query) {
+    std::unique_ptr<ResultSet> result(_statement->executeQuery(query));
+    return result;
+}
+
+std::unique_ptr<PreparedStatement> ConnexioBDD::get_prepared_statement(std::string statement) {
+    std::unique_ptr<PreparedStatement> pstmt(_connection->prepareStatement(statement));
+    return pstmt;
 }
 
 ConnexioBDD::ConnexioBDD() {
-    ifstream env_file(".env");
-    string line;
+    std::ifstream env_file(".env");
+    std::string line;
 
     if (!env_file.is_open()) {
         throw "Could not open the .env file.";
         return;
     }
     
-    string host = "";
-    string user = "";
-    string password = "";
+    std::string host = "";
+    std::string user = "";
+    std::string password = "";
 
     while (getline(env_file, line)) {
         if (line.empty() || line[0] == '#') {
@@ -36,9 +42,9 @@ ConnexioBDD::ConnexioBDD() {
         }
 
         size_t delimiterPos = line.find('=');
-        if (delimiterPos != string::npos) {
-            string key = line.substr(0, delimiterPos);
-            string value = line.substr(delimiterPos + 1);
+        if (delimiterPos != std::string::npos) {
+            std::string key = line.substr(0, delimiterPos);
+            std::string value = line.substr(delimiterPos + 1);
 
             key.erase(key.find_last_not_of(" \n\r\t") + 1);
             value.erase(0, value.find_first_not_of(" \n\r\t"));

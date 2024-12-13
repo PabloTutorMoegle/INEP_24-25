@@ -1,15 +1,17 @@
 #include "Pasarela.hpp"
 
-using namespace std;
+PasarelaVisualitzarSerie::PasarelaVisualitzarSerie() {
 
-void Pasarela::Insereix() {
+}
+
+void PasarelaVisualitzarSerie::Insereix() {
     // code
 }
 
-void Pasarela::Modifica() {
+void PasarelaVisualitzarSerie::Modifica() {
     // code
 }
 
-void Pasarela::Esborra() {
+void PasarelaVisualitzarSerie::Esborra() {
     // code
 }
