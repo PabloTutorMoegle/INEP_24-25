@@ -9,15 +9,6 @@ ConnexioBDD* ConnexioBDD::getInstance() {
     return _instance;
 }
 
-void ConnexioBDD::execute(std::string query) {
-    _statement->execute(query);
-}
-
-std::unique_ptr<ResultSet> ConnexioBDD::execute_query(std::string query) {
-    std::unique_ptr<ResultSet> result(_statement->executeQuery(query));
-    return result;
-}
-
 std::unique_ptr<PreparedStatement> ConnexioBDD::get_prepared_statement(std::string statement) {
     std::unique_ptr<PreparedStatement> pstmt(_connection->prepareStatement(statement));
     return pstmt;

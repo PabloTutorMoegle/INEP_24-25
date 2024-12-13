@@ -3,9 +3,12 @@
 PasarelaUsuari CercadoraUsuari::cercaUsuari(string sobrenom) {
     ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
     
-    string query = "SELECT * FROM usuari WHERE usu_sobrenom = '" + sobrenom + "'";
+    unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
+        "SELECT * FROM usuari WHERE usu_sobrenom = ?"
+    );
+    pstmt->setString(1, sobrenom);
 
-    unique_ptr<ResultSet> result = connexio_bdd->execute_query(query);
+    unique_ptr<ResultSet> result(pstmt->executeQuery());
 
     if (result->next()) {
         string sobrenom = result->getString("usu_sobrenom");

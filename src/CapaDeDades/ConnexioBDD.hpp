@@ -26,8 +26,6 @@ class ConnexioBDD {
     public:
         static ConnexioBDD *getInstance();
 
-        void execute(std::string query);
-        std::unique_ptr<ResultSet> execute_query(std::string query);
         std::unique_ptr<PreparedStatement> get_prepared_statement(std::string statement);
 
     private:
