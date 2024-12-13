@@ -73,3 +73,23 @@ void PasarelaUsuari::esborra() {
 
     pstmt->executeUpdate();
 }
+
+string PasarelaUsuari::obte_sobrenom() {
+    return _sobrenom;
+}
+
+string PasarelaUsuari::obte_nom() {
+    return _nom;
+}
+
+string PasarelaUsuari::obte_correu_electronic() {
+    return _correu_electronic;
+}
+
+time_t PasarelaUsuari::obte_data_naixement() {
+    return _data_naixement;
+}
+
+ModalitatSubscripcio PasarelaUsuari::obte_modalitat_subscripcio() {
+    return _modalitat_subscripcio;
+}
