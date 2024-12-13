@@ -2,7 +2,9 @@
 #include <time.h>
 using std::string;
 
-#include "../../definitions.h"
+#include "../../definitions.hpp"
+#include "../ConnexioBDD.hpp"
+#include <cppconn/prepared_statement.h>
 
 class PasarelaUsuari {
     private:
@@ -14,6 +16,14 @@ class PasarelaUsuari {
         ModalitatSubscripcio _modalitat_subscripcio;
         
     public:
+        PasarelaUsuari(
+            string sobrenom, 
+            string nom, 
+            string contrasenya, 
+            string correu_electronic, 
+            time_t data_naixement, 
+            ModalitatSubscripcio modalitat_subscripcio
+        );
         void insereix();
         void modifica();
         void esborra();

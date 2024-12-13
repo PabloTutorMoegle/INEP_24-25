@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <string>
 #include <unordered_map>
@@ -10,23 +11,22 @@
 #include <cppconn/driver.h>
 #include <cppconn/exception.h>
 #include <cppconn/statement.h>
+#include <cppconn/prepared_statement.h>
 #include <mysql_connection.h>
 #include <mysql_driver.h>
 
 using sql::Connection;
-using sql::Statement;
 using sql::ResultSet;
+using sql::Statement;
 using sql::mysql::get_mysql_driver_instance;
 using sql::mysql::MySQL_Driver;
-
-using namespace std;
+using sql::PreparedStatement;
 
 class ConnexioBDD {
     public:
         static ConnexioBDD *getInstance();
 
-        void execute(string query);
-        ResultSet* execute_query(string query);
+        std::unique_ptr<PreparedStatement> get_prepared_statement(std::string statement);
 
     private:
         static ConnexioBDD *_instance;
