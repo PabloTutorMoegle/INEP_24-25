@@ -14,7 +14,6 @@ void TxIniciSessio::executar() {
         return;
     }
 
-
     PetitFlix* petit_flix = PetitFlix::get_instance();   
     petit_flix->inicia_sessio(pasarela_usuari);
 }

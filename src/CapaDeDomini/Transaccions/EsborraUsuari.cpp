@@ -16,5 +16,5 @@ void TxEsborraUsuari::executar() {
     
     usuari.esborra();
 
-    // TODO: Tancar sessió? He preguntat a la Lídia
+    petit_flix->tanca_sessio();
 }

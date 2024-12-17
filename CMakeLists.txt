@@ -7,6 +7,8 @@ set(SRC "${CMAKE_SOURCE_DIR}/src")
 
 # Utilitzar tots els fitxers per crear l'executable
 file(GLOB_RECURSE SOURCES "${SRC}/*.cpp" "${SRC}/*.hpp")
+list(REMOVE_ITEM SOURCES "${SRC}/VisualitzarPelicula/*.cpp")
+list(REMOVE_ITEM SOURCES "${SRC}/VisualitzarPelicula/*.hpp")
 add_executable(projecte_inep ${SOURCES})
 
 # Incloure libesin

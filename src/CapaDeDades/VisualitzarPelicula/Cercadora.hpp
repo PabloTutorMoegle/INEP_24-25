@@ -1,11 +1,13 @@
-#include <iostream>
 #include <string>
+using std::string;
 
-using namespace std;
+#include <vector>
+using std::vector;
 
-class Cercadora {
+#include "Pasarela.hpp"
+
+class CercadoraVisualitzarPelicula {
     public:
-
-        void cercaVisualitzacions(string sobrenom);
+        static vector<PasarelaVisualitzarPelicula> cerca_per_sobrenom(string sobrenom_usuari);
 };
 

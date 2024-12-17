@@ -1,10 +1,9 @@
-#include <iostream>
 #include <string>
+using std::string;
+
 #include <time.h>
 
-using namespace std;
-
-class PasarelaVisualitzaPelicula {
+class PasarelaVisualitzarPelicula {
     private: 
         string _sobrenom;
         string _titolPelicula;
@@ -15,4 +14,6 @@ class PasarelaVisualitzaPelicula {
         void insereix();
         void modifica();
         void esborra();
+
+        unsigned int obte_num_visualitzacions();
 };

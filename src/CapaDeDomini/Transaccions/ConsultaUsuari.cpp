@@ -1,4 +1,4 @@
-#include "ConsultaUsuari.hpp"   
+#include "ConsultaUsuari.hpp"
 
 TxConsultaUsuari::TxConsultaUsuari() {
     _resultat = std::nullopt;
