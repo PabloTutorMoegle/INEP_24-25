@@ -9,10 +9,10 @@ using std::string;
 class PasarelaVisualitzarSerie {
     private:
         string _sobrenom;
-        string _titolSerie;
-        int _numVicialitzacions;
-        int _numTemporada;
-        int _numCapitol;
+        string _titol_serie;
+        int _num_visualitzacions;
+        int _num_temporada;
+        int _num_capitol;
         time_t _data;
         ModalitatSubscripcio _modalitat_subscripcio;
 
@@ -26,15 +26,15 @@ class PasarelaVisualitzarSerie {
             time_t data,
             ModalitatSubscripcio modalitat_subscripcio
         );
-        void Insereix();
-        void Modifica();
-        void Esborra();
+        void insereix();
+        void modifica();
+        void esborra();
 
-        string ObteSobrenom();
-        string ObteTitolSerie();
-        int ObteNumVicialitzacions();
-        int ObteNumTemporada();
-        int ObteNumCapitol();
-        time_t ObteData();
-        ModalitatSubscripcio ObteModalitatSubscripcio();
+        string obte_sobrenom();
+        string obte_titol_serie();
+        int obte_num_visualitzacions();
+        int obte_num_temporada();
+        int obte_num_capitol();
+        time_t obte_data();
+        ModalitatSubscripcio obte_modalitat_subscripcio();
 };

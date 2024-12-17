@@ -1,5 +1,6 @@
 #include "Cercadora.hpp"
 
-PasarelaVisualitzarSerie Cercadora::CercaVisualitzarSeriePerSobrenom(std::string sobreNom) {
-
+vector<PasarelaVisualitzarSerie> CercadoraVisualitzarSerie::cerca_per_sobrenom(string sobrenom_usuari) {
+    // TODO!!
+    return vector<PasarelaVisualitzarSerie>();
 }

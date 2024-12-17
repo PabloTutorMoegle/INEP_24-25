@@ -82,6 +82,10 @@ string PasarelaUsuari::obte_nom() {
     return _nom;
 }
 
+string PasarelaUsuari::obte_contrasenya() {
+    return _contrasenya;
+}
+
 string PasarelaUsuari::obte_correu_electronic() {
     return _correu_electronic;
 }

@@ -4,11 +4,14 @@ using std::string;
 #include <memory>
 using std::unique_ptr;
 
+#include <vector>
+using std::vector;
+
 #include "Pasarela.hpp"
 #include "../ConnexioBDD.hpp"
 #include "../../definitions.hpp"
 
-class Cercadora {
+class CercadoraVisualitzarSerie {
     public:
-        PasarelaVisualitzarSerie CercaVisualitzarSeriePerSobrenom(std::string sobreNom);
+        static vector<PasarelaVisualitzarSerie> cerca_per_sobrenom(string sobreNom);
 };
