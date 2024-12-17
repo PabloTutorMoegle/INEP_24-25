@@ -1,13 +1,15 @@
 # TODO
-- Revisar CapaDeDades::PasarelaVisualitzarSerie
-- Fer CapaDeDades::CercadoraVisualitzarSerie
+## Pablo
+    - Revisar CapaDeDades::PasarelaVisualitzarSerie
+    - Fer CapaDeDades::CercadoraVisualitzarSerie
+
+## Ari
 - Fer CapaDeDades::PasarelaVisualitzarPelicula
 - Fer CapaDeDades::CercadoraVisualitzarPelicula
 
-- Fer CapaDeDomini::Transaccions::RegistraUsuari
-- Fer CapaDeDomini::Transaccions::TancaSessio
+## Pol
 - Fer CapaDeDomini::ControlModificaUsuari
 
+## Pablo
 - Fer CapaDePresentacio
-
 - Fer main
