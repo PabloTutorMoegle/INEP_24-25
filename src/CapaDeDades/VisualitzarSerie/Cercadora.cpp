@@ -1,5 +1,5 @@
 #include "Cercadora.hpp"
 
-// PasarelaVisualitzarSerie Cercadora::CercaVisualitzarSeriePerSobrenom(std::string sobreNom) {
-//     // code
-// }
+PasarelaVisualitzarSerie Cercadora::CercaVisualitzarSeriePerSobrenom(std::string sobreNom) {
+
+}
