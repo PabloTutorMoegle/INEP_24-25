@@ -11,5 +11,4 @@ class TxConsultaUsuari {
 
         void executar();
         DTOUsuari obte_resultat();
-        PasarelaUsuari obte_usuari();
 };
