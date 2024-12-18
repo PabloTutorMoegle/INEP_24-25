@@ -9,14 +9,19 @@ TxInfoVisualitzacions::~TxInfoVisualitzacions() {}
 
 void TxInfoVisualitzacions::executar() {
     const PetitFlix* petit_flix = PetitFlix::get_instance();   
-    const PasarelaUsuari usuari = petit_flix->obte_usuari();
-    const string sobrenom_usuari = usuari.obte_sobrenom();
+    const optional<PasarelaUsuari> usuari = petit_flix->obte_usuari();
+
+    if (!usuari) {
+        throw "No hi ha cap usuari autenticat!";
+    }
+
+    const string sobrenom_usuari = usuari->obte_sobrenom();
 
     vector<PasarelaVisualitzarSerie> visualitzacions_serie =  CercadoraVisualitzarSerie::cerca_per_sobrenom(sobrenom_usuari);
     vector<PasarelaVisualitzarPelicula> visualitzacions_pelicula =  CercadoraVisualitzarPelicula::cerca_per_sobrenom(sobrenom_usuari);
 
     for (auto visualitzacio : visualitzacions_serie) {
-        _visualitzacions_serie += visualitzacio.obte_num_visualitzacions();
+        _visualitzacions_serie += visualitzacio.obte_nb_visualitzacions();
     }
 
     for (auto visualitzacio : visualitzacions_pelicula) {

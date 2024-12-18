@@ -17,7 +17,7 @@ class PetitFlix {
     public:
         static PetitFlix* get_instance();
 
-        PasarelaUsuari obte_usuari() const;
+        optional<PasarelaUsuari> obte_usuari() const;
         void inicia_sessio(PasarelaUsuari usuari);
         void tanca_sessio();
 

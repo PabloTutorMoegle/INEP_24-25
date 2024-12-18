@@ -4,7 +4,7 @@
 #include <utility>
 using std::pair;
 
-#include "../CapaDeDomini/DTOUsuari.hpp"
+#include "../CapaDeDomini/GestioUsuaris/DTOUsuari.hpp"
 
 // Això no fa falta que s'implementi com un singleton ja que tot els mètodes poden ser estàtics
 class CapaDePresentacio {

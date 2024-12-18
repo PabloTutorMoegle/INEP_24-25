@@ -13,12 +13,8 @@ PetitFlix::PetitFlix() {
     _usuari = std::nullopt;
 }
 
-PasarelaUsuari PetitFlix::obte_usuari() const {
-    if (_usuari) {
-        return *_usuari;
-    } else {
-        throw "No hi ha cap sessió iniciada";
-    }
+optional<PasarelaUsuari> PetitFlix::obte_usuari() const {
+    return _usuari;
 }
 
 // Pre: l'usuari ha estat autenticat previament
