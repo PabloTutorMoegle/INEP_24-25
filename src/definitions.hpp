@@ -5,9 +5,9 @@
 #define MODALITAT_CINEFIL "cinefil"
 #define MODALITAT_INFANTIL "infantil"
 enum ModalitatSubscripcio {
-    Completa,
-    Cinefil,
-    Infantil,
+    Completa = 1,
+    Cinefil = 2,
+    Infantil = 3,
 };
 
 #include <chrono>
@@ -20,5 +20,7 @@ std::string time_t_to_datetime_string(time_t datetime);
 ModalitatSubscripcio modalitat_subscripcio_from_string(std::string modalitat);
 
 std::string modalitat_subscripcio_to_string(ModalitatSubscripcio modalitat);
+
+
 
 #endif
