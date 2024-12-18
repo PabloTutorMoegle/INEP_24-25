@@ -9,7 +9,6 @@ set(SRC "${CMAKE_SOURCE_DIR}/src")
 file(GLOB_RECURSE SOURCES "${SRC}/*.cpp" "${SRC}/*.hpp")
 add_executable(projecte_inep ${SOURCES})
 
-# Incloure libesin
 include_directories("${BLOBS}/include/jdbc")
 include_directories("${BLOBS}/include/mysql")
 include_directories("${BLOBS}/include/mysqlx")
