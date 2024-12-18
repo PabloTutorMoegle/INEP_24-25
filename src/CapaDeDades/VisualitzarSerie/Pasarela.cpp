@@ -6,7 +6,7 @@ PasarelaVisualitzarSerie::PasarelaVisualitzarSerie(
     int nb_visualitzacions,
     int num_temporada,
     int num_capitol,
-    time_t data,
+    time_t data
 ) {
     _sobrenom = sobrenom;
     _titol_serie = titol_serie;
@@ -15,6 +15,8 @@ PasarelaVisualitzarSerie::PasarelaVisualitzarSerie(
     _num_capitol = num_capitol;
     _data = data;
 }
+
+PasarelaVisualitzarSerie::~PasarelaVisualitzarSerie() {}
 
 void PasarelaVisualitzarSerie::insereix() {
     ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
@@ -67,10 +69,13 @@ void PasarelaVisualitzarSerie::esborra() {
     ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
 
     std::unique_ptr<sql::PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
-        "DELETE FROM visualitzacio_capitol WHERE vic_sobrenom = ?"
+        "DELETE FROM visualitzacio_capitol WHERE vic_sobrenom = ? AND vic_titol_serie = ? AND vic_num_temporada = ? AND vic_num_capitol = ?"
     );
 
     pstmt->setString(1, _sobrenom);
+    pstmt->setString(2, _titol_serie);
+    pstmt->setInt(3, _num_temporada);
+    pstmt->setInt(4, _num_capitol);
 
     pstmt->executeUpdate();
 }
@@ -97,8 +102,4 @@ int PasarelaVisualitzarSerie::obte_num_capitol() {
 
 time_t PasarelaVisualitzarSerie::obte_data() {
     return _data;
-}
-
-ModalitatSubscripcio PasarelaVisualitzarSerie::obte_modalitat_subscripcio() {
-    return _modalitat_subscripcio;
 }

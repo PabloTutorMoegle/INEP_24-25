@@ -1,5 +1,5 @@
 # PetitFlix - Projecte INEP
-## Com compilar
+## Com compilar:
 ### Dependències: 
 - `cmake`
 - `gcc`
@@ -21,18 +21,5 @@ USER=<usuari>
 PASSWORD=<contrasenya>
 ```
 
-# ↓ BORRAR ABANS D'ENTREGAR ↓
-
-# TODO
-## Pablo
-- Revisar `CapaDeDades::PasarelaVisualitzarSerie`
-- Fer `CapaDeDades::CercadoraVisualitzarSerie`
-
-
-- Implementar les operacions de CapaDePresentacio
-- Fer main
-  - El tipus `time_t` et permet obtenir els dies, les hores, els minuts i tal per separat, per poguer fer un cout bonic
-
-# DONE
- - De la capa de dades, Usuari i ConnexióBDD està acabat
- - Tota la capa de domini està acabada.
+## Com crear la base de dades:
+Al directori `sql_scripts` hi ha un arxiu `create_tables.sql` per crear totes les taules de la base de dades.

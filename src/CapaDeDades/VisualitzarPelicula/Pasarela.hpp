@@ -6,14 +6,27 @@ using std::string;
 
 #include <time.h>
 
+#include <cppconn/prepared_statement.h>
+
+#include "../../definitions.hpp"
+#include "../ConnexioBDD.hpp"
+
 class PasarelaVisualitzarPelicula {
     private: 
         string _sobrenom;
-        string _titolPelicula;
-        int _numVisualitzacions;
-        time_t data;
+        string _titol_pelicula;
+        int _nb_visualitzacions;
+        time_t _data;
 
-    public: 
+    public:
+        PasarelaVisualitzarPelicula(
+            string sobrenom,
+            string titol_pelicula,
+            int nb_visualitzacions,
+            time_t data
+        );
+        ~PasarelaVisualitzarPelicula();
+        
         void insereix();
         void modifica();
         void esborra();

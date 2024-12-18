@@ -27,6 +27,8 @@ class PasarelaVisualitzarSerie {
             int num_capitol, 
             time_t data
         );
+        ~PasarelaVisualitzarSerie();
+
         void insereix();
         void modifica();
         void esborra();
