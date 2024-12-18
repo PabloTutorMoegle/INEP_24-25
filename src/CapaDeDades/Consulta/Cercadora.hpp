@@ -16,11 +16,11 @@ using std::vector;
 #include "../ConnexioBDD.hpp"
 #include "../../definitions.hpp"
 
-class CercadoraPelicula {
+class CercadoraConsulta {
     public: 
-        static vector<PasarelaPelicula> cerca_novetats();
-        static vector<PasarelaPelicula> cerca_estrenes();
-        static vector<PasarelaPelicula> cerca_mes_vistes();
+        static vector<PasarelaConsulta> cerca_novetats();
+        static vector<PasarelaConsulta> cerca_estrenes();
+        static vector<PasarelaConsulta> cerca_mes_vistes();
 };
 
 #endif

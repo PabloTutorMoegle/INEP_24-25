@@ -9,19 +9,17 @@ using std::string;
 #include "../ConnexioBDD.hpp"
 #include <cppconn/prepared_statement.h>
 
-class PasarelaPelicula {
+class PasarelaConsulta {
     private:
-        string _titol;
         time_t _data_estrena;
-        int _duracio;
+        string _tipus;
+        string _titol;
+        string _qualificacio;
+        string _info;
 
     public:
-        PasarelaPelicula(string titol, time_t data, int duracio);
-        ~PasarelaPelicula();
-
-        void insereix() const;
-        void modifica() const;
-        void esborra() const;
+        PasarelaConsulta(time_t data, string _tipus, string titol, string _qualificacio, string _info);
+        ~PasarelaConsulta();
 };
 
 #endif
