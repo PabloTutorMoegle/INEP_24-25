@@ -7,6 +7,9 @@ using std::string;
 #include <vector>
 using std::vector;
 
+#include <memory>
+using std::unique_ptr;
+
 #include "Pasarela.hpp"
 
 class CercadoraVisualitzarPelicula {
