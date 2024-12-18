@@ -1,7 +1,7 @@
 #include <string>
 #include <chrono>
 
-#include "../definitions.hpp"
+#include "../../definitions.hpp"
 
 struct DTOUsuari {
     std::string sobrenom;

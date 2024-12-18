@@ -27,13 +27,11 @@ PASSWORD=<contrasenya>
 ## Pablo
 - Revisar `CapaDeDades::PasarelaVisualitzarSerie`
 - Fer `CapaDeDades::CercadoraVisualitzarSerie`
+
+
 - Implementar les operacions de CapaDePresentacio
 - Fer main
   - El tipus `time_t` et permet obtenir els dies, les hores, els minuts i tal per separat, per poguer fer un cout bonic
-
-## Ari
-- Fer `CapaDeDades::PasarelaVisualitzarPelicula`
-- Fer `CapaDeDades::CercadoraVisualitzarPelicula`
 
 # DONE
  - De la capa de dades, Usuari i ConnexióBDD està acabat

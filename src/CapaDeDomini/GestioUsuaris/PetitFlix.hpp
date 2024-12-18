@@ -4,7 +4,7 @@
 #include <optional>
 using std::optional;
 
-#include "../CapaDeDades/Usuari/Pasarela.hpp"
+#include "../../CapaDeDades/Usuari/Pasarela.hpp"
 
 class PetitFlix {
     private:

@@ -6,8 +6,8 @@ using std::string;
 
 #include <time.h>
 
-#include "../../definitions.hpp"
-#include "../../CapaDeDades/Usuari/Pasarela.hpp"
+#include "../../../definitions.hpp"
+#include "../../../CapaDeDades/Usuari/Pasarela.hpp"
 
 class TxRegistraUsuari {
     private:

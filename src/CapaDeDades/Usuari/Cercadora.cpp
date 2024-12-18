@@ -22,5 +22,4 @@ PasarelaUsuari CercadoraUsuari::cercaUsuari(string sobrenom) {
     } else {
         throw "No existeix l'usuari";
     }
-
 }

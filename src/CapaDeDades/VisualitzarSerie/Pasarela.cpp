@@ -2,20 +2,18 @@
 
 PasarelaVisualitzarSerie::PasarelaVisualitzarSerie(
     string sobrenom,
-    string titolSerie,
-    int numVicialitzacions,
-    int numTemporada,
-    int numCapitol,
+    string titol_serie,
+    int nb_visualitzacions,
+    int num_temporada,
+    int num_capitol,
     time_t data,
-    ModalitatSubscripcio modalitat_subscripcio
 ) {
     _sobrenom = sobrenom;
-    _titol_serie = titolSerie;
-    _num_visualitzacions = numVicialitzacions;
-    _num_temporada = numTemporada;
-    _num_capitol = numCapitol;
+    _titol_serie = titol_serie;
+    _nb_visualitzacions = nb_visualitzacions;
+    _num_temporada = num_temporada;
+    _num_capitol = num_capitol;
     _data = data;
-    _modalitat_subscripcio = modalitat_subscripcio;
 }
 
 void PasarelaVisualitzarSerie::insereix() {
@@ -37,7 +35,7 @@ void PasarelaVisualitzarSerie::insereix() {
     pstmt->setInt(3, _num_temporada);
     pstmt->setInt(4, _num_capitol);
     pstmt->setString(5, time_t_to_datetime_string(_data));
-    pstmt->setInt(6, _num_visualitzacions);
+    pstmt->setInt(6, _nb_visualitzacions);
 
     pstmt->executeUpdate();
 }
@@ -47,21 +45,20 @@ void PasarelaVisualitzarSerie::modifica() {
 
     std::unique_ptr<sql::PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
         "UPDATE visualitzacio_capitol SET "
-        "vis_titol_serie = ?, "
-        "vis_num_vicialitzacions = ?, "
-        "vis_num_temporada = ?, "
-        "vis_num_capitol = ?, "
-        "vis_data = ?, "
-        "WHERE vis_sobrenom = ?" // TODO: Arreglar ordre i noms
+        "vic_titol_serie = ?, "
+        "vic_num_temporada = ?, "
+        "vic_num_capitol = ?, "
+        "vic_data = ?, "
+        "vic_nb_vicialitzacions = ?, "
+        "WHERE vic_sobrenom_usuari = ?"
     );
 
     pstmt->setString(1, _titol_serie);
-    pstmt->setInt(2, _num_visualitzacions);
-    pstmt->setInt(3, _num_temporada);
-    pstmt->setInt(4, _num_capitol);
-    pstmt->setString(5, time_t_to_datetime_string(_data));
-    pstmt->setString(6, modalitat_subscripcio_to_string(_modalitat_subscripcio));
-    pstmt->setString(7, _sobrenom); // TODO arreglar setStrings i ordre
+    pstmt->setInt(1, _num_temporada);
+    pstmt->setInt(2, _num_capitol);
+    pstmt->setString(4, time_t_to_datetime_string(_data));
+    pstmt->setInt(5, _nb_visualitzacions);
+    pstmt->setString(6, _sobrenom);
 
     pstmt->executeUpdate();
 }
@@ -86,8 +83,8 @@ string PasarelaVisualitzarSerie::obte_titol_serie() {
     return _titol_serie;
 }
 
-int PasarelaVisualitzarSerie::obte_num_visualitzacions() {
-    return _num_visualitzacions;
+int PasarelaVisualitzarSerie::obte_nb_visualitzacions() {
+    return _nb_visualitzacions;
 }
 
 int PasarelaVisualitzarSerie::obte_num_temporada() {

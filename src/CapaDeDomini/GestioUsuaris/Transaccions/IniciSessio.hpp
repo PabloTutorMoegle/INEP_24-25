@@ -5,7 +5,7 @@
 using std::string;
 
 #include "../PetitFlix.hpp"
-#include "../../CapaDeDades/Usuari/Cercadora.hpp"
+#include "../../../CapaDeDades/Usuari/Cercadora.hpp"
 
 class TxIniciSessio {
     private:

@@ -5,10 +5,10 @@
 using std::pair;
 
 #include "../PetitFlix.hpp"
-#include "../../CapaDeDades/VisualitzarSerie/Cercadora.hpp"
-#include "../../CapaDeDades/VisualitzarSerie/Pasarela.hpp"
-#include "../../CapaDeDades/VisualitzarPelicula/Cercadora.hpp"
-#include "../../CapaDeDades/VisualitzarPelicula/Pasarela.hpp"
+#include "../../../CapaDeDades/VisualitzarSerie/Cercadora.hpp"
+#include "../../../CapaDeDades/VisualitzarSerie/Pasarela.hpp"
+#include "../../../CapaDeDades/VisualitzarPelicula/Cercadora.hpp"
+#include "../../../CapaDeDades/VisualitzarPelicula/Pasarela.hpp"
 
 class TxInfoVisualitzacions {
     private:

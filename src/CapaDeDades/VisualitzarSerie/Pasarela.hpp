@@ -13,21 +13,19 @@ class PasarelaVisualitzarSerie {
     private:
         string _sobrenom;
         string _titol_serie;
-        int _num_visualitzacions;
+        int _nb_visualitzacions;
         int _num_temporada;
         int _num_capitol;
         time_t _data;
-        ModalitatSubscripcio _modalitat_subscripcio;
 
     public:
         PasarelaVisualitzarSerie(
             string sobrenom, 
-            string titolSerie, 
-            int numVicialitzacions, 
-            int numTemporada, 
-            int numCapitol, 
-            time_t data,
-            ModalitatSubscripcio modalitat_subscripcio
+            string titol_serie, 
+            int nb_visualitzacions,
+            int num_temporada, 
+            int num_capitol, 
+            time_t data
         );
         void insereix();
         void modifica();
@@ -35,11 +33,10 @@ class PasarelaVisualitzarSerie {
 
         string obte_sobrenom();
         string obte_titol_serie();
-        int obte_num_visualitzacions();
+        int obte_nb_visualitzacions();
         int obte_num_temporada();
         int obte_num_capitol();
         time_t obte_data();
-        ModalitatSubscripcio obte_modalitat_subscripcio();
 };
 
 #endif

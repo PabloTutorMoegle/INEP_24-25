@@ -5,8 +5,8 @@
 using std::string;
 
 #include "../PetitFlix.hpp"
-#include "../../CapaDeDades/VisualitzarSerie/Pasarela.hpp"
-#include "../../CapaDeDades/VisualitzarSerie/Cercadora.hpp"
+#include "../../../CapaDeDades/VisualitzarSerie/Pasarela.hpp"
+#include "../../../CapaDeDades/VisualitzarSerie/Cercadora.hpp"
 
 class TxEsborraUsuari {
     private:
