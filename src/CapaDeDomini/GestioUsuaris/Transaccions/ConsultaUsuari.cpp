@@ -7,14 +7,19 @@ TxConsultaUsuari::TxConsultaUsuari() {
 TxConsultaUsuari::~TxConsultaUsuari() {}
 
 void TxConsultaUsuari::executar() {
-    PetitFlix* petit_flix = PetitFlix::get_instance();   
-    const PasarelaUsuari usuari = petit_flix->obte_usuari();
+    PetitFlix* petit_flix = PetitFlix::get_instance(); 
 
-    const string sobrenom = usuari.obte_sobrenom();
-    const string nom = usuari.obte_nom();
-    const string correu_electronic = usuari.obte_correu_electronic();
-    const time_t data_naixement = usuari.obte_data_naixement();
-    const ModalitatSubscripcio modalitat_subscripcio = usuari.obte_modalitat_subscripcio();
+    const optional<PasarelaUsuari> usuari = petit_flix->obte_usuari();
+
+    if (!usuari) {
+        throw "No hi ha cap usuari autenticat!";
+    }
+
+    const string sobrenom = usuari->obte_sobrenom();
+    const string nom = usuari->obte_nom();
+    const string correu_electronic = usuari->obte_correu_electronic();
+    const time_t data_naixement = usuari->obte_data_naixement();
+    const ModalitatSubscripcio modalitat_subscripcio = usuari->obte_modalitat_subscripcio();
 
     _resultat = DTOUsuari {
         .sobrenom = sobrenom,
@@ -34,6 +39,13 @@ DTOUsuari TxConsultaUsuari::obte_resultat() const {
 }
 
 PasarelaUsuari TxConsultaUsuari::obte_usuari() const {
-    const PetitFlix* petit_flix = PetitFlix::get_instance();   
-    return petit_flix->obte_usuari();
+    const PetitFlix* petit_flix = PetitFlix::get_instance();  
+
+    const optional<PasarelaUsuari> usuari = petit_flix->obte_usuari();
+
+    if (!usuari) {
+        throw "No hi ha cap usuari autenticat!";
+    }
+
+    return *usuari;
 }
