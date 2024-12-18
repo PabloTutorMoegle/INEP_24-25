@@ -1,3 +1,6 @@
+#ifndef DADES_VISUALITZAR_PELICULA_PASARELA_HPP
+#define DADES_VISUALITZAR_PELICULA_PASARELA_HPP
+
 #include <string>
 using std::string;
 
@@ -17,3 +20,5 @@ class PasarelaVisualitzarPelicula {
 
         unsigned int obte_num_visualitzacions();
 };
+
+#endif

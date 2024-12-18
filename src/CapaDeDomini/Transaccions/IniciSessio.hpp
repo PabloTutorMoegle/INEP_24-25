@@ -1,3 +1,6 @@
+#ifndef DOMINI_TRANSACCIO_INICI_SESSIO_HPP
+#define DOMINI_TRANSACCIO_INICI_SESSIO_HPP
+
 #include <string>
 using std::string;
 
@@ -11,6 +14,9 @@ class TxIniciSessio {
 
     public:
         TxIniciSessio(string sobrenom_usuari, string contrasenya_usuari);
+        ~TxIniciSessio();
 
-        void executar();
+        void executar() const;
 };
+
+#endif

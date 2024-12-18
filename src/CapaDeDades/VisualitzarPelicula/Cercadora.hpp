@@ -1,3 +1,6 @@
+#ifndef DADES_VISUALITZAR_PELICULA_CERCADORA_HPP
+#define DADES_VISUALITZAR_PELICULA_CERCADORA_HPP
+
 #include <string>
 using std::string;
 
@@ -11,3 +14,4 @@ class CercadoraVisualitzarPelicula {
         static vector<PasarelaVisualitzarPelicula> cerca_per_sobrenom(string sobrenom_usuari);
 };
 
+#endif

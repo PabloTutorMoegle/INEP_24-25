@@ -5,9 +5,11 @@ TxIniciSessio::TxIniciSessio(string sobrenom_usuari, string contrasenya_usuari) 
     _contrasenya_usuari = contrasenya_usuari;
 }
 
-void TxIniciSessio::executar() {
-    PasarelaUsuari pasarela_usuari = CercadoraUsuari::cercaUsuari(_sobrenom_usuari);
-    string contrasenya_pasarela = pasarela_usuari.obte_contrasenya();
+TxIniciSessio::~TxIniciSessio() {}
+
+void TxIniciSessio::executar() const {
+    const PasarelaUsuari pasarela_usuari = CercadoraUsuari::cercaUsuari(_sobrenom_usuari);
+    const string contrasenya_pasarela = pasarela_usuari.obte_contrasenya();
 
     if (_contrasenya_usuari != contrasenya_pasarela) {
         throw "Hi ha hagut un error amb el sobrenom o la contrasenya";

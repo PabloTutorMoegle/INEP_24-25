@@ -16,8 +16,10 @@ TxRegistraUsuari::TxRegistraUsuari(
     _modalitat_subscripcio = modalitat_subscripcio;
 }
 
-void TxRegistraUsuari::executar() {
-    PasarelaUsuari nou_usuari(
+TxRegistraUsuari::~TxRegistraUsuari() {}
+
+void TxRegistraUsuari::executar() const {
+    const PasarelaUsuari nou_usuari(
         _sobrenom_usuari,
         _nom_usuari,
         _contrasenya_usuari,

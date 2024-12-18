@@ -1,7 +1,12 @@
+#ifndef DOMINI_TRANSACCIO_ESBORRA_USUARI_HPP
+#define DOMINI_TRANSACCIO_ESBORRA_USUARI_HPP
+
 #include <string>
 using std::string;
 
 #include "../PetitFlix.hpp"
+#include "../../CapaDeDades/VisualitzarSerie/Pasarela.hpp"
+#include "../../CapaDeDades/VisualitzarSerie/Cercadora.hpp"
 
 class TxEsborraUsuari {
     private:
@@ -9,6 +14,9 @@ class TxEsborraUsuari {
 
     public:
         TxEsborraUsuari(string contrasenya_usuari);
+        ~TxEsborraUsuari();
 
-        void executar();
+        void executar() const;
 };
+
+#endif

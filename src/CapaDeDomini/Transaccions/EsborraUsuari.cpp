@@ -4,10 +4,12 @@ TxEsborraUsuari::TxEsborraUsuari(string contrasenya_usuari) {
     _contrasenya_usuari = contrasenya_usuari;
 }
 
-void TxEsborraUsuari::executar() {
+TxEsborraUsuari::~TxEsborraUsuari() {}
+
+void TxEsborraUsuari::executar() const {
     PetitFlix* petit_flix = PetitFlix::get_instance();   
-    PasarelaUsuari usuari = petit_flix->obte_usuari();
-    string contrasenya_usuari = usuari.obte_contrasenya();
+    const PasarelaUsuari usuari = petit_flix->obte_usuari();
+    const string contrasenya_usuari = usuari.obte_contrasenya();
 
     if (contrasenya_usuari != _contrasenya_usuari) {
         throw "La contrasenya no és correcta, l'usuari no s'ha esborrat";

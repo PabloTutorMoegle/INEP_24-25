@@ -1,3 +1,6 @@
+#ifndef DADES_VISUALITZAR_SERIE_CERCADORA_HPP
+#define DADES_VISUALITZAR_SERIE_CERCADORA_HPP
+
 #include <string>
 using std::string;
 
@@ -15,3 +18,5 @@ class CercadoraVisualitzarSerie {
     public:
         static vector<PasarelaVisualitzarSerie> cerca_per_sobrenom(string sobreNom);
 };
+
+#endif

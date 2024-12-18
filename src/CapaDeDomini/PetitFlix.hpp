@@ -1,3 +1,6 @@
+#ifndef DOMINI_PETITFLIX_HPP
+#define DOMINI_PETITFLIX_HPP
+
 #include <optional>
 using std::optional;
 
@@ -14,8 +17,10 @@ class PetitFlix {
     public:
         static PetitFlix* get_instance();
 
-        PasarelaUsuari obte_usuari();
+        PasarelaUsuari obte_usuari() const;
         void inicia_sessio(PasarelaUsuari usuari);
         void tanca_sessio();
 
 };
+
+#endif

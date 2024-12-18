@@ -1,3 +1,6 @@
+#ifndef DADES_VISUALITZAR_SERIE_PASARELA_HPP
+#define DADES_VISUALITZAR_SERIE_PASARELA_HPP
+
 #include <string>
 #include <time.h>
 using std::string;
@@ -38,3 +41,5 @@ class PasarelaVisualitzarSerie {
         time_t obte_data();
         ModalitatSubscripcio obte_modalitat_subscripcio();
 };
+
+#endif

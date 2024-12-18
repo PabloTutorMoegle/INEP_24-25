@@ -1,3 +1,6 @@
+#ifndef DOMINI_TRANSACCIO_REGISTRA_USUARI_HPP
+#define DOMINI_TRANSACCIO_REGISTRA_USUARI_HPP
+
 #include <string>
 using std::string;
 
@@ -25,5 +28,9 @@ class TxRegistraUsuari {
             ModalitatSubscripcio modalitat_subscripcio
         );
 
-        void executar();
+        ~TxRegistraUsuari();
+
+        void executar() const;
 };
+
+#endif

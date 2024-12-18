@@ -16,7 +16,9 @@ PasarelaUsuari::PasarelaUsuari(
     _modalitat_subscripcio = modalitat_subscripcio;
 }
 
-void PasarelaUsuari::insereix() {
+PasarelaUsuari::~PasarelaUsuari() {}
+
+void PasarelaUsuari::insereix() const {
     ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
 
     std::unique_ptr<sql::PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
@@ -40,7 +42,7 @@ void PasarelaUsuari::insereix() {
     pstmt->executeUpdate();
 }
 
-void PasarelaUsuari::modifica() {
+void PasarelaUsuari::modifica() const {
     ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
 
     std::unique_ptr<sql::PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
@@ -62,7 +64,7 @@ void PasarelaUsuari::modifica() {
     pstmt->executeUpdate();
 }
 
-void PasarelaUsuari::esborra() {
+void PasarelaUsuari::esborra() const {
     ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
     
     std::unique_ptr<sql::PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
@@ -74,26 +76,48 @@ void PasarelaUsuari::esborra() {
     pstmt->executeUpdate();
 }
 
-string PasarelaUsuari::obte_sobrenom() {
+string PasarelaUsuari::obte_sobrenom() const {
     return _sobrenom;
 }
 
-string PasarelaUsuari::obte_nom() {
+string PasarelaUsuari::obte_nom() const {
     return _nom;
 }
 
-string PasarelaUsuari::obte_contrasenya() {
+string PasarelaUsuari::obte_contrasenya() const {
     return _contrasenya;
 }
 
-string PasarelaUsuari::obte_correu_electronic() {
+string PasarelaUsuari::obte_correu_electronic() const {
     return _correu_electronic;
 }
 
-time_t PasarelaUsuari::obte_data_naixement() {
+time_t PasarelaUsuari::obte_data_naixement() const {
     return _data_naixement;
 }
 
-ModalitatSubscripcio PasarelaUsuari::obte_modalitat_subscripcio() {
+ModalitatSubscripcio PasarelaUsuari::obte_modalitat_subscripcio() const {
     return _modalitat_subscripcio;
+}
+
+void PasarelaUsuari::posa_nom(string nom) {
+    _nom = nom;
+}
+
+void PasarelaUsuari::posa_contrasenya(string contrasenya) {
+    _contrasenya = contrasenya;
+}
+
+void PasarelaUsuari::posa_correu_electronic(string correu_electronic) {
+    _correu_electronic = correu_electronic;
+}
+
+void PasarelaUsuari::posa_data_naixement(time_t data_naixement) {
+    _data_naixement = data_naixement;
+}
+
+void PasarelaUsuari::posa_modalitat_subscripcio(
+    ModalitatSubscripcio modalitat_subscripcio
+) {
+    _modalitat_subscripcio = modalitat_subscripcio;
 }

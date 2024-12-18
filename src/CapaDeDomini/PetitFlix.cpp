@@ -13,7 +13,7 @@ PetitFlix::PetitFlix() {
     _usuari = std::nullopt;
 }
 
-PasarelaUsuari PetitFlix::obte_usuari() {
+PasarelaUsuari PetitFlix::obte_usuari() const {
     if (_usuari) {
         return *_usuari;
     } else {
