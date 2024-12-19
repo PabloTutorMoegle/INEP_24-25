@@ -114,7 +114,7 @@ CREATE TABLE visualitzacio_pelicula (
     PRIMARY KEY (
         vip_sobrenom_usuari,
         vip_titol_pelicula
-    )
+    ),
 
     FOREIGN KEY (vip_sobrenom_usuari) 
         REFERENCES usuari (usu_sobrenom)

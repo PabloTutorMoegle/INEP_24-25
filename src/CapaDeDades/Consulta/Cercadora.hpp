@@ -18,8 +18,12 @@ using std::vector;
 
 class CercadoraConsulta {
     public: 
-        static vector<PasarelaConsulta> cerca_novetats();
-        static vector<PasarelaConsulta> cerca_estrenes();
+        static vector<PasarelaConsulta> cerca_novetats_completa();
+        static vector<PasarelaConsulta> cerca_novetats_cinefil();
+        static vector<PasarelaConsulta> cerca_novetats_infantil();
+        static vector<PasarelaConsulta> cerca_estrenes_completa();
+        static vector<PasarelaConsulta> cerca_estrenes_cinefil();
+        static vector<PasarelaConsulta> cerca_estrenes_infantil();
         static vector<PasarelaConsulta> cerca_mes_vistes();
 };
 
