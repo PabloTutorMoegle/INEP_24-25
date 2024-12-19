@@ -1,9 +1,11 @@
 #ifndef DOMINI_CONSULTA_ESTRENA_HPP
 #define DOMINI_CONSULTA_ESTRENA_HPP
 
+#include <optional>
+using std::optional;
+
 #include "../../CapaDeDades/Consulta/Cercadora.hpp"
 #include "../../CapaDeDades/Consulta/Pasarela.hpp"
-#include "../GestioUsuaris/PetitFlix.hpp"
 #include "../../definitions.hpp"
 #include "DTOContingut.hpp"
 
