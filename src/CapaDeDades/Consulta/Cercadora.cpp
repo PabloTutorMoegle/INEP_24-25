@@ -108,8 +108,6 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_novetats_infantil() {
     
     unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
         "SELECT " 
-            "pel_data_estrena AS data_estrena, "
-            "'Pelicula' AS tipus, "
             "pel_titol AS titol, "
             "c.con_qualificacio AS qualificacio, "
             "CONCAT(pel_duracio, ' min') AS info "
@@ -162,8 +160,6 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_estrenes_completa() {
     ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
     time_t current_time = time(nullptr);
     
-    // Hola Lidia, sé que això és una chernobilada de proporcions asronòmiques
-    // però si he d'implementar això amb C++ acabaré com aquesta imatge: https://i.imgur.com/zkkoLph.png
     unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
         "SELECT " 
             "pel_data_estrena AS data_estrena, "
@@ -264,8 +260,6 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_estrenes_infantil() {
     ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
     time_t current_time = time(nullptr);
     
-    // Hola Lidia, sé que això és una chernobilada de proporcions asronòmiques
-    // però si he d'implementar això amb C++ acabaré com aquesta imatge: https://i.imgur.com/zkkoLph.png
     unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
         "SELECT " 
             "pel_data_estrena AS data_estrena, "
@@ -316,4 +310,54 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_estrenes_infantil() {
     }
 
     return pelicules;
+}
+
+vector<PasarelaConsulta> CercadoraConsulta::cerca_mes_vistes() {
+    ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
+    
+    unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
+        "SELECT "
+            "pel.pel_data_estrena AS data_estrena, "
+            "pel.pel_titol AS titol, "
+            "c.con_qualificacio AS qualificacio, "
+            "SUM(vip.vip_nb_visualitzacions) AS visualitzacions "
+            "pel_duracio AS duracio "
+        "FROM "
+            "pelicula pel "
+        "JOIN "
+            "contingut c ON pel.pel_titol = c.con_titol "
+        "JOIN "
+            "visualitzacio_pelicula vip ON pel.pel_titol = vip.vip_titol_pelicula "
+        "GROUP BY "
+            "pel.pel_titol "
+        "ORDER BY "
+            "info DESC "
+        "LIMIT 5"
+    );
+
+    unique_ptr<ResultSet> result(pstmt->executeQuery());
+
+    vector<PasarelaConsulta> continguts;
+
+    while (result->next()) {
+        time_t data = time_t_from_string(result->getString("data_estrena"));
+        string titol = result->getString("titol");
+        string qualificacio = result->getString("qualificacio");
+        int visualitzacions_totals = result->getInt("visualitzacions");
+        int duracio = result->getInt("duracio");
+        
+        string info = std::to_string(duracio) + " min.; Visualitzacions: " + std::to_string(visualitzacions_totals);
+        
+        continguts.push_back(
+            PasarelaConsulta(
+                data,
+                "",
+                titol,
+                qualificacio,
+                info
+            )
+        );
+    }
+
+    return continguts;
 }
