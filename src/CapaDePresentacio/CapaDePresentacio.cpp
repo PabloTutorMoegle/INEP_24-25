@@ -177,8 +177,14 @@ void modifica_usuari()
         std::cerr << "El correu electronic ja existeix." << '\n';
     }
     
-
-    cout << "Usuari modificat correctament!" << endl;
+    usuari = controlModificaUsuari.obte_usuari();
+    
+    cout << "** Dades usuari modificades **" << "\n"
+         << "Nom complet: " << usuari.nom << "\n"
+         << "Sobrenom: " << usuari.sobrenom << "\n"
+         << "Correu electronic: " << usuari.correu_electronic << "\n"
+         << "Data de naixement: " << usuari.data_naixement << "\n"
+         << "Modalitat de subscripcio: " << usuari.modalitat_subscripcio << endl;
 }
 
 void esborra_usuari()
