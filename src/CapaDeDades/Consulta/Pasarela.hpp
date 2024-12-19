@@ -20,6 +20,12 @@ class PasarelaConsulta {
     public:
         PasarelaConsulta(time_t data, string _tipus, string titol, string _qualificacio, string _info);
         ~PasarelaConsulta();
+
+        time_t obte_data_estrena() const;
+        string obte_tipus() const;
+        string obte_titol() const;
+        string obte_qualificacio() const;
+        string obte_info() const;
 };
 
 #endif
