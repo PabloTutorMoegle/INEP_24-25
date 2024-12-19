@@ -5,6 +5,16 @@
 using std::pair;
 
 #include "../CapaDeDomini/GestioUsuaris/DTOUsuari.hpp"
+#include "../CapaDeDomini/GestioUsuaris/PetitFlix.hpp"
+#include "../CapaDeDomini/GestioUsuaris/Transaccions/IniciSessio.hpp"
+#include "../CapaDeDomini/GestioUsuaris/Transaccions/TancaSessio.hpp"
+#include "../CapaDeDomini/GestioUsuaris/Transaccions/RegistraUsuari.hpp"
+#include "../CapaDeDomini/GestioUsuaris/Transaccions/ConsultaUsuari.hpp"
+#include "../CapaDeDomini/GestioUsuaris/ControlModificaUsuari.hpp"
+#include "../CapaDeDomini/GestioUsuaris/Transaccions/EsborraUsuari.hpp"
+#include "../CapaDeDomini/Consultes/TxConsultaEstrenes.hpp"
+#include "../CapaDeDomini/Consultes/TxConsultaMesVistes.hpp"
+#include "../CapaDeDomini/Consultes/TxConsultaNovetats.hpp"
 
 // Això no fa falta que s'implementi com un singleton ja que tot els mètodes poden ser estàtics
 class CapaDePresentacio {

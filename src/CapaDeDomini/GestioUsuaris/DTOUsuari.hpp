@@ -1,3 +1,6 @@
+#ifndef DTOUSUARI_HPP
+#define DTOUSUARI_HPP
+
 #include <string>
 #include <chrono>
 
@@ -10,3 +13,5 @@ struct DTOUsuari {
     std::time_t data_naixement;
     ModalitatSubscripcio modalitat_subscripcio;
 };
+
+#endif

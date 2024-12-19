@@ -1,3 +1,6 @@
+#ifndef DTOCONTINGUT_HPP
+#define DTOCONTINGUT_HPP
+
 #include <string>
 #include <chrono>
 
@@ -10,3 +13,5 @@ struct DTOContingut {
     std::string qualificacio;
     std::string info;
 };
+
+#endif

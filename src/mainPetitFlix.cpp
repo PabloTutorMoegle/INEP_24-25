@@ -5,6 +5,7 @@
 
 using namespace std;
 
+CapaDePresentacio cdp;
 
 void consultes()
 {
@@ -27,10 +28,10 @@ void consultes()
                 CapaDePresentacio::properes_estrenes();
                 break;
             case 2:
-                CapaDePresentacio::ultimes_novetats();
+                cdp.ultimes_novetats();
                 break;
             case 3:
-                CapaDePresentacio::pelicules_mes_vistes();
+                cdp.pelicules_mes_vistes();
                 break;
             case 4:
                 break;
@@ -60,16 +61,16 @@ void gestioUsuaris()
         switch (opcio)
         {
             case 1:
-                CapaDePresentacio::consulta_usuari();
+                cdp.consulta_usuari();
                 break;
             case 2:
-                CapaDePresentacio::modifica_usuari();
+                cdp.modifica_usuari();
                 break;
             case 3:
-                CapaDePresentacio::modifica_contrasenya();
+                cdp.modifica_contrasenya();
                 break;
             case 4:
-                CapaDePresentacio::esborra_usuari();
+                cdp.esborra_usuari();
                 break;
             default:
                 cout << "Opcio no valida" << endl;
@@ -143,7 +144,7 @@ int main()
                     consultes();
                     break;
                 case 4:
-                    CapaDePresentacio::tanca_sessio();
+                    cdp.tanca_sessio();
                     break;
                 case 5:
                     bucle = false;
@@ -169,11 +170,10 @@ int main()
             switch (opcio)
             {
                 case 1:
-                    CapaDePresentacio::inici_sessio();
+                    cdp.inici_sessio();
                     break;
                 case 2:
-                    CapaDePresentacio::registrar_usuari();
-                    cout << "Usuari registrat correctament!" << endl;
+                    cdp.registrar_usuari();
                     break;
                 case 3:
                     consultes();
