@@ -6,7 +6,10 @@ set(BLOBS "${CMAKE_SOURCE_DIR}/external_blobs")
 set(SRC "${CMAKE_SOURCE_DIR}/src")
 
 # Utilitzar tots els fitxers per crear l'executable
-file(GLOB_RECURSE SOURCES "${SRC}/*.cpp" "${SRC}/*.hpp")
+file(
+    GLOB_RECURSE SOURCES 
+    "${SRC}/*.cpp" 
+)
 add_executable(projecte_inep ${SOURCES})
 
 include_directories("${BLOBS}/include/jdbc")

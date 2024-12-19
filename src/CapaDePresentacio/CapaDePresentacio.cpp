@@ -1,16 +1,20 @@
 #include <iostream>
 #include "CapaDePresentacio.hpp"
+#include "../CapaDeDomini/GestioUsuaris/PetitFlix.hpp"
 #include "../CapaDeDomini/GestioUsuaris/Transaccions/IniciSessio.hpp"
 #include "../CapaDeDomini/GestioUsuaris/Transaccions/TancaSessio.hpp"
 #include "../CapaDeDomini/GestioUsuaris/Transaccions/RegistraUsuari.hpp"
 #include "../CapaDeDomini/GestioUsuaris/Transaccions/ConsultaUsuari.hpp"
-#include "../CapaDeDomini/GestioUsuaris/DTOUsuari.hpp"
 #include "../CapaDeDomini/GestioUsuaris/ControlModificaUsuari.hpp"
 #include "../CapaDeDomini/GestioUsuaris/Transaccions/EsborraUsuari.hpp"
+#include "../CapaDeDomini/Consultes/TxConsultaEstrenes.hpp"
+#include "../CapaDeDomini/Consultes/TxConsultaMesVistes.hpp"
+#include "../CapaDeDomini/Consultes/TxConsultaNovetats.hpp"
+
 
 using namespace std;
 
-void inici_sessio()
+void CapaDePresentacio::inici_sessio()
 {
     cout<< "** Inici de sessio **" << "\n"
         << "Sobrenom: ";
@@ -29,7 +33,7 @@ void inici_sessio()
     }
 }
 
-void tanca_sessio()
+void CapaDePresentacio::tanca_sessio()
 {
     cout<< "** Tancar sessio **" << "\n"
         << "Vols tancar la sessio? (S/N): ";
@@ -47,7 +51,7 @@ void tanca_sessio()
     }
 }
 
-void registrar_usuari()
+void CapaDePresentacio::registrar_usuari()
 {
     cout << "** Registrar usuari **" << "\n"
         << "Nom complet: ";
@@ -100,7 +104,7 @@ void registrar_usuari()
     }
 }
 
-pair<DTOUsuari, pair<unsigned int, unsigned int>> consulta_usuari()
+pair<DTOUsuari, pair<unsigned int, unsigned int>> CapaDePresentacio::consulta_usuari()
 {
     TxConsultaUsuari consultaUsuari;
 
@@ -114,14 +118,15 @@ pair<DTOUsuari, pair<unsigned int, unsigned int>> consulta_usuari()
         << "Correu electronic: " << usuari.correu_electronic << "\n"
         << "Data de naixement: " << usuari.data_naixement << "\n"
         << "Modalitat de subscripcio: " << usuari.modalitat_subscripcio << "\n"
-        << "\n"
-        << usuari.obte_pelis_vistes() << " pel·licules visualitzades "  << "\n"
-        << usuari.obte_capitols_vists() << " capitols visualitzats " << endl;
+        << "\n";
+        //HACER FUNCIONES 
+        //<< usuari.obte_pelis_vistes() << " pel·licules visualitzades "  << "\n"
+        //<< usuari.obte_capitols_vists() << " capitols visualitzats " << endl;
 
     return pair<DTOUsuari, pair<unsigned int, unsigned int>>();
 }
 
-void modifica_usuari()
+void CapaDePresentacio::modifica_usuari()
 {
     CtrlModificaUsuari controlModificaUsuari;
     DTOUsuari usuari = controlModificaUsuari.obte_usuari();
@@ -137,6 +142,9 @@ void modifica_usuari()
          << "Nom complet: ";
     string nom = NULL;
     getline(cin, nom);
+    cout << "\n" << "Contrasenya: ";
+    string contrasenya;
+    getline(cin, contrasenya);
     cout << "\n" << "Sobrenom: ";
     string sobrenom = NULL;
     getline(cin, sobrenom);
@@ -144,14 +152,14 @@ void modifica_usuari()
     string correu = NULL;
     getline(cin, correu);
     cout << "\n" << "Data de naixement (DD/MM/AAAA): ";
-    time_t data_naixement = NULL;
+    time_t data_naixement = 0;
     cin >> data_naixement;
     cout << "\n" << "Modalitats de subscripcio disponibles " << "\n"
         << "  > 1. Completa " << "\n"
         << "  > 2. Cinefil " << "\n"
         << "  > 3. Infantil " << "\n"
         << "Escull modalitat: ";
-    int modalitat = NULL;
+    int modalitat = 0;
     cin >> modalitat;
 
     if(modalitat < 1 || modalitat > 3)
@@ -187,10 +195,15 @@ void modifica_usuari()
          << "Modalitat de subscripcio: " << usuari.modalitat_subscripcio << endl;
 }
 
-void esborra_usuari()
+void CapaDePresentacio::modifica_contrasenya()
+{
+    cout << "hello" << endl;
+}
+
+void CapaDePresentacio::esborra_usuari()
 {
     cout<< "** Esborra usuari **" << "\n"
-        << "Per confirmar l'esborrat, s'ha d'entrar la contrasenya..." << "\n";
+        << "Per confirmar l'esborrat, s'ha d'entrar la contrasenya..." << "\n"
         << "Contrasenya: ";
     string contrasenya;
     getline(cin, contrasenya);
@@ -207,17 +220,137 @@ void esborra_usuari()
     
 }
 
-void properes_estrenes()
+void CapaDePresentacio::properes_estrenes()
 {
+    auto usuari = PetitFlix::get_instance()->obte_usuari();
 
+    if (usuari)
+    {
+        cout<< "** Properes estrenes **" << "\n"
+            << "Modalitat: " << usuari->obte_modalitat_subscripcio() << "\n"
+            << "\n" << endl;
+        
+        TxConsultaEstrenes consultaEstrenes(usuari->obte_modalitat_subscripcio());
+        consultaEstrenes.executar();
+
+        vector<DTOContingut> estrenes = consultaEstrenes.obte_resultat();
+
+        for (int i = 0; i < estrenes.size(); i++)
+        {
+            DTOContingut estrena = estrenes[i];
+
+            cout << i + 1 << ".- " << estrena.data_estrena
+                << "[" << estrena.tipus << "]:"
+                << estrena.titol << ";"
+                << estrena.qualificacio << ";"
+                << estrena.info << " min." << endl;
+        }
+    }
+    else
+    {
+        cout << "Modalitats de subscripcio disponibles " << "\n"
+        << "  > 1. Completa " << "\n"
+        << "  > 2. Cinefil " << "\n"
+        << "  > 3. Infantil " << "\n"
+        << "Escull modalitat: ";
+
+        int m = 0;
+        cin >> m;
+
+        if(m < 1 || m > 3)
+        {
+            cout << "Modalitat no valida" << endl;
+            return;
+        }
+
+        ModalitatSubscripcio modalitat_subscripcio = static_cast<ModalitatSubscripcio>(m); 
+
+        cout<< "** Properes estrenes **" << "\n"
+            << "Modalitat: " <<  modalitat_subscripcio << "\n"
+            << "\n" << endl;
+        
+        TxConsultaEstrenes consultaEstrenes(modalitat_subscripcio);
+        consultaEstrenes.executar();
+
+        vector<DTOContingut> estrenes = consultaEstrenes.obte_resultat();
+
+        for (int i = 0; i < estrenes.size(); i++)
+        {
+            DTOContingut estrena = estrenes[i];
+
+            cout << i + 1 << ".- " << estrena.data_estrena
+                << "[" << estrena.tipus << "]:"
+                << estrena.titol << ";"
+                << estrena.qualificacio << ";"
+                << estrena.info << " min." << endl;
+        }
+    }
 }
 
-void ultimes_novetats()
+void CapaDePresentacio::ultimes_novetats()
 {
+    auto usuari = PetitFlix::get_instance()->obte_usuari();
 
+    if (usuari)
+    {
+        cout<< "** Novetats **" << "\n" 
+            << "Modalitat: " << usuari->obte_modalitat_subscripcio() << "\n"
+            << "\n" << endl;
+
+        TxConsultaNovetats txConsultaNovetats(usuari->obte_modalitat_subscripcio());
+        txConsultaNovetats.executar();
+
+        vector<DTOContingut> novetats = txConsultaNovetats.obte_resultat();
+
+        for (int i = 0; i < novetats.size(); i++)
+        {
+            DTOContingut novetat = novetats[i];
+
+            cout << i + 1 << ".- " << novetat.data_estrena
+                << "[" << novetat.tipus << "]:"
+                << novetat.titol << ";"
+                << novetat.qualificacio << ";"
+                << novetat.info << " min." << endl;
+        }
+    }
+    else
+    {
+        cout << "Modalitats de subscripcio disponibles " << "\n"
+        << "  > 1. Completa " << "\n"
+        << "  > 2. Cinefil " << "\n"
+        << "  > 3. Infantil " << "\n"
+        << "Escull modalitat: ";
+
+        int m = 0;
+        cin >> m;
+
+        if(m < 1 || m > 3)
+        {
+            cout << "Modalitat no valida" << endl;
+            return;
+        }
+
+        ModalitatSubscripcio modalitat_subscripcio = static_cast<ModalitatSubscripcio>(m); 
+
+        TxConsultaNovetats txConsultaNovetats(modalitat_subscripcio);
+        txConsultaNovetats.executar();
+
+        vector<DTOContingut> novetats = txConsultaNovetats.obte_resultat();
+
+        for (int i = 0; i < novetats.size(); i++)
+        {
+            DTOContingut novetat = novetats[i];
+
+            cout << i + 1 << ".- " << novetat.data_estrena
+                << "[" << novetat.tipus << "]:"
+                << novetat.titol << ";"
+                << novetat.qualificacio << ";"
+                << novetat.info << " min." << endl;
+        }
+    }
 }
 
-void pelicules_mes_vistes()
+void CapaDePresentacio::pelicules_mes_vistes()
 {
-
+    cout << "Hello World!" << endl;
 }
