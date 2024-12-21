@@ -10,12 +10,14 @@ void CapaDePresentacio::inici_sessio()
     cout<< "** Inici de sessio **" << "\n"
         << "Sobrenom: ";
     string sobrenom;
+    cin.ignore();
     getline(cin, sobrenom);
     cout << "\n" << "Contrasenya: ";
     string contrasenya;
+    cin.ignore();
     getline(cin, contrasenya);
     cout << endl;
-    TxIniciSessio iniciSessio("sobrenom", "contrasenya");
+    TxIniciSessio iniciSessio(sobrenom, contrasenya);
     try {
         iniciSessio.executar();
         cout << "Sessio iniciada correctament!" << endl;
@@ -29,6 +31,7 @@ void CapaDePresentacio::tanca_sessio()
     cout<< "** Tancar sessio **" << "\n"
         << "Vols tancar la sessio? (S/N): ";
     string resposta;
+    cin.ignore();
     cin >> resposta;
     if (resposta == "S" || resposta == "s")
     {
@@ -47,30 +50,36 @@ void CapaDePresentacio::registrar_usuari()
     cout << "** Registrar usuari **" << "\n"
         << "Nom complet: ";
     string nom;
+    cin.ignore();
     getline(cin, nom);
     cout << "Sobrenom: ";
     string sobrenom;
+    cin.ignore();
     getline(cin, sobrenom);
-    cout << "\n" << "Contrasenya: ";
+    cout << "Contrasenya: ";
     string contrasenya;
+    cin.ignore();
     getline(cin, contrasenya);
     cout << "Correu electronic: ";
     string correu;
+    cin.ignore();
     getline(cin, correu);
     cout << "Data de naixement (DD/MM/AAAA): ";
     time_t data_naixement;
+    cin.ignore();
     cin >> data_naixement;
     cout << "Modalitats de subscripcio disponibles " << "\n"
         << "  > 1. Completa " << "\n"
         << "  > 2. Cinefil " << "\n"
         << "  > 3. Infantil " << "\n"
         << "Escull modalitat: ";
-    int modalitat;
+    unsigned int modalitat = 1;
+    cin.ignore();
     cin >> modalitat;
 
     if(modalitat < 1 || modalitat > 3)
     {
-        cout << "Modalitat no valida" << endl;
+        cout << "\n" << "Modalitat no valida" << endl;
         return;
     }
     
@@ -94,6 +103,7 @@ void CapaDePresentacio::registrar_usuari()
         cerr << "El sobrenom o el correu electronic ja existeixen." << endl;
     }
 }
+
 
 pair<DTOUsuari, pair<unsigned int, unsigned int>> CapaDePresentacio::consulta_usuari()
 {
@@ -132,18 +142,23 @@ void CapaDePresentacio::modifica_usuari()
     cout << "Omplir la informacio que es vol modificar ..." << "\n"
          << "Nom complet: ";
     string nom = NULL;
+    cin.ignore();
     getline(cin, nom);
     cout << "\n" << "Contrasenya: ";
     string contrasenya;
+    cin.ignore();
     getline(cin, contrasenya);
     cout << "\n" << "Sobrenom: ";
     string sobrenom = NULL;
+    cin.ignore();
     getline(cin, sobrenom);
     cout << "\n" << "Correu electronic: ";
     string correu = NULL;
+    cin.ignore();
     getline(cin, correu);
     cout << "\n" << "Data de naixement (DD/MM/AAAA): ";
     time_t data_naixement = 0;
+    cin.ignore();
     cin >> data_naixement;
     cout << "\n" << "Modalitats de subscripcio disponibles " << "\n"
         << "  > 1. Completa " << "\n"
@@ -151,6 +166,7 @@ void CapaDePresentacio::modifica_usuari()
         << "  > 3. Infantil " << "\n"
         << "Escull modalitat: ";
     int modalitat = 0;
+    cin.ignore();
     cin >> modalitat;
 
     if(modalitat < 1 || modalitat > 3)
@@ -186,6 +202,7 @@ void CapaDePresentacio::modifica_usuari()
          << "Modalitat de subscripcio: " << usuari.modalitat_subscripcio << endl;
 }
 
+
 void CapaDePresentacio::modifica_contrasenya()
 {
     cout << "hello" << endl;
@@ -197,6 +214,7 @@ void CapaDePresentacio::esborra_usuari()
         << "Per confirmar l'esborrat, s'ha d'entrar la contrasenya..." << "\n"
         << "Contrasenya: ";
     string contrasenya;
+    cin.ignore();
     getline(cin, contrasenya);
     TxEsborraUsuari esborraUsuari(contrasenya);
     try
@@ -246,6 +264,7 @@ void CapaDePresentacio::properes_estrenes()
         << "Escull modalitat: ";
 
         int m = 0;
+        cin.ignore();
         cin >> m;
 
         if(m < 1 || m > 3)
@@ -277,6 +296,7 @@ void CapaDePresentacio::properes_estrenes()
         }
     }
 }
+
 
 void CapaDePresentacio::ultimes_novetats()
 {
@@ -313,6 +333,7 @@ void CapaDePresentacio::ultimes_novetats()
         << "Escull modalitat: ";
 
         int m = 0;
+        cin.ignore();
         cin >> m;
 
         if(m < 1 || m > 3)
@@ -340,6 +361,7 @@ void CapaDePresentacio::ultimes_novetats()
         }
     }
 }
+
 
 void CapaDePresentacio::pelicules_mes_vistes()
 {

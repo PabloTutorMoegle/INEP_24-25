@@ -19,6 +19,7 @@ void consultes()
         << "Escriu opcio: ";
 
     int opcio;
+    cin.ignore();
     cin >> opcio;
     while(cin >> opcio && opcio != 4)
     {
@@ -40,6 +41,7 @@ void consultes()
                 break;
         }
     }
+    return;
 }
 
 void gestioUsuaris()
@@ -77,6 +79,7 @@ void gestioUsuaris()
                 break;
         }
     }
+    return;
 }
 
 void visualitzacions()
@@ -107,6 +110,7 @@ void visualitzacions()
                 break;
         }
     }
+    return;
 }
 
 int main() 
@@ -186,6 +190,7 @@ int main()
                     break;
             }
         }
+        cin.ignore();
     }
 
     return 0;
