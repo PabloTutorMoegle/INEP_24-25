@@ -28,7 +28,7 @@ void TxRegistraUsuari::executar() const {
         _data_naixement_usuari,
         _modalitat_subscripcio
     );
-    std::cout << "entra" << std::endl;
+
     nou_usuari.insereix();
-    std::cout << "surt" << std::endl;
+
 }
