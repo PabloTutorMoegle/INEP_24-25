@@ -102,13 +102,13 @@ void CapaDePresentacio::registrar_usuari()
         registraUsuari.executar();
         cout << "Nou usuari registrat correctament!" << endl;
     }
-    catch(const exception& e)
-    {
-        cerr << "El sobrenom o el correu electronic ja existeixen." << endl;
-    }
     catch(const char* error)
     {
         cerr << error << endl;
+    }
+    catch(const exception& e)
+    {
+        cerr << "El sobrenom o el correu electronic ja existeixen." << endl;
     }
 }
 
