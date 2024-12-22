@@ -19,8 +19,9 @@ PasarelaUsuari::PasarelaUsuari(
 PasarelaUsuari::~PasarelaUsuari() {}
 
 void PasarelaUsuari::insereix() const {
+    std::cout << "entra" << std::endl;
     ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
-
+    std::cout << "entra" << std::endl;
     std::unique_ptr<sql::PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
         "INSERT INTO usuari ("
             "usu_sobrenom,"
@@ -38,8 +39,9 @@ void PasarelaUsuari::insereix() const {
     pstmt->setString(4, _correu_electronic);
     pstmt->setString(5, time_t_to_datetime_string(_data_naixement));
     pstmt->setString(6, modalitat_subscripcio_to_string(_modalitat_subscripcio));
-
+    
     pstmt->executeUpdate();
+    std::cout << "surt" << std::endl;
 }
 
 void PasarelaUsuari::modifica() const {

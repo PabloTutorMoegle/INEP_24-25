@@ -19,7 +19,7 @@ ConnexioBDD::ConnexioBDD() {
     std::string line;
 
     if (!env_file.is_open()) {
-        throw "Could not open the .env file.";
+        throw std::runtime_error("Could not open the .env file.");
         return;
     }
     

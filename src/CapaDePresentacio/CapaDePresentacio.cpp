@@ -7,15 +7,15 @@ using namespace std;
 
 void CapaDePresentacio::inici_sessio()
 {
+    string sobrenom, contrasenya;
     cout<< "** Inici de sessio **" << "\n"
         << "Sobrenom: ";
-    string sobrenom;
-    getline(cin, sobrenom);
-    cout << "\n" << "Contrasenya: ";
-    string contrasenya;
-    getline(cin, contrasenya);
-    cout << endl;
-    TxIniciSessio iniciSessio("sobrenom", "contrasenya");
+    cin >> sobrenom;
+
+    cout << "Contrasenya: ";
+    cin >> contrasenya;
+    
+    TxIniciSessio iniciSessio(sobrenom, contrasenya);
     try {
         iniciSessio.executar();
         cout << "Sessio iniciada correctament!" << endl;
@@ -26,10 +26,11 @@ void CapaDePresentacio::inici_sessio()
 
 void CapaDePresentacio::tanca_sessio()
 {
+    string resposta;
     cout<< "** Tancar sessio **" << "\n"
         << "Vols tancar la sessio? (S/N): ";
-    string resposta;
     cin >> resposta;
+
     if (resposta == "S" || resposta == "s")
     {
         TxTancaSessio tancarSessio;
@@ -44,35 +45,47 @@ void CapaDePresentacio::tanca_sessio()
 
 void CapaDePresentacio::registrar_usuari()
 {
+    string nom, sobrenom, contrasenya, correu, data;
+    int modalitat;
+
     cout << "** Registrar usuari **" << "\n"
         << "Nom complet: ";
-    string nom;
-    getline(cin, nom);
+    cin >> nom;
+    
     cout << "Sobrenom: ";
-    string sobrenom;
-    getline(cin, sobrenom);
-    cout << "\n" << "Contrasenya: ";
-    string contrasenya;
-    getline(cin, contrasenya);
+    cin >> sobrenom;
+    
+    cout << "Contrasenya: ";
+    cin >> contrasenya;
+    
     cout << "Correu electronic: ";
-    string correu;
-    getline(cin, correu);
+    cin >> correu;
+    
     cout << "Data de naixement (DD/MM/AAAA): ";
-    time_t data_naixement;
-    cin >> data_naixement;
+    cin >> data;
+    
     cout << "Modalitats de subscripcio disponibles " << "\n"
         << "  > 1. Completa " << "\n"
         << "  > 2. Cinefil " << "\n"
         << "  > 3. Infantil " << "\n"
         << "Escull modalitat: ";
-    int modalitat;
     cin >> modalitat;
 
     if(modalitat < 1 || modalitat > 3)
     {
-        cout << "Modalitat no valida" << endl;
+        cout << "\n" << "Modalitat no valida" << endl;
         return;
     }
+
+    //pasar data_naixement de string a time_t 
+    tm tm = {};
+    istringstream ss(data);
+    ss >> get_time(&tm, "%d/%m/%Y");
+    if (ss.fail()) {
+        throw std::runtime_error("Error al convertir la cadena a tiempo");
+    }
+    time_t data_naixement = mktime(&tm);
+
     
     ModalitatSubscripcio modalitat_subscripcio = static_cast<ModalitatSubscripcio>(modalitat);
 
@@ -88,6 +101,10 @@ void CapaDePresentacio::registrar_usuari()
     {
         registraUsuari.executar();
         cout << "Nou usuari registrat correctament!" << endl;
+    }
+    catch(const char* error)
+    {
+        cerr << error << endl;
     }
     catch(const exception& e)
     {
@@ -122,6 +139,9 @@ void CapaDePresentacio::modifica_usuari()
     CtrlModificaUsuari controlModificaUsuari;
     DTOUsuari usuari = controlModificaUsuari.obte_usuari();
 
+    string nom, sobrenom, contrasenya, correu, data;
+    int modalitat;
+
     cout<< "** Modifica usuari **" << "\n"
         << "Nom complet: " << usuari.nom << "\n"
         << "Sobrenom: " << usuari.sobrenom << "\n"
@@ -131,33 +151,40 @@ void CapaDePresentacio::modifica_usuari()
 
     cout << "Omplir la informacio que es vol modificar ..." << "\n"
          << "Nom complet: ";
-    string nom = NULL;
-    getline(cin, nom);
-    cout << "\n" << "Contrasenya: ";
-    string contrasenya;
-    getline(cin, contrasenya);
-    cout << "\n" << "Sobrenom: ";
-    string sobrenom = NULL;
-    getline(cin, sobrenom);
-    cout << "\n" << "Correu electronic: ";
-    string correu = NULL;
-    getline(cin, correu);
-    cout << "\n" << "Data de naixement (DD/MM/AAAA): ";
-    time_t data_naixement = 0;
-    cin >> data_naixement;
-    cout << "\n" << "Modalitats de subscripcio disponibles " << "\n"
+    cin >> nom;
+
+    cout << "Contrasenya: ";
+    cin >> contrasenya;
+    
+    cout << "Sobrenom: ";
+    cin >> sobrenom;
+    
+    cout << "Correu electronic: ";
+    cin >> correu;
+    
+    cout << "Data de naixement (DD/MM/AAAA): ";
+    cin >> data;
+    
+    cout << "Modalitats de subscripcio disponibles " << "\n"
         << "  > 1. Completa " << "\n"
         << "  > 2. Cinefil " << "\n"
         << "  > 3. Infantil " << "\n"
         << "Escull modalitat: ";
-    int modalitat = 0;
-    cin >> modalitat;
 
     if(modalitat < 1 || modalitat > 3)
     {
         cout << "Modalitat no valida" << endl;
         return;
     }
+
+    //pasar data_naixement de string a time_t
+    tm tm = {};
+    istringstream ss(data);
+    ss >> get_time(&tm, "%d/%m/%Y");
+    if (ss.fail()) {
+        throw std::runtime_error("Error al convertir la cadena a tiempo");
+    }
+    time_t data_naixement = mktime(&tm);
 
     ModalitatSubscripcio modalitat_subscripcio = static_cast<ModalitatSubscripcio>(modalitat);
 
@@ -186,6 +213,7 @@ void CapaDePresentacio::modifica_usuari()
          << "Modalitat de subscripcio: " << usuari.modalitat_subscripcio << endl;
 }
 
+
 void CapaDePresentacio::modifica_contrasenya()
 {
     cout << "hello" << endl;
@@ -193,11 +221,13 @@ void CapaDePresentacio::modifica_contrasenya()
 
 void CapaDePresentacio::esborra_usuari()
 {
+    string contrasenya;
+
     cout<< "** Esborra usuari **" << "\n"
         << "Per confirmar l'esborrat, s'ha d'entrar la contrasenya..." << "\n"
         << "Contrasenya: ";
-    string contrasenya;
-    getline(cin, contrasenya);
+    cin >> contrasenya;
+
     TxEsborraUsuari esborraUsuari(contrasenya);
     try
     {
@@ -239,13 +269,13 @@ void CapaDePresentacio::properes_estrenes()
     }
     else
     {
-        cout << "Modalitats de subscripcio disponibles " << "\n"
-        << "  > 1. Completa " << "\n"
-        << "  > 2. Cinefil " << "\n"
-        << "  > 3. Infantil " << "\n"
-        << "Escull modalitat: ";
-
         int m = 0;
+
+        cout << "Modalitats de subscripcio disponibles " << "\n"
+            << "  > 1. Completa " << "\n"
+            << "  > 2. Cinefil " << "\n"
+            << "  > 3. Infantil " << "\n"
+            << "Escull modalitat: ";
         cin >> m;
 
         if(m < 1 || m > 3)
@@ -278,6 +308,7 @@ void CapaDePresentacio::properes_estrenes()
     }
 }
 
+
 void CapaDePresentacio::ultimes_novetats()
 {
     auto usuari = PetitFlix::get_instance()->obte_usuari();
@@ -306,13 +337,14 @@ void CapaDePresentacio::ultimes_novetats()
     }
     else
     {
-        cout << "Modalitats de subscripcio disponibles " << "\n"
-        << "  > 1. Completa " << "\n"
-        << "  > 2. Cinefil " << "\n"
-        << "  > 3. Infantil " << "\n"
-        << "Escull modalitat: ";
-
         int m = 0;
+
+        cout << "Modalitats de subscripcio disponibles " << "\n"
+            << "  > 1. Completa " << "\n"
+            << "  > 2. Cinefil " << "\n"
+            << "  > 3. Infantil " << "\n"
+            << "Escull modalitat: ";
+
         cin >> m;
 
         if(m < 1 || m > 3)
@@ -340,6 +372,7 @@ void CapaDePresentacio::ultimes_novetats()
         }
     }
 }
+
 
 void CapaDePresentacio::pelicules_mes_vistes()
 {
