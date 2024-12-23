@@ -1,6 +1,7 @@
 #include "TxConsultaMesVistes.hpp"
 
-TxConsultaMesVistes::TxConsultaMesVistes() {
+TxConsultaMesVistes::TxConsultaMesVistes(ModalitatSubscripcio modalitat) {
+    _modalitat = modalitat;
     _resultat = std::nullopt;
 }
 

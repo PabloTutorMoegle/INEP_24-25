@@ -177,7 +177,7 @@ VALUES
 ('emily_jones', 'The Crown', 1, 1, '2023-12-05 20:00:00', 2),
 ('lucas_w', 'The Crown', 1, 2, '2023-12-06 21:45:00', 4),
 ('anna_bell', 'House of the Dragon', 1, 1, '2023-12-07 18:00:00', 1),
-('jack_77', 'House of the Dragon', 1, 2, '2023-12-08 19:00:00', 5),
+('jack_77', 'House of the Dragon', 1, 1, '2023-12-08 19:00:00', 5),
 ('chloe_k', 'Sherlock', 1, 1, '2023-12-09 20:30:00', 1),
 ('oliver_b', 'Sherlock', 1, 2, '2023-12-10 17:45:00', 2),
 ('john_doe', 'The Witcher', 1, 1, '2023-12-11 16:00:00', 1),

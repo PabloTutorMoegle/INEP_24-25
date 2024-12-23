@@ -12,9 +12,10 @@ using std::optional;
 class TxConsultaMesVistes {
     private:
         optional<vector<DTOContingut>> _resultat;
+        ModalitatSubscripcio _modalitat;
 
     public:
-        TxConsultaMesVistes();
+        TxConsultaMesVistes(ModalitatSubscripcio modalitat);
         ~TxConsultaMesVistes();
 
         void executar();

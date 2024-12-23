@@ -37,8 +37,12 @@ ConnexioBDD::ConnexioBDD() {
             std::string key = line.substr(0, delimiterPos);
             std::string value = line.substr(delimiterPos + 1);
 
+            /*key.erase(key.find_last_not_of(" \n\r\t") + 1);
+            value.erase(0, value.find_first_not_of(" \n\r\t"));*/
+            key.erase(0, key.find_first_not_of(" \n\r\t"));
             key.erase(key.find_last_not_of(" \n\r\t") + 1);
             value.erase(0, value.find_first_not_of(" \n\r\t"));
+            value.erase(value.find_last_not_of(" \n\r\t") + 1);
 
             if (key == "HOST") {
                 host = value;

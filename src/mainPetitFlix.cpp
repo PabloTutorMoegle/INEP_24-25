@@ -9,8 +9,8 @@ CapaDePresentacio cdp;
 
 void consultes()
 {
-    bool bucle = true;
-    while(bucle)
+    bool bucleC = true;
+    while(bucleC)
     {
         int opcio;
 
@@ -36,19 +36,20 @@ void consultes()
                 cdp.pelicules_mes_vistes();
                 break;
             case 4:
-                bucle = false;
+                bucleC = false;
                 break;
             default:
                 cout << "Opcio no valida" << endl;
                 break;
         }
     }
+    return;
 }
 
 void gestioUsuaris()
 {
-    bool bucle = true;
-    while(bucle)
+    bool bucleG = true;
+    while(bucleG)
     {
         int opcio;
 
@@ -57,7 +58,7 @@ void gestioUsuaris()
             << "******************" << "\n"
             << "1. Consulta usuari" << "\n"
             << "2. Modifica usuari" << "\n"
-            << "3. Modifica contraenya" << "\n"
+            << "3. Modifica contrasenya" << "\n"
             << "4. Esborra usuari" << "\n"
             << "5. Tornar" << "\n"
             << "Escriu opcio: ";
@@ -78,19 +79,20 @@ void gestioUsuaris()
                 cdp.esborra_usuari();
                 break;
             case 5:
-                bucle = false;
+                bucleG = false;
                 break;
             default:
                 cout << "Opcio no valida" << endl;
                 break;
         }
     }
+    return;
 }
 
 void visualitzacions()
 {
-    bool bucle = true;
-    while(bucle)
+    bool bucleV = true;
+    while(bucleV)
     {
         int opcio;
 
@@ -116,13 +118,14 @@ void visualitzacions()
                 cout << "Consultant visualitzacions" << endl; 
                 break;
             case 4:
-                bucle = false;
+                bucleV = false;
                 break;
             default:
                 cout << "Opcio no valida" << endl;
                 break;
         }
     }
+    return;
 }
 
 int main() 
