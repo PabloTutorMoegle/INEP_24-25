@@ -320,7 +320,7 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_mes_vistes() {
             "pel.pel_data_estrena AS data_estrena, "
             "pel.pel_titol AS titol, "
             "c.con_qualificacio AS qualificacio, "
-            "SUM(vip.vip_nb_visualitzacions) AS visualitzacions "
+            "SUM(vip.vip_nb_visualitzacions) AS visualitzacions, "
             "pel_duracio AS duracio "
         "FROM "
             "pelicula pel "
@@ -331,7 +331,7 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_mes_vistes() {
         "GROUP BY "
             "pel.pel_titol "
         "ORDER BY "
-            "info DESC "
+            "visualitzacions DESC "
         "LIMIT 5"
     );
 
