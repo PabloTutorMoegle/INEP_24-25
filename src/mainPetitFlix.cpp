@@ -77,6 +77,7 @@ void gestioUsuaris()
                 break;
             case 4:
                 cdp.esborra_usuari();
+                bucleG = false;
                 break;
             case 5:
                 bucleG = false;

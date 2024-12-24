@@ -51,6 +51,7 @@ void CapaDePresentacio::registrar_usuari()
     cout << "** Registrar usuari **" << "\n"
         << "Nom complet: ";
     cin >> nom;
+    cin.ignore();
     
     cout << "Sobrenom: ";
     cin >> sobrenom;
@@ -232,7 +233,7 @@ void CapaDePresentacio::modifica_usuari()
     }
     time_t data_naixement = mktime(&tm);
 
-    ModalitatSubscripcio modalitat_subscripcio = static_cast<ModalitatSubscripcio>(modalitat);
+    ModalitatSubscripcio modalitat_subs = static_cast<ModalitatSubscripcio>(modalitat);
 
     try
     {
@@ -241,7 +242,7 @@ void CapaDePresentacio::modifica_usuari()
             sobrenom,
             correu,
             data_naixement,
-            modalitat_subscripcio
+            modalitat_subs
         );
     }
     catch(const std::exception& e)
@@ -293,8 +294,24 @@ void CapaDePresentacio::properes_estrenes()
 
     if (usuari)
     {
+        string modalitat_subscripcio;
+        switch (usuari->obte_modalitat_subscripcio())
+        {
+            case 1:
+                modalitat_subscripcio = "Completa";
+                break;
+            case 2:
+                modalitat_subscripcio = "Cinefil";
+                break;
+            case 3:
+                modalitat_subscripcio = "Infantil";
+                break;
+            default:
+                break;
+        }
+
         cout<< "** Properes estrenes **" << "\n"
-            << "Modalitat: " << usuari->obte_modalitat_subscripcio() << "\n"
+            << "Modalitat: " << modalitat_subscripcio << "\n"
             << "\n" << endl;
         
         TxConsultaEstrenes consultaEstrenes(usuari->obte_modalitat_subscripcio());
@@ -336,10 +353,26 @@ void CapaDePresentacio::properes_estrenes()
             return;
         }
 
+        string modalitat;
+        switch (m)
+        {
+        case 1:
+            modalitat = "Completa";
+            break;
+        case 2:
+            modalitat = "Cinefil";
+            break;
+        case 3:
+            modalitat = "Infantil";
+            break;
+        default:
+            break;
+        }
+
         ModalitatSubscripcio modalitat_subscripcio = static_cast<ModalitatSubscripcio>(m); 
 
         cout<< "** Properes estrenes **" << "\n"
-            << "Modalitat: " <<  modalitat_subscripcio << "\n"
+            << "Modalitat: " <<  modalitat << "\n"
             << "\n" << endl;
         
         TxConsultaEstrenes consultaEstrenes(modalitat_subscripcio);
@@ -373,8 +406,24 @@ void CapaDePresentacio::ultimes_novetats()
 
     if (usuari)
     {
+        string modalitat_subscripcio;
+        switch (usuari->obte_modalitat_subscripcio())
+        {
+            case 1:
+                modalitat_subscripcio = "Completa";
+                break;
+            case 2:
+                modalitat_subscripcio = "Cinefil";
+                break;
+            case 3:
+                modalitat_subscripcio = "Infantil";
+                break;
+            default:
+                break;
+        }
+
         cout<< "** Novetats **" << "\n" 
-            << "Modalitat: " << usuari->obte_modalitat_subscripcio() << "\n"
+            << "Modalitat: " << modalitat_subscripcio << "\n"
             << "\n" << endl;
 
         TxConsultaNovetats txConsultaNovetats(usuari->obte_modalitat_subscripcio());
@@ -422,10 +471,26 @@ void CapaDePresentacio::ultimes_novetats()
             return;
         }
 
+        string modalitat;
+        switch (m)
+        {
+            case 1:
+                modalitat = "Completa";
+                break;
+            case 2:
+                modalitat = "Cinefil";
+                break;
+            case 3:
+                modalitat = "Infantil";
+                break;
+            default:
+                break;
+        }
+
         ModalitatSubscripcio modalitat_subscripcio = static_cast<ModalitatSubscripcio>(m); 
 
         cout<< "** Novetats **" << "\n" 
-            << "Modalitat: " << modalitat_subscripcio << "\n"
+            << "Modalitat: " << modalitat << "\n"
             << "\n" << endl;
 
         TxConsultaNovetats txConsultaNovetats(modalitat_subscripcio);
@@ -464,8 +529,24 @@ void CapaDePresentacio::pelicules_mes_vistes()
 
     if(usuari)
     {
+        string modalitat_subscripcio;
+        switch (usuari->obte_modalitat_subscripcio())
+        {
+            case 1:
+                modalitat_subscripcio = "Completa";
+                break;
+            case 2:
+                modalitat_subscripcio = "Cinefil";
+                break;
+            case 3:
+                modalitat_subscripcio = "Infantil";
+                break;
+            default:
+                break;
+        }
+
         cout<< "** Pel·licules mes vistes **" << "\n"
-            << "Modalitat: " << usuari->obte_modalitat_subscripcio() << "\n"
+            << "Modalitat: " << modalitat_subscripcio << "\n"
             << "\n" << endl;
 
         TxConsultaMesVistes txConsultaMesVistes(usuari->obte_modalitat_subscripcio());
@@ -501,10 +582,26 @@ void CapaDePresentacio::pelicules_mes_vistes()
             return;
         }
 
+        string modalitat;
+        switch (m)
+        {
+            case 1:
+                modalitat = "Completa";
+                break;
+            case 2:
+                modalitat = "Cinefil";
+                break;
+            case 3:
+                modalitat = "Infantil";
+                break;
+            default:
+                break;
+        }
+
         ModalitatSubscripcio modalitat_subscripcio = static_cast<ModalitatSubscripcio>(m); 
 
         cout<< "** Pel·licules mes vistes **" << "\n"
-            << "Modalitat: " << modalitat_subscripcio << "\n"
+            << "Modalitat: " << modalitat << "\n"
             << "\n" << endl;
 
         TxConsultaMesVistes txConsultaMesVistes(modalitat_subscripcio);
