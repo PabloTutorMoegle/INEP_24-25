@@ -68,3 +68,16 @@ void PasarelaVisualitzarPelicula::esborra() {
 unsigned int PasarelaVisualitzarPelicula::obte_num_visualitzacions() {
     return _nb_visualitzacions;
 }
+
+string PasarelaVisualitzarPelicula::obte_sobrenom() const {
+    return _sobrenom;
+}
+
+string PasarelaVisualitzarPelicula::obte_titol_pelicula() const {
+    return _titol_pelicula;
+}
+
+time_t PasarelaVisualitzarPelicula::obte_data() const {
+    return _data;
+}
+

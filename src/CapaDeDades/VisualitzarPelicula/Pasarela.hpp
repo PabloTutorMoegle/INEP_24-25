@@ -32,6 +32,9 @@ class PasarelaVisualitzarPelicula {
         void esborra();
 
         unsigned int obte_num_visualitzacions();
+        string obte_sobrenom() const;
+        string obte_titol_pelicula() const;
+        time_t obte_data() const;
 };
 
 #endif

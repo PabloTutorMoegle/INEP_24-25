@@ -30,3 +30,25 @@ vector<PasarelaVisualitzarPelicula> CercadoraVisualitzarPelicula::cerca_per_sobr
 
     return visualitzacions_pelicula;
 }
+
+PasarelaVisualitzarPelicula CercadoraVisualitzarPelicula::obte_dades_pelicula(string titol_pelicula) {
+    ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
+    
+    unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
+        "SELECT * FROM contingut WHERE con_titol = ? , con_tipus = 'Pelicula'"
+    );
+    pstmt->setString(1, titol_pelicula);
+
+    unique_ptr<ResultSet> result(pstmt->executeQuery());
+
+    if(result->next()) {
+        time_t data = time_t_from_string(result->getString("con_data_estrena"));
+        string titol = result->getString("con_titol");
+        string qualificacio = result->getString("con_qualificacio");
+        string info = result->getString("con_info");
+
+        return PasarelaVisualitzarPelicula(titol, qualificacio, info, data);
+    }
+
+    throw runtime_error("No data found for the given movie title.");
+}
