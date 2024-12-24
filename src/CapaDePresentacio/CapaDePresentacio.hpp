@@ -20,15 +20,21 @@ using std::pair;
 class CapaDePresentacio {
     public:
         static void inici_sessio();
-        static void tanca_sessio();
         static void registrar_usuari();
+
         static pair<DTOUsuari, pair<unsigned int, unsigned int>> consulta_usuari();
         static void modifica_usuari();
         static void modifica_contrasenya();
         static void esborra_usuari();
+        static void tanca_sessio();
+        
         static void properes_estrenes();
         static void ultimes_novetats();
         static void pelicules_mes_vistes();
+
+        static void visualitzar_pelicula();
+        static void visualitzar_capitol();
+        static void consulta_visualitzacions();
 };
 
 #endif

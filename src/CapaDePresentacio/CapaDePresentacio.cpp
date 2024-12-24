@@ -622,3 +622,18 @@ void CapaDePresentacio::pelicules_mes_vistes()
         }
     }
 }
+
+void CapaDePresentacio::visualitzar_pelicula()
+{
+
+}
+
+void CapaDePresentacio::visualitzar_capitol()
+{
+
+}
+
+void CapaDePresentacio::consulta_visualitzacions()
+{
+
+}
