@@ -13,6 +13,7 @@ class PasarelaVisualitzarSerie {
     private:
         string _sobrenom;
         string _titol_serie;
+        string _qualificacio;
         int _nb_visualitzacions;
         int _num_temporada;
         int _num_capitol;
@@ -22,6 +23,7 @@ class PasarelaVisualitzarSerie {
         PasarelaVisualitzarSerie(
             string sobrenom, 
             string titol_serie, 
+            string qualificacio,
             int nb_visualitzacions,
             int num_temporada, 
             int num_capitol, 
@@ -35,6 +37,7 @@ class PasarelaVisualitzarSerie {
 
         string obte_sobrenom();
         string obte_titol_serie();
+        string obte_qualificacio();
         int obte_nb_visualitzacions();
         int obte_num_temporada();
         int obte_num_capitol();

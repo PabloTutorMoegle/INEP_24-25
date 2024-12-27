@@ -16,6 +16,8 @@ using std::pair;
 #include "../CapaDeDomini/Consultes/TxConsultaMesVistes.hpp"
 #include "../CapaDeDomini/Consultes/TxConsultaNovetats.hpp"
 #include "../CapaDeDomini/VisualitzacioContingut/TxVisualitzarPelicula.hpp"
+#include "../CapaDeDomini/VisualitzacioContingut/TxVisualitzarCapitol.hpp"
+#include "../CapaDeDomini/VisualitzacioContingut/TxConsultaVisualitzacions.hpp"
 
 // Això no fa falta que s'implementi com un singleton ja que tot els mètodes poden ser estàtics
 class CapaDePresentacio {

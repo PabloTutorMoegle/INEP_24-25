@@ -6,7 +6,8 @@ PasarelaVisualitzarPelicula::PasarelaVisualitzarPelicula(
     string qualificacio,
     time_t data,
     int duracio,
-    string sobrenom
+    string sobrenom,
+    int nb_visualitzacions
 ) {
     _sobrenom = sobrenom;
     _titol_pelicula = titol_pelicula;
@@ -84,7 +85,7 @@ void PasarelaVisualitzarPelicula::modifica_data(time_t data) {
     _data = data;
 }
 
-unsigned int PasarelaVisualitzarPelicula::obte_num_visualitzacions() {
+int PasarelaVisualitzarPelicula::obte_num_visualitzacions() {
     return _nb_visualitzacions;
 }
 

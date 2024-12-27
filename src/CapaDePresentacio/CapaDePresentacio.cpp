@@ -725,5 +725,69 @@ void CapaDePresentacio::visualitzar_capitol()
 
 void CapaDePresentacio::consulta_visualitzacions()
 {
+    PetitFlix::get_instance()->obte_usuari();
+    string sobrenom_usuari = PetitFlix::get_instance()->obte_usuari()->obte_sobrenom();
+
+    cout << "** Consulta visualitzacions **" << endl;
+
+
+    TxVisualitzarPelicula txVisualitzarPelicula;
+
+    txVisualitzarPelicula.buscar_visualitzacions(sobrenom_usuari);
+
+    vector<DTOPelicula> visualitzacionsP = txVisualitzarPelicula.obte_resultats();
     
+    TxConsultaVisualitzacions txConsultaVisualitzacions;
+
+    txConsultaVisualitzacions.executar(sobrenom_usuari);
+
+    vector<DTOCapitol> visualitzacionsC = txConsultaVisualitzacions.obte_tots_resultats();
+
+    if(visualitzacionsP.size() == 0 && visualitzacionsC.size() == 0)
+    {
+        cout << "No hi ha visualitzacions" << endl;
+        return;
+    }
+
+    cout << "** Visualitzacions pel·licules **" << endl;
+    cout << "****************************" << endl;
+
+    for (int i = 0; i < visualitzacionsP.size(); i++)
+    {
+        DTOPelicula visualitzacio = visualitzacionsP[i];
+        
+        //formatear fecha
+        tm* tiempo_local = localtime(&visualitzacio.data_estrena);
+        char fecha[11]; // Espacio suficiente para "DD/MM/YYYY"
+        strftime(fecha, 11, "%d/%m/%Y", tiempo_local);
+        string fecha_formateada(fecha);
+
+        cout << "- " << fecha_formateada << "; "
+             << visualitzacio.titol << "; "
+             << visualitzacio.qualificacio << "; "
+             << visualitzacio.duracio << " min; "
+             << "nombre de visualitzacions " << visualitzacio.nb_visualitzacions << endl;
+    }
+
+    cout << "** Visualitzacions series **" << endl;
+    cout << "****************************" << endl;
+
+
+    for (int i = 0; i < visualitzacionsC.size(); i++)
+    {
+        DTOCapitol visualitzacio = visualitzacionsC[i];
+        
+        //formatear fecha
+        tm* tiempo_local = localtime(&visualitzacio.data);
+        char fecha[11]; // Espacio suficiente para "DD/MM/YYYY"
+        strftime(fecha, 11, "%d/%m/%Y", tiempo_local);
+        string fecha_formateada(fecha);
+
+        cout << "- " << fecha_formateada << "; "
+             << visualitzacio.titol << "; "
+             << visualitzacio.qualificacio << "; "
+             << "Temporada " << visualitzacio.num_temporada << ", capitol "
+             << visualitzacio.num_capitol << "; "
+             << "nombre de visualitzacions " << visualitzacio.num_visualitzacions << endl;
+    }
 }

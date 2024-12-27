@@ -33,7 +33,8 @@ class PasarelaVisualitzarPelicula {
             string _qualificacio,
             time_t _data_estrena,
             int _duracio,
-            string _sobrenom
+            string _sobrenom,
+            int _nb_visualitzacions
         );
         ~PasarelaVisualitzarPelicula();
         
@@ -43,7 +44,7 @@ class PasarelaVisualitzarPelicula {
 
         void modifica_data(time_t data);
 
-        unsigned int obte_num_visualitzacions();
+        int obte_num_visualitzacions();
         string obte_sobrenom() const;
         string obte_titol_pelicula() const;
         string obte_descripcio() const;

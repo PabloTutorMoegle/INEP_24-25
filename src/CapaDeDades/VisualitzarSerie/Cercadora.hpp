@@ -16,7 +16,7 @@ using std::vector;
 
 class CercadoraVisualitzarSerie {
     public:
-        static vector<PasarelaVisualitzarSerie> cerca_per_sobrenom(string sobreNom);
+        static vector<PasarelaVisualitzarSerie> cerca_per_sobrenom(string sobrenom_usuari);
 };
 
 #endif

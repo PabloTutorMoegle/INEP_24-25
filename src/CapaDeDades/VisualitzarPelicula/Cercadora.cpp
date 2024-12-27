@@ -68,7 +68,7 @@ PasarelaVisualitzarPelicula CercadoraVisualitzarPelicula::obte_dades_pelicula(st
         duracio = result2->getInt("pel_duracio");
     }
     
-    return PasarelaVisualitzarPelicula(titol, descripcio, qualificacio, data, duracio, sobrenom_usuari);
+    return PasarelaVisualitzarPelicula(titol, descripcio, qualificacio, data, duracio, sobrenom_usuari, 0);
 }
 
 vector<string> CercadoraVisualitzarPelicula::cerca_relacionades(string titol_pelicula) {
@@ -97,4 +97,49 @@ vector<string> CercadoraVisualitzarPelicula::cerca_relacionades(string titol_pel
     }
 
     return titols_relacionats;
+}
+
+vector<PasarelaVisualitzarPelicula> CercadoraVisualitzarPelicula::obte_visualitzacions(string sobrenom_usuari) {
+    ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
+
+    unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
+        "SELECT * FROM visualitzacio_pelicula WHERE vip_sobrenom_usuari = ?"
+    );
+    pstmt->setString(1, sobrenom_usuari);
+
+    unique_ptr<ResultSet> result(pstmt->executeQuery());
+
+    //hay que ir a buscar la descripción, la qualificación y la duración de la película a la tabla de pelicula
+
+    unique_ptr<PreparedStatement> pstmt2 = connexio_bdd->get_prepared_statement(
+        "SELECT * FROM pelicula WHERE pel_titol = ?"
+    );
+
+    unique_ptr<ResultSet> result2(pstmt2->executeQuery());
+
+    vector<PasarelaVisualitzarPelicula> visualitzacions_pelicula;
+
+    while (result->next()) {
+        string sobrenom = result->getString("vip_sobrenom_usuari");
+        string titol_pelicula = result->getString("vip_titol_pelicula");
+        time_t data = time_t_from_string(result->getString("vip_data"));
+        int nb_visualitzacions = result->getInt("vip_nb_visualitzacions");
+        string descripcio = result2->getString("pel_descripcio");
+        string qualificacio = result2->getString("pel_qualificacio");
+        int duracio = result2->getInt("pel_duracio");
+        
+        visualitzacions_pelicula.push_back(
+            PasarelaVisualitzarPelicula(
+                titol_pelicula,
+                descripcio,
+                qualificacio,
+                data,
+                duracio,
+                sobrenom,
+                nb_visualitzacions
+            )
+        );
+    }
+
+    return visualitzacions_pelicula;
 }

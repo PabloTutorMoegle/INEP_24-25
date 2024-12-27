@@ -12,6 +12,7 @@ struct DTOPelicula {
     std::string qualificacio;
     time_t data_estrena;
     int duracio;
+    int nb_visualitzacions;
 };
 
 #endif // DTOPELICULA_HPP

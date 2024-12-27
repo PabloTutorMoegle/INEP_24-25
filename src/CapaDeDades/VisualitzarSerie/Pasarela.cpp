@@ -3,6 +3,7 @@
 PasarelaVisualitzarSerie::PasarelaVisualitzarSerie(
     string sobrenom,
     string titol_serie,
+    string qualificacio,
     int nb_visualitzacions,
     int num_temporada,
     int num_capitol,
@@ -10,6 +11,7 @@ PasarelaVisualitzarSerie::PasarelaVisualitzarSerie(
 ) {
     _sobrenom = sobrenom;
     _titol_serie = titol_serie;
+    _qualificacio = qualificacio;
     _nb_visualitzacions = nb_visualitzacions;
     _num_temporada = num_temporada;
     _num_capitol = num_capitol;
@@ -86,6 +88,10 @@ string PasarelaVisualitzarSerie::obte_sobrenom() {
 
 string PasarelaVisualitzarSerie::obte_titol_serie() {
     return _titol_serie;
+}
+
+string PasarelaVisualitzarSerie::obte_qualificacio() {
+    return _qualificacio;
 }
 
 int PasarelaVisualitzarSerie::obte_nb_visualitzacions() {

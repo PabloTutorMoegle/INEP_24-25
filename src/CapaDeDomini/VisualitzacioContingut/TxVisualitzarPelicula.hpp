@@ -19,7 +19,9 @@ class TxVisualitzarPelicula {
         
         void buscar(string titol_pelicula);
         void executar(string titol_pelicula);
+        void buscar_visualitzacions(string sobrenom_usuari);
         DTOPelicula obte_resultat() const;
+        vector<DTOPelicula> obte_resultats() const;
 
         vector<DTOPelicula> pelicula_relacionada(string titol_pelicula);
 };
