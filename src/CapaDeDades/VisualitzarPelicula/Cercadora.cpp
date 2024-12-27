@@ -33,6 +33,9 @@ vector<PasarelaVisualitzarPelicula> CercadoraVisualitzarPelicula::cerca_per_sobr
 
 PasarelaVisualitzarPelicula CercadoraVisualitzarPelicula::obte_dades_pelicula(string titol_pelicula) {
     ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
+
+    PetitFlix* petitFlix = PetitFlix::get_instance();
+    string sobrenom_usuari = petitFlix->obte_usuari()->obte_sobrenom();
     
     unique_ptr<PreparedStatement> pstmt1 = connexio_bdd->get_prepared_statement(
         "SELECT * FROM contingut WHERE con_titol = ? AND con_tipus = 'Pelicula'"
@@ -65,54 +68,40 @@ PasarelaVisualitzarPelicula CercadoraVisualitzarPelicula::obte_dades_pelicula(st
         duracio = result2->getInt("pel_duracio");
     }
     
-    return PasarelaVisualitzarPelicula(titol, descripcio, qualificacio, data, duracio);
+    return PasarelaVisualitzarPelicula(titol, descripcio, qualificacio, data, duracio, sobrenom_usuari);
 }
 
 vector<PasarelaVisualitzarPelicula> CercadoraVisualitzarPelicula::cerca_relacionades(string titol_pelicula) {
     ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
-    
+
+    PetitFlix* petitFlix = PetitFlix::get_instance();
+    string sobrenom = petitFlix->obte_usuari()->obte_sobrenom();
+
     unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
-        "SELECT rel_titol_x FROM relacionat WHERE rel_titol_y = ? UNION SELECT rel_titol_y FROM relacionat WHERE rel_titol_x = ?"
+        "SELECT p.* FROM pelicula p "
+        "JOIN relacionat r ON p.pel_titol = r.rel_titol_y "
+        "WHERE r.rel_titol_x = ? "
+        "UNION "
+        "SELECT p.* FROM pelicula p "
+        "JOIN relacionat r ON p.pel_titol = r.rel_titol_x "
+        "WHERE r.rel_titol_y = ?"
     );
+
     pstmt->setString(1, titol_pelicula);
     pstmt->setString(2, titol_pelicula);
-    pstmt->setString(1, titol_pelicula);
 
     unique_ptr<ResultSet> result(pstmt->executeQuery());
 
-    vector<string> titols_relacionats;
-
-    while (result->next()) {
-        titols_relacionats.push_back(result->getString("rel_titol_y"));
-    }
-
     vector<PasarelaVisualitzarPelicula> pelicules_relacionades;
 
-    for (const string& titol_relacionat : titols_relacionats) {
-        unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
-            "SELECT * FROM pelicula WHERE pel_titol = ?"
-        );
-        pstmt->setString(1, titol_relacionat);
+    while (result->next()) {
+        string titol = result->getString("con_titol");
+        string descripcio = result->getString("con_descripcio");
+        string qualificacio = result->getString("con_qualificacio");
+        time_t data = time_t_from_string(result->getString("con_data_estrena")); 
+        int duracio = result->getInt("con_duracio");
 
-        unique_ptr<ResultSet> result(pstmt->executeQuery());
-
-        if (result->next()) {
-            string titol = result->getString("pel_titol");
-            string descripcio = result->getString("pel_info");
-            string qualificacio = result->getString("pel_qualificacio");
-            time_t data = time_t_from_string(result->getString("pel_data_estrena"));
-            int duracio = result->getInt("pel_duracio");
-
-            pelicules_relacionades.push_back(
-                PasarelaVisualitzarPelicula(
-                    titol, 
-                    descripcio, 
-                    qualificacio,
-                    data,
-                    duracio
-                )
-            );
-        }
+        pelicules_relacionades.push_back(PasarelaVisualitzarPelicula(titol, descripcio, qualificacio, data, duracio, sobrenom));
     }
 
     return pelicules_relacionades;

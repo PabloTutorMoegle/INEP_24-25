@@ -5,14 +5,16 @@ PasarelaVisualitzarPelicula::PasarelaVisualitzarPelicula(
     string descripcio,
     string qualificacio,
     time_t data,
-    int duracio
+    int duracio,
+    string sobrenom
 ) {
+    _sobrenom = sobrenom;
     _titol_pelicula = titol_pelicula;
     _descripcio = descripcio;
     _qualificacio = qualificacio;
     _data_estrena = data;
     _duracio = duracio;
-    _nb_visualitzacions = 0;
+    _nb_visualitzacions = 1;
 }
 
 PasarelaVisualitzarPelicula::~PasarelaVisualitzarPelicula() {}
@@ -20,46 +22,31 @@ PasarelaVisualitzarPelicula::~PasarelaVisualitzarPelicula() {}
 void PasarelaVisualitzarPelicula::insereix() {
     ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
 
-    // Formatear fecha
-    tm* tiempo_local = localtime(&_data_estrena);
-    char fecha[11]; // Espacio suficiente para "DD/MM/YYYY"
+    // Obtener la fecha actual
+    time_t now = time(0);
+    tm* tiempo_local = localtime(&now);
+    char fecha[11]; 
     strftime(fecha, 11, "%Y-%m-%d", tiempo_local);
     string fecha_formateada(fecha);
 
-    // Check if the record already exists
-    std::unique_ptr<sql::PreparedStatement> check_stmt = connexio_bdd->get_prepared_statement(
-        "SELECT vip_nb_visualitzacions FROM visualitzacio_pelicula WHERE vip_sobrenom_usuari = ? AND vip_titol_pelicula = ?"
+    // Consulta INSERT ... ON DUPLICATE KEY UPDATE
+    std::unique_ptr<sql::PreparedStatement> stmt = connexio_bdd->get_prepared_statement(
+        "INSERT INTO visualitzacio_pelicula ("
+            "vip_sobrenom_usuari,"
+            "vip_titol_pelicula,"
+            "vip_data,"
+            "vip_nb_visualitzacions"
+        ") VALUES (?, ?, ?, ?) "
+        "ON DUPLICATE KEY UPDATE "
+            "vip_nb_visualitzacions = vip_nb_visualitzacions + 1"
     );
-    check_stmt->setString(1, _sobrenom);
-    check_stmt->setString(2, _titol_pelicula);
-    std::unique_ptr<sql::ResultSet> res(check_stmt->executeQuery());
 
-    if (res->next()) {
-        // Record exists, update the visualizations count
-        int current_visualitzacions = res->getInt("vip_nb_vicialitzacions");
-        std::unique_ptr<sql::PreparedStatement> update_stmt = connexio_bdd->get_prepared_statement(
-            "UPDATE visualitzacio_pelicula SET vip_nb_visualitzacions = ? WHERE vip_sobrenom_usuari = ? AND vip_titol_pelicula = ?"
-        );
-        update_stmt->setInt(1, current_visualitzacions + 1);
-        update_stmt->setString(2, _sobrenom);
-        update_stmt->setString(3, _titol_pelicula);
-        update_stmt->executeUpdate();
-    } else {
-        // Record does not exist, insert a new one
-        std::unique_ptr<sql::PreparedStatement> insert_stmt = connexio_bdd->get_prepared_statement(
-            "INSERT INTO visualitzacio_pelicula ("
-                "vip_sobrenom_usuari,"
-                "vip_titol_pelicula,"
-                "vip_data,"
-                "vip_nb_visualitzacions"
-            ") VALUES (?, ?, ?, ?)"
-        );
-        insert_stmt->setString(1, _sobrenom);
-        insert_stmt->setString(2, _titol_pelicula);
-        insert_stmt->setString(3, fecha_formateada);
-        insert_stmt->setInt(4, _nb_visualitzacions);
-        insert_stmt->executeUpdate();
-    }
+    stmt->setString(1, _sobrenom);
+    stmt->setString(2, _titol_pelicula);
+    stmt->setString(3, fecha_formateada);
+    stmt->setInt(4, 1); // Inicialitzar en 1
+        
+    stmt->executeUpdate();
 }
 
 void PasarelaVisualitzarPelicula::modifica() {
@@ -69,13 +56,13 @@ void PasarelaVisualitzarPelicula::modifica() {
         "UPDATE visualitzacio_pelicula SET "
         "vip_titol_pelicula = ?, "
         "vip_data = ?, "
-        "vip_nb_vicialitzacions = ?, "
+        "vip_nb_visualitzacions = ?, "
         "WHERE vip_sobrenom_usuari = ?"
     );
 
     pstmt->setString(1, _titol_pelicula);
-    pstmt->setString(4, time_t_to_datetime_string(_data));
-    pstmt->setInt(5, _nb_visualitzacions);
+    pstmt->setString(2, time_t_to_datetime_string(_data));
+    pstmt->setInt(3, _nb_visualitzacions);
 
     pstmt->executeUpdate();
 }

@@ -10,6 +10,7 @@ using std::string;
 
 #include "../../definitions.hpp"
 #include "../ConnexioBDD.hpp"
+#include "../../CapaDeDomini/GestioUsuaris/PetitFlix.hpp"
 
 class PasarelaVisualitzarPelicula {
     private:
@@ -31,7 +32,8 @@ class PasarelaVisualitzarPelicula {
             string _descripcio,
             string _qualificacio,
             time_t _data_estrena,
-            int _duracio
+            int _duracio,
+            string _sobrenom
         );
         ~PasarelaVisualitzarPelicula();
         
