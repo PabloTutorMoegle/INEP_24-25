@@ -56,15 +56,17 @@ vector<DTOPelicula> TxVisualitzarPelicula::pelicula_relacionada(string titol_pel
     vector<DTOPelicula> resultats;
 
     //buscar pelicules relacionades
-    vector<PasarelaVisualitzarPelicula> relacionades = CercadoraVisualitzarPelicula::cerca_relacionades(titol_pelicula);
+    vector<string> relacionades = CercadoraVisualitzarPelicula::cerca_relacionades(titol_pelicula);
     
-    for (const PasarelaVisualitzarPelicula& relacionada : relacionades) {
+    for (auto relacionada : relacionades) {
+        PasarelaVisualitzarPelicula visualitzacio = CercadoraVisualitzarPelicula::obte_dades_pelicula(relacionada);
+
         resultats.push_back(DTOPelicula {
-            .titol = relacionada.obte_titol_pelicula(),
-            .descripcio = relacionada.obte_descripcio(),
-            .qualificacio = relacionada.obte_qualificacio(),
-            .data_estrena = relacionada.obte_data(),
-            .duracio = relacionada.obte_duracio()
+            .titol = visualitzacio.obte_titol_pelicula(),
+            .descripcio = visualitzacio.obte_descripcio(),
+            .qualificacio = visualitzacio.obte_qualificacio(),
+            .data_estrena = visualitzacio.obte_data(),
+            .duracio = visualitzacio.obte_duracio()
         });
     }
     

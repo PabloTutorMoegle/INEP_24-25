@@ -646,11 +646,18 @@ void CapaDePresentacio::visualitzant_pelicula(string titol_pelicula)
     {
         DTOPelicula pelicula_relacionada = pelicules_relacionades[i];
 
-        cout<< "- " << pelicula_relacionada.titol << "; "
-            << pelicula_relacionada.descripcio << "; "
-            << pelicula_relacionada.qualificacio << "; "
-            << pelicula_relacionada.duracio << " min."
-            << pelicula_relacionada.data_estrena << "; " << endl;
+        cout << "- " << pelicula_relacionada.titol << "; "
+             << pelicula_relacionada.descripcio << "; "
+             << pelicula_relacionada.qualificacio << "; "
+             << pelicula_relacionada.duracio << " min";
+
+        //formatear fecha
+        tm* tiempo_local = localtime(&pelicula_relacionada.data_estrena);
+        char fecha[11]; // Espacio suficiente para "DD/MM/YYYY"
+        strftime(fecha, 11, "%d/%m/%Y", tiempo_local);
+        string fecha_formateada(fecha);
+
+        cout << fecha_formateada << "; " << endl;
     }
 }
 
@@ -659,13 +666,21 @@ void CapaDePresentacio::visualitzar_pelicula()
     cout << "** Visualitzant pel·licula **" << "\n"
          << "Nom pel·licula: ";
     string nom_pelicula;
-    cin >> nom_pelicula;
-
+    //el titulo de la serie puede tener espacios y mas de una palabra
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, nom_pelicula);
+    
     TxVisualitzarPelicula txVisualitzarPelicula;
     try
     {
         txVisualitzarPelicula.buscar(nom_pelicula);
         DTOPelicula pelicula = txVisualitzarPelicula.obte_resultat();
+
+        if(pelicula.titol == "")
+        {
+            cout << "La pel·licula no existeix." << endl;
+            return;
+        }
 
         cout << "Informacio pel·licula: " << "\n"
              << "Nom pel·licula: " << pelicula.titol << "\n"
@@ -695,7 +710,11 @@ void CapaDePresentacio::visualitzar_pelicula()
     }
     catch(const char* error)
     {
-        cerr << error << endl;
+        cerr << "Error: " << error << endl;
+    }
+    catch(const std::exception& e)
+    {
+        cerr << "La pel·licula no existeix." << endl;
     }
 }
 
@@ -706,5 +725,5 @@ void CapaDePresentacio::visualitzar_capitol()
 
 void CapaDePresentacio::consulta_visualitzacions()
 {
-
+    
 }
