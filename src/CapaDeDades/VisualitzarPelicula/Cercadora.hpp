@@ -16,6 +16,7 @@ class CercadoraVisualitzarPelicula {
     public:
         static vector<PasarelaVisualitzarPelicula> cerca_per_sobrenom(string sobrenom_usuari);
         static PasarelaVisualitzarPelicula obte_dades_pelicula(string titol_pelicula);
+        static vector<PasarelaVisualitzarPelicula> cerca_relacionades(string titol_pelicula);
 };
 
 #endif

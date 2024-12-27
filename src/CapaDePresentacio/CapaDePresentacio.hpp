@@ -15,6 +15,7 @@ using std::pair;
 #include "../CapaDeDomini/Consultes/TxConsultaEstrenes.hpp"
 #include "../CapaDeDomini/Consultes/TxConsultaMesVistes.hpp"
 #include "../CapaDeDomini/Consultes/TxConsultaNovetats.hpp"
+#include "../CapaDeDomini/VisualitzacioContingut/TxVisualitzarPelicula.hpp"
 
 // Això no fa falta que s'implementi com un singleton ja que tot els mètodes poden ser estàtics
 class CapaDePresentacio {
@@ -32,6 +33,7 @@ class CapaDePresentacio {
         static void ultimes_novetats();
         static void pelicules_mes_vistes();
 
+        static void visualitzant_pelicula(string titol_pelicula);
         static void visualitzar_pelicula();
         static void visualitzar_capitol();
         static void consulta_visualitzacions();

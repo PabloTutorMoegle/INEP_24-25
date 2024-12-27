@@ -2,15 +2,16 @@
 #define DTOPELICULA_HPP
 
 #include <string>
-#include <chrono>
+#include <ctime> 
 
 #include "../../definitions.hpp"
 
 struct DTOPelicula {
     std::string titol;
-    std::string info;
+    std::string descripcio;
     std::string qualificacio;
-    std::time_t data_estrena;
+    time_t data_estrena;
+    int duracio;
 };
 
-#endif
+#endif // DTOPELICULA_HPP

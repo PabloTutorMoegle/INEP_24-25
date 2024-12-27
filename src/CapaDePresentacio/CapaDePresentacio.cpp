@@ -623,9 +623,80 @@ void CapaDePresentacio::pelicules_mes_vistes()
     }
 }
 
+void CapaDePresentacio::visualitzant_pelicula(string titol_pelicula)
+{
+    time_t hora_acual = time(0);
+
+    //formatear la fecha
+    tm* tiempo_local = localtime(&hora_acual);
+    char fecha[11]; // Espacio suficiente para "DD/MM/YYYY"
+    strftime(fecha, 11, "%d/%m/%Y", tiempo_local);
+    string fecha_formateada(fecha);
+
+    cout << "Visualitacio registrada ... " << fecha_formateada << endl;
+    TxVisualitzarPelicula txVisualitzarPelicula;
+    txVisualitzarPelicula.executar(titol_pelicula);
+
+    //pelicules relacionades
+    cout << "Pelicules relacionades: " << endl;
+
+    vector<DTOPelicula> pelicules_relacionades = txVisualitzarPelicula.pelicula_relacionada(titol_pelicula);
+
+    for (int i = 0; i < pelicules_relacionades.size(); i++)
+    {
+        DTOPelicula pelicula_relacionada = pelicules_relacionades[i];
+
+        cout<< "- " << pelicula_relacionada.titol << "; "
+            << pelicula_relacionada.descripcio << "; "
+            << pelicula_relacionada.qualificacio << "; "
+            << pelicula_relacionada.duracio << " min."
+            << pelicula_relacionada.data_estrena << "; " << endl;
+    }
+}
+
 void CapaDePresentacio::visualitzar_pelicula()
 {
+    cout << "** Visualitzant pel·licula **" << "\n"
+         << "Nom pel·licula: ";
+    string nom_pelicula;
+    cin >> nom_pelicula;
 
+    TxVisualitzarPelicula txVisualitzarPelicula;
+    try
+    {
+        txVisualitzarPelicula.buscar(nom_pelicula);
+        DTOPelicula pelicula = txVisualitzarPelicula.obte_resultat();
+
+        cout << "Informacio pel·licula: " << "\n"
+             << "Nom pel·licula: " << pelicula.titol << "\n"
+             << "Descripcio: " << pelicula.descripcio << "\n"
+             << "Qualificacio edat: " << pelicula.qualificacio << "\n";
+
+        //formatear fecha
+        tm* tiempo_local = localtime(&pelicula.data_estrena);
+        char fecha[11]; // Espacio suficiente para "DD/MM/YYYY"
+        strftime(fecha, 11, "%d/%m/%Y", tiempo_local);
+        string fecha_formateada(fecha);
+
+        cout << "Data estrena: " << fecha_formateada << "\n"
+             << "Duracio: " << pelicula.duracio << "\n"
+             << "Vols continuar amb la visualitzacio? (S/N): ";
+        string resposta;
+        cin >> resposta;
+
+        if (resposta == "S" || resposta == "s")
+        {
+            visualitzant_pelicula(pelicula.titol);
+        }
+        else
+        {
+            return;
+        }
+    }
+    catch(const char* error)
+    {
+        cerr << error << endl;
+    }
 }
 
 void CapaDePresentacio::visualitzar_capitol()

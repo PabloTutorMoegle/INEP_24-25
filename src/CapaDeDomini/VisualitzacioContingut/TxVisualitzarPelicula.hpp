@@ -16,9 +16,12 @@ class TxVisualitzarPelicula {
     public:
         TxVisualitzarPelicula();
         ~TxVisualitzarPelicula();
-
+        
+        void buscar(string titol_pelicula);
         void executar(string titol_pelicula);
         DTOPelicula obte_resultat() const;
+
+        vector<DTOPelicula> pelicula_relacionada(string titol_pelicula);
 };
 
 #endif
