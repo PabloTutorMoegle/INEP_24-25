@@ -109,24 +109,35 @@ vector<PasarelaVisualitzarPelicula> CercadoraVisualitzarPelicula::obte_visualitz
 
     unique_ptr<ResultSet> result(pstmt->executeQuery());
 
-    //hay que ir a buscar la descripción, la qualificación y la duración de la película a la tabla de pelicula
-
     unique_ptr<PreparedStatement> pstmt2 = connexio_bdd->get_prepared_statement(
-        "SELECT * FROM pelicula WHERE pel_titol = ?"
+        "SELECT * FROM contingut WHERE con_titol = ?"
     );
 
-    unique_ptr<ResultSet> result2(pstmt2->executeQuery());
+    unique_ptr<PreparedStatement> pstmt3 = connexio_bdd->get_prepared_statement(
+        "SELECT * FROM pelicula WHERE pel_titol = ?"
+    );
 
     vector<PasarelaVisualitzarPelicula> visualitzacions_pelicula;
 
     while (result->next()) {
-        string sobrenom = result->getString("vip_sobrenom_usuari");
         string titol_pelicula = result->getString("vip_titol_pelicula");
+
+        pstmt2->setString(1, titol_pelicula);
+        unique_ptr<ResultSet> result2(pstmt2->executeQuery());
+
+        pstmt3->setString(1, titol_pelicula);
+        unique_ptr<ResultSet> result3(pstmt3->executeQuery());
+
+        if (!result2->next() || !result3->next()) {
+            continue;
+        }
+
+        string sobrenom = result->getString("vip_sobrenom_usuari");
         time_t data = time_t_from_string(result->getString("vip_data"));
         int nb_visualitzacions = result->getInt("vip_nb_visualitzacions");
-        string descripcio = result2->getString("pel_descripcio");
-        string qualificacio = result2->getString("pel_qualificacio");
-        int duracio = result2->getInt("pel_duracio");
+        string descripcio = result2->getString("con_descripcio");
+        string qualificacio = result2->getString("con_qualificacio");
+        int duracio = result3->getInt("pel_duracio");
         
         visualitzacions_pelicula.push_back(
             PasarelaVisualitzarPelicula(

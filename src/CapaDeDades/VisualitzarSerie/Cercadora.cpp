@@ -14,11 +14,22 @@ vector<PasarelaVisualitzarSerie> CercadoraVisualitzarSerie::cerca_per_sobrenom(s
         "SELECT * FROM capitol WHERE cap_titol_serie = ? AND cap_numero_temporada = ? AND cap_numero = ?"
     );
 
-    unique_ptr<ResultSet> result2(pstmt->executeQuery());
+    
 
     vector<PasarelaVisualitzarSerie> visualitzacions_serie;
 
     while (result->next()) {
+
+        pstmt->setString(1, result->getString("vic_titol_serie"));
+        pstmt->setInt(2, result->getInt("vic_num_temporada"));
+        pstmt->setInt(3, result->getInt("vic_num_capitol"));
+
+        unique_ptr<ResultSet> result2(pstmt->executeQuery());
+
+        if (!result2->next()) {
+            continue;
+        }
+
         string sobrenom = result->getString("vic_sobrenom_usuari");
         string titol_serie = result->getString("vic_titol_serie");
         string qualificacio = result2->getString("cap_qualificacio");

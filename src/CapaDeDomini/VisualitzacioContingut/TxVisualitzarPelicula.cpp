@@ -45,7 +45,6 @@ void TxVisualitzarPelicula::executar(string titol_pelicula)
 void TxVisualitzarPelicula::buscar_visualitzacions(string sobrenom_usuari) 
 {
     vector<PasarelaVisualitzarPelicula> visualitzacions = CercadoraVisualitzarPelicula::obte_visualitzacions(sobrenom_usuari);
-
     for (auto visualitzacio : visualitzacions) {
         _resultat = DTOPelicula {
             .titol = visualitzacio.obte_titol_pelicula(),

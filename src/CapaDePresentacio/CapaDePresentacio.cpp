@@ -728,21 +728,20 @@ void CapaDePresentacio::consulta_visualitzacions()
     PetitFlix::get_instance()->obte_usuari();
     string sobrenom_usuari = PetitFlix::get_instance()->obte_usuari()->obte_sobrenom();
 
-    cout << "** Consulta visualitzacions **" << endl;
-
+    cout << "** Consulta visualitzacions **" << "\n" << endl;
 
     TxVisualitzarPelicula txVisualitzarPelicula;
 
     txVisualitzarPelicula.buscar_visualitzacions(sobrenom_usuari);
-
+    
     vector<DTOPelicula> visualitzacionsP = txVisualitzarPelicula.obte_resultats();
     
     TxConsultaVisualitzacions txConsultaVisualitzacions;
-
+    
     txConsultaVisualitzacions.executar(sobrenom_usuari);
-
+    
     vector<DTOCapitol> visualitzacionsC = txConsultaVisualitzacions.obte_tots_resultats();
-
+    
     if(visualitzacionsP.size() == 0 && visualitzacionsC.size() == 0)
     {
         cout << "No hi ha visualitzacions" << endl;
@@ -764,6 +763,7 @@ void CapaDePresentacio::consulta_visualitzacions()
 
         cout << "- " << fecha_formateada << "; "
              << visualitzacio.titol << "; "
+             << visualitzacio.descripcio << "; "
              << visualitzacio.qualificacio << "; "
              << visualitzacio.duracio << " min; "
              << "nombre de visualitzacions " << visualitzacio.nb_visualitzacions << endl;
@@ -771,7 +771,6 @@ void CapaDePresentacio::consulta_visualitzacions()
 
     cout << "** Visualitzacions series **" << endl;
     cout << "****************************" << endl;
-
 
     for (int i = 0; i < visualitzacionsC.size(); i++)
     {

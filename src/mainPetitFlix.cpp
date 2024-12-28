@@ -116,7 +116,7 @@ void visualitzacions()
                 cout << "Visualitzant serie" << endl;
                 break;
             case 3:
-                cout << "Consultant visualitzacions" << endl; 
+                cdp.consulta_visualitzacions();
                 break;
             case 4:
                 bucleV = false;

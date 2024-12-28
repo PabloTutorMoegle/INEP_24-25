@@ -12,9 +12,11 @@ using std::pair;
 #include "../CapaDeDomini/GestioUsuaris/Transaccions/ConsultaUsuari.hpp"
 #include "../CapaDeDomini/GestioUsuaris/ControlModificaUsuari.hpp"
 #include "../CapaDeDomini/GestioUsuaris/Transaccions/EsborraUsuari.hpp"
+
 #include "../CapaDeDomini/Consultes/TxConsultaEstrenes.hpp"
 #include "../CapaDeDomini/Consultes/TxConsultaMesVistes.hpp"
 #include "../CapaDeDomini/Consultes/TxConsultaNovetats.hpp"
+
 #include "../CapaDeDomini/VisualitzacioContingut/TxVisualitzarPelicula.hpp"
 #include "../CapaDeDomini/VisualitzacioContingut/TxVisualitzarCapitol.hpp"
 #include "../CapaDeDomini/VisualitzacioContingut/TxConsultaVisualitzacions.hpp"

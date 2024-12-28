@@ -1,7 +1,7 @@
 #include "TxConsultaVisualitzacions.hpp"
 
 TxConsultaVisualitzacions::TxConsultaVisualitzacions() {
-    _resultat = std::nullopt;
+    _resultat = vector<DTOCapitol>();
 }
 
 TxConsultaVisualitzacions::~TxConsultaVisualitzacions() {}
@@ -9,7 +9,6 @@ TxConsultaVisualitzacions::~TxConsultaVisualitzacions() {}
 void TxConsultaVisualitzacions::executar(string sobrenom_usuari) 
 {
     vector<PasarelaVisualitzarSerie> visualitzacions = CercadoraVisualitzarSerie::cerca_per_sobrenom(sobrenom_usuari);
-
     vector<DTOCapitol> resultats;
 
     for (PasarelaVisualitzarSerie visualitzacio : visualitzacions) {
@@ -27,7 +26,7 @@ void TxConsultaVisualitzacions::executar(string sobrenom_usuari)
 }
 
 DTOCapitol TxConsultaVisualitzacions::obte_resultat() const {
-    return _resultat.value();
+    return _resultat[0];
 }
 
 vector<DTOCapitol> TxConsultaVisualitzacions::obte_tots_resultats() const {

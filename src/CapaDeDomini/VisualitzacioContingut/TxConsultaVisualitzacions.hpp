@@ -14,7 +14,7 @@ using namespace std;
 
 class TxConsultaVisualitzacions {
     private:
-        optional<DTOCapitol> _resultat;
+        vector<DTOCapitol> _resultat;
 
     public:
         TxConsultaVisualitzacions();
