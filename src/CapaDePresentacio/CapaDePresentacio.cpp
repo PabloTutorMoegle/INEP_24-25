@@ -220,7 +220,9 @@ void CapaDePresentacio::modifica_usuari()
         << "Escull modalitat: ";
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getline(cin, modalitat);
+    cin >> modalitat;
+
+    time_t data_naixement = usuari.data_naixement;
 
     if (data != "")
     {
@@ -231,12 +233,14 @@ void CapaDePresentacio::modifica_usuari()
         if (ss.fail()) {
             throw std::runtime_error("Error al convertir la cadena a tiempo");
         }
-        time_t data_naixement = mktime(&tm);
+        data_naixement = mktime(&tm);
     }
+
+    ModalitatSubscripcio modalitat_subs = usuari.modalitat_subscripcio;
 
     if (modalitat != 0)
     {
-        ModalitatSubscripcio modalitat_subs = static_cast<ModalitatSubscripcio>(modalitat);
+        modalitat_subs = static_cast<ModalitatSubscripcio>(modalitat);
     }
 
     try
@@ -253,14 +257,7 @@ void CapaDePresentacio::modifica_usuari()
         {
             correu = usuari.correu_electronic;
         }
-        if (data_naixement == 0)
-        {
-            data_naixement = usuari.data_naixement;
-        }
-        if (modalitat_subs == 0)
-        {
-            modalitat_subs = usuari.modalitat_subscripcio;
-        }
+
         controlModificaUsuari.modifica_usuari(
             nom,
             sobrenom,
@@ -280,7 +277,7 @@ void CapaDePresentacio::modifica_usuari()
          << "Nom complet: " << usuari.nom << "\n"
          << "Sobrenom: " << usuari.sobrenom << "\n"
          << "Correu electronic: " << usuari.correu_electronic << "\n"
-         << "Data de naixement: " << usuari.data_naixement << "\n"
+         << "Data de naixement: " << time_t_to_datetime_string(usuari.data_naixement) << "\n"
          << "Modalitat de subscripcio: " << usuari.modalitat_subscripcio << endl;
 }
 
