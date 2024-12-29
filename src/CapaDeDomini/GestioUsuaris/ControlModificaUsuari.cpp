@@ -14,7 +14,7 @@ DTOUsuari CtrlModificaUsuari::obte_usuari() {
 
 void CtrlModificaUsuari::modifica_usuari(
     optional<string> nom_usuari,
-    optional<string> contrasenya_usuari,
+    optional<string> sobrenom_usuari,
     optional<string> correu_electronic_usuari,
     optional<time_t> data_naixement_usuari,
     optional<ModalitatSubscripcio> modalitat_subscripcio_usuari
@@ -25,7 +25,7 @@ void CtrlModificaUsuari::modifica_usuari(
 
     if (
         !nom_usuari &&
-        !contrasenya_usuari &&
+        !sobrenom_usuari &&
         !correu_electronic_usuari &&
         !data_naixement_usuari &&
         !modalitat_subscripcio_usuari
@@ -35,8 +35,8 @@ void CtrlModificaUsuari::modifica_usuari(
         _usuari->posa_nom(*nom_usuari);
     }
 
-    if (contrasenya_usuari) {
-        _usuari->posa_contrasenya(*contrasenya_usuari);
+    if (sobrenom_usuari) {
+        _usuari->posa_contrasenya(*sobrenom_usuari);
     }
 
     if (correu_electronic_usuari) {

@@ -41,6 +41,7 @@ class PasarelaUsuari {
         ModalitatSubscripcio obte_modalitat_subscripcio() const;
 
         void posa_nom(string nom);
+        void posa_sobrenom(string sobrenom);
         void posa_contrasenya(string contrasenya);
         void posa_correu_electronic(string correu_electronic);
         void posa_data_naixement(time_t data_naixement);

@@ -164,7 +164,7 @@ void CapaDePresentacio::modifica_usuari()
     DTOUsuari usuari = controlModificaUsuari.obte_usuari();
 
     string nom, sobrenom, contrasenya, correu, data;
-    int modalitat = 0;
+    char modalitat;
 
     //formatear la fecha    
     tm* tiempo_local = localtime(&usuari.data_naixement);
@@ -200,10 +200,6 @@ void CapaDePresentacio::modifica_usuari()
          << "Nom complet: ";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, nom);
-    
-    cout << "Sobrenom: ";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getline(cin, sobrenom);
         
     cout << "Correu electronic: ";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -238,26 +234,16 @@ void CapaDePresentacio::modifica_usuari()
 
     ModalitatSubscripcio modalitat_subs = usuari.modalitat_subscripcio;
 
-    if (modalitat != 0)
+    //modalitat es un string, hay que convertirlo a int
+    int mod = modalitat - 48;
+
+    if (mod != 0 && mod >= 1 && mod <= 3)
     {
-        modalitat_subs = static_cast<ModalitatSubscripcio>(modalitat);
+        modalitat_subs = static_cast<ModalitatSubscripcio>(mod);
     }
 
     try
     {
-        if (nom == "")
-        {
-            nom = usuari.nom;
-        }
-        if (sobrenom == "")
-        {
-            sobrenom = usuari.sobrenom;
-        }
-        if (correu == "")
-        {
-            correu = usuari.correu_electronic;
-        }
-
         controlModificaUsuari.modifica_usuari(
             nom,
             sobrenom,
@@ -280,7 +266,6 @@ void CapaDePresentacio::modifica_usuari()
          << "Data de naixement: " << time_t_to_datetime_string(usuari.data_naixement) << "\n"
          << "Modalitat de subscripcio: " << usuari.modalitat_subscripcio << endl;
 }
-
 
 void CapaDePresentacio::modifica_contrasenya()
 {
