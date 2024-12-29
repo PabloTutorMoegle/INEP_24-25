@@ -10,20 +10,31 @@ using std::string;
 
 #include "../../definitions.hpp"
 #include "../ConnexioBDD.hpp"
+#include "../../CapaDeDomini/GestioUsuaris/PetitFlix.hpp"
 
 class PasarelaVisualitzarPelicula {
-    private: 
-        string _sobrenom;
+    private:
         string _titol_pelicula;
-        int _nb_visualitzacions;
+        string _descripcio;
+        string _qualificacio;
+        string _tipus;
+        time_t _data_estrena;
+        int _duracio;
+
+        string _sobrenom;
         time_t _data;
+        int _nb_visualitzacions;
+
 
     public:
         PasarelaVisualitzarPelicula(
-            string sobrenom,
-            string titol_pelicula,
-            int nb_visualitzacions,
-            time_t data
+            string _titol_pelicula,
+            string _descripcio,
+            string _qualificacio,
+            time_t _data_estrena,
+            int _duracio,
+            string _sobrenom,
+            int _nb_visualitzacions
         );
         ~PasarelaVisualitzarPelicula();
         
@@ -31,7 +42,15 @@ class PasarelaVisualitzarPelicula {
         void modifica();
         void esborra();
 
-        unsigned int obte_num_visualitzacions();
+        void modifica_data(time_t data);
+
+        int obte_num_visualitzacions();
+        string obte_sobrenom() const;
+        string obte_titol_pelicula() const;
+        string obte_descripcio() const;
+        string obte_qualificacio() const;
+        time_t obte_data() const;
+        int obte_duracio() const;
 };
 
 #endif

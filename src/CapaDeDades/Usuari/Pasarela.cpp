@@ -105,6 +105,10 @@ void PasarelaUsuari::posa_nom(string nom) {
     _nom = nom;
 }
 
+void PasarelaUsuari::posa_sobrenom(string sobrenom) {
+    _sobrenom = sobrenom;
+}
+
 void PasarelaUsuari::posa_contrasenya(string contrasenya) {
     _contrasenya = contrasenya;
 }

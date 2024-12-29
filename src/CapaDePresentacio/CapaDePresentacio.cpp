@@ -50,7 +50,8 @@ void CapaDePresentacio::registrar_usuari()
 
     cout << "** Registrar usuari **" << "\n"
         << "Nom complet: ";
-    cin >> nom;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, nom);    
     
     cout << "Sobrenom: ";
     cin >> sobrenom;
@@ -163,7 +164,7 @@ void CapaDePresentacio::modifica_usuari()
     DTOUsuari usuari = controlModificaUsuari.obte_usuari();
 
     string nom, sobrenom, contrasenya, correu, data;
-    int modalitat;
+    char modalitat;
 
     //formatear la fecha    
     tm* tiempo_local = localtime(&usuari.data_naixement);
@@ -197,19 +198,16 @@ void CapaDePresentacio::modifica_usuari()
 
     cout << "Omplir la informacio que es vol modificar ..." << "\n"
          << "Nom complet: ";
-    cin >> nom;
-
-    cout << "Contrasenya: ";
-    cin >> contrasenya;
-    
-    cout << "Sobrenom: ";
-    cin >> sobrenom;
-    
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, nom);
+        
     cout << "Correu electronic: ";
-    cin >> correu;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, correu);
     
     cout << "Data de naixement (DD/MM/AAAA): ";
-    cin >> data;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, data);
     
     cout << "Modalitats de subscripcio disponibles " << "\n"
         << "  > 1. Completa " << "\n"
@@ -217,22 +215,32 @@ void CapaDePresentacio::modifica_usuari()
         << "  > 3. Infantil " << "\n"
         << "Escull modalitat: ";
 
-    if(modalitat < 1 || modalitat > 3)
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin >> modalitat;
+
+    time_t data_naixement = usuari.data_naixement;
+
+    if (data != "")
     {
-        cout << "Modalitat no valida" << endl;
-        return;
+        //pasar data_naixement de string a time_t
+        tm tm = {};
+        istringstream ss(data);
+        ss >> get_time(&tm, "%d/%m/%Y");
+        if (ss.fail()) {
+            throw std::runtime_error("Error al convertir la cadena a tiempo");
+        }
+        data_naixement = mktime(&tm);
     }
 
-    //pasar data_naixement de string a time_t
-    tm tm = {};
-    istringstream ss(data);
-    ss >> get_time(&tm, "%d/%m/%Y");
-    if (ss.fail()) {
-        throw std::runtime_error("Error al convertir la cadena a tiempo");
-    }
-    time_t data_naixement = mktime(&tm);
+    ModalitatSubscripcio modalitat_subs = usuari.modalitat_subscripcio;
 
-    ModalitatSubscripcio modalitat_subscripcio = static_cast<ModalitatSubscripcio>(modalitat);
+    //modalitat es un string, hay que convertirlo a int
+    int mod = modalitat - 48;
+
+    if (mod != 0 && mod >= 1 && mod <= 3)
+    {
+        modalitat_subs = static_cast<ModalitatSubscripcio>(mod);
+    }
 
     try
     {
@@ -241,7 +249,7 @@ void CapaDePresentacio::modifica_usuari()
             sobrenom,
             correu,
             data_naixement,
-            modalitat_subscripcio
+            modalitat_subs
         );
     }
     catch(const std::exception& e)
@@ -255,10 +263,9 @@ void CapaDePresentacio::modifica_usuari()
          << "Nom complet: " << usuari.nom << "\n"
          << "Sobrenom: " << usuari.sobrenom << "\n"
          << "Correu electronic: " << usuari.correu_electronic << "\n"
-         << "Data de naixement: " << usuari.data_naixement << "\n"
+         << "Data de naixement: " << time_t_to_datetime_string(usuari.data_naixement) << "\n"
          << "Modalitat de subscripcio: " << usuari.modalitat_subscripcio << endl;
 }
-
 
 void CapaDePresentacio::modifica_contrasenya()
 {
@@ -293,8 +300,24 @@ void CapaDePresentacio::properes_estrenes()
 
     if (usuari)
     {
+        string modalitat_subscripcio;
+        switch (usuari->obte_modalitat_subscripcio())
+        {
+            case 1:
+                modalitat_subscripcio = "Completa";
+                break;
+            case 2:
+                modalitat_subscripcio = "Cinefil";
+                break;
+            case 3:
+                modalitat_subscripcio = "Infantil";
+                break;
+            default:
+                break;
+        }
+
         cout<< "** Properes estrenes **" << "\n"
-            << "Modalitat: " << usuari->obte_modalitat_subscripcio() << "\n"
+            << "Modalitat: " << modalitat_subscripcio << "\n"
             << "\n" << endl;
         
         TxConsultaEstrenes consultaEstrenes(usuari->obte_modalitat_subscripcio());
@@ -336,10 +359,26 @@ void CapaDePresentacio::properes_estrenes()
             return;
         }
 
+        string modalitat;
+        switch (m)
+        {
+        case 1:
+            modalitat = "Completa";
+            break;
+        case 2:
+            modalitat = "Cinefil";
+            break;
+        case 3:
+            modalitat = "Infantil";
+            break;
+        default:
+            break;
+        }
+
         ModalitatSubscripcio modalitat_subscripcio = static_cast<ModalitatSubscripcio>(m); 
 
         cout<< "** Properes estrenes **" << "\n"
-            << "Modalitat: " <<  modalitat_subscripcio << "\n"
+            << "Modalitat: " <<  modalitat << "\n"
             << "\n" << endl;
         
         TxConsultaEstrenes consultaEstrenes(modalitat_subscripcio);
@@ -373,8 +412,24 @@ void CapaDePresentacio::ultimes_novetats()
 
     if (usuari)
     {
+        string modalitat_subscripcio;
+        switch (usuari->obte_modalitat_subscripcio())
+        {
+            case 1:
+                modalitat_subscripcio = "Completa";
+                break;
+            case 2:
+                modalitat_subscripcio = "Cinefil";
+                break;
+            case 3:
+                modalitat_subscripcio = "Infantil";
+                break;
+            default:
+                break;
+        }
+
         cout<< "** Novetats **" << "\n" 
-            << "Modalitat: " << usuari->obte_modalitat_subscripcio() << "\n"
+            << "Modalitat: " << modalitat_subscripcio << "\n"
             << "\n" << endl;
 
         TxConsultaNovetats txConsultaNovetats(usuari->obte_modalitat_subscripcio());
@@ -422,10 +477,26 @@ void CapaDePresentacio::ultimes_novetats()
             return;
         }
 
+        string modalitat;
+        switch (m)
+        {
+            case 1:
+                modalitat = "Completa";
+                break;
+            case 2:
+                modalitat = "Cinefil";
+                break;
+            case 3:
+                modalitat = "Infantil";
+                break;
+            default:
+                break;
+        }
+
         ModalitatSubscripcio modalitat_subscripcio = static_cast<ModalitatSubscripcio>(m); 
 
         cout<< "** Novetats **" << "\n" 
-            << "Modalitat: " << modalitat_subscripcio << "\n"
+            << "Modalitat: " << modalitat << "\n"
             << "\n" << endl;
 
         TxConsultaNovetats txConsultaNovetats(modalitat_subscripcio);
@@ -464,8 +535,24 @@ void CapaDePresentacio::pelicules_mes_vistes()
 
     if(usuari)
     {
+        string modalitat_subscripcio;
+        switch (usuari->obte_modalitat_subscripcio())
+        {
+            case 1:
+                modalitat_subscripcio = "Completa";
+                break;
+            case 2:
+                modalitat_subscripcio = "Cinefil";
+                break;
+            case 3:
+                modalitat_subscripcio = "Infantil";
+                break;
+            default:
+                break;
+        }
+
         cout<< "** Pel·licules mes vistes **" << "\n"
-            << "Modalitat: " << usuari->obte_modalitat_subscripcio() << "\n"
+            << "Modalitat: " << modalitat_subscripcio << "\n"
             << "\n" << endl;
 
         TxConsultaMesVistes txConsultaMesVistes(usuari->obte_modalitat_subscripcio());
@@ -501,10 +588,26 @@ void CapaDePresentacio::pelicules_mes_vistes()
             return;
         }
 
+        string modalitat;
+        switch (m)
+        {
+            case 1:
+                modalitat = "Completa";
+                break;
+            case 2:
+                modalitat = "Cinefil";
+                break;
+            case 3:
+                modalitat = "Infantil";
+                break;
+            default:
+                break;
+        }
+
         ModalitatSubscripcio modalitat_subscripcio = static_cast<ModalitatSubscripcio>(m); 
 
         cout<< "** Pel·licules mes vistes **" << "\n"
-            << "Modalitat: " << modalitat_subscripcio << "\n"
+            << "Modalitat: " << modalitat << "\n"
             << "\n" << endl;
 
         TxConsultaMesVistes txConsultaMesVistes(modalitat_subscripcio);
@@ -523,5 +626,173 @@ void CapaDePresentacio::pelicules_mes_vistes()
                 << mesVista.info << " " 
                 << endl;
         }
+    }
+}
+
+void CapaDePresentacio::visualitzant_pelicula(string titol_pelicula)
+{
+    time_t hora_acual = time(0);
+
+    //formatear la fecha
+    tm* tiempo_local = localtime(&hora_acual);
+    char fecha[11]; // Espacio suficiente para "DD/MM/YYYY"
+    strftime(fecha, 11, "%d/%m/%Y", tiempo_local);
+    string fecha_formateada(fecha);
+
+    cout << "Visualitacio registrada ... " << fecha_formateada << endl;
+    TxVisualitzarPelicula txVisualitzarPelicula;
+    txVisualitzarPelicula.executar(titol_pelicula);
+
+    //pelicules relacionades
+    cout << "Pelicules relacionades: " << endl;
+
+    vector<DTOPelicula> pelicules_relacionades = txVisualitzarPelicula.pelicula_relacionada(titol_pelicula);
+
+    for (int i = 0; i < pelicules_relacionades.size(); i++)
+    {
+        DTOPelicula pelicula_relacionada = pelicules_relacionades[i];
+
+        cout << "- " << pelicula_relacionada.titol << "; "
+             << pelicula_relacionada.descripcio << "; "
+             << pelicula_relacionada.qualificacio << "; "
+             << pelicula_relacionada.duracio << " min";
+
+        //formatear fecha
+        tm* tiempo_local = localtime(&pelicula_relacionada.data_estrena);
+        char fecha[11]; // Espacio suficiente para "DD/MM/YYYY"
+        strftime(fecha, 11, "%d/%m/%Y", tiempo_local);
+        string fecha_formateada(fecha);
+
+        cout << fecha_formateada << "; " << endl;
+    }
+}
+
+void CapaDePresentacio::visualitzar_pelicula()
+{
+    cout << "** Visualitzant pel·licula **" << "\n"
+         << "Nom pel·licula: ";
+    string nom_pelicula;
+    //el titulo de la serie puede tener espacios y mas de una palabra
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, nom_pelicula);
+    
+    TxVisualitzarPelicula txVisualitzarPelicula;
+    try
+    {
+        txVisualitzarPelicula.buscar(nom_pelicula);
+        DTOPelicula pelicula = txVisualitzarPelicula.obte_resultat();
+
+        if(pelicula.titol == "")
+        {
+            cout << "La pel·licula no existeix." << endl;
+            return;
+        }
+
+        cout << "Informacio pel·licula: " << "\n"
+             << "Nom pel·licula: " << pelicula.titol << "\n"
+             << "Descripcio: " << pelicula.descripcio << "\n"
+             << "Qualificacio edat: " << pelicula.qualificacio << "\n";
+
+        //formatear fecha
+        tm* tiempo_local = localtime(&pelicula.data_estrena);
+        char fecha[11]; // Espacio suficiente para "DD/MM/YYYY"
+        strftime(fecha, 11, "%d/%m/%Y", tiempo_local);
+        string fecha_formateada(fecha);
+
+        cout << "Data estrena: " << fecha_formateada << "\n"
+             << "Duracio: " << pelicula.duracio << "\n"
+             << "Vols continuar amb la visualitzacio? (S/N): ";
+        string resposta;
+        cin >> resposta;
+
+        if (resposta == "S" || resposta == "s")
+        {
+            visualitzant_pelicula(pelicula.titol);
+        }
+        else
+        {
+            return;
+        }
+    }
+    catch(const char* error)
+    {
+        cerr << "Error: " << error << endl;
+    }
+    catch(const std::exception& e)
+    {
+        cerr << "La pel·licula no existeix." << endl;
+    }
+}
+
+void CapaDePresentacio::visualitzar_capitol()
+{
+
+}
+
+void CapaDePresentacio::consulta_visualitzacions()
+{
+    PetitFlix::get_instance()->obte_usuari();
+    string sobrenom_usuari = PetitFlix::get_instance()->obte_usuari()->obte_sobrenom();
+
+    cout << "** Consulta visualitzacions **" << "\n" << endl;
+
+    TxVisualitzarPelicula txVisualitzarPelicula;
+
+    txVisualitzarPelicula.buscar_visualitzacions(sobrenom_usuari);
+    
+    vector<DTOPelicula> visualitzacionsP = txVisualitzarPelicula.obte_resultats();
+    
+    TxConsultaVisualitzacions txConsultaVisualitzacions;
+    
+    txConsultaVisualitzacions.executar(sobrenom_usuari);
+    
+    vector<DTOCapitol> visualitzacionsC = txConsultaVisualitzacions.obte_tots_resultats();
+    
+    if(visualitzacionsP.size() == 0 && visualitzacionsC.size() == 0)
+    {
+        cout << "No hi ha visualitzacions" << endl;
+        return;
+    }
+
+    cout << "** Visualitzacions pel·licules **" << endl;
+    cout << "****************************" << endl;
+
+    for (int i = 0; i < visualitzacionsP.size(); i++)
+    {
+        DTOPelicula visualitzacio = visualitzacionsP[i];
+        
+        //formatear fecha
+        tm* tiempo_local = localtime(&visualitzacio.data_estrena);
+        char fecha[11]; // Espacio suficiente para "DD/MM/YYYY"
+        strftime(fecha, 11, "%d/%m/%Y", tiempo_local);
+        string fecha_formateada(fecha);
+
+        cout << "- " << fecha_formateada << "; "
+             << visualitzacio.titol << "; "
+             << visualitzacio.descripcio << "; "
+             << visualitzacio.qualificacio << "; "
+             << visualitzacio.duracio << " min; "
+             << "nombre de visualitzacions " << visualitzacio.nb_visualitzacions << endl;
+    }
+
+    cout << "** Visualitzacions series **" << endl;
+    cout << "****************************" << endl;
+
+    for (int i = 0; i < visualitzacionsC.size(); i++)
+    {
+        DTOCapitol visualitzacio = visualitzacionsC[i];
+        
+        //formatear fecha
+        tm* tiempo_local = localtime(&visualitzacio.data);
+        char fecha[11]; // Espacio suficiente para "DD/MM/YYYY"
+        strftime(fecha, 11, "%d/%m/%Y", tiempo_local);
+        string fecha_formateada(fecha);
+
+        cout << "- " << fecha_formateada << "; "
+             << visualitzacio.titol << "; "
+             << visualitzacio.qualificacio << "; "
+             << "Temporada " << visualitzacio.num_temporada << ", capitol "
+             << visualitzacio.num_capitol << "; "
+             << "nombre de visualitzacions " << visualitzacio.num_visualitzacions << endl;
     }
 }

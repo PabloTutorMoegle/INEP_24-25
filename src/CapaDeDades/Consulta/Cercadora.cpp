@@ -4,8 +4,6 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_novetats_completa() {
     ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
     time_t current_time = time(nullptr);
     
-    // Hola Lidia, sé que això és una chernobilada de proporcions asronòmiques
-    // però si he d'implementar això amb C++ acabaré com aquesta imatge: https://i.imgur.com/zkkoLph.png
     unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
         "SELECT " 
             "pel_data_estrena AS data_estrena, "
@@ -22,7 +20,7 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_novetats_completa() {
             "'Sèrie' AS tipus, "
             "ser_titol AS titol, "
             "c.con_qualificacio AS qualificacio, "
-            "CONCAT('Temporada ', ser_temporada) AS info "
+            "CONCAT('Temporada ', tem_numero) AS info "
         "FROM serie s "
         "JOIN contingut c ON s.ser_titol = c.con_titol "
         "WHERE ser_data_estrena < ? "
@@ -120,7 +118,7 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_novetats_infantil() {
             "'Sèrie' AS tipus, "
             "ser_titol AS titol, "
             "c.con_qualificacio AS qualificacio, "
-            "CONCAT('Temporada ', ser_temporada) AS info "
+            "CONCAT('Temporada ', tem_numero) AS info "
         "FROM serie s "
         "JOIN contingut c ON s.ser_titol = c.con_titol "
         "WHERE ser_data_estrena < ? AND c.con_qualificacio = 'TP'"
@@ -176,7 +174,7 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_estrenes_completa() {
             "'Sèrie' AS tipus, "
             "ser_titol AS titol, "
             "c.con_qualificacio AS qualificacio, "
-            "CONCAT('Temporada ', ser_temporada) AS info "
+            "CONCAT('Temporada ', tem_numero) AS info "
         "FROM serie s "
         "JOIN contingut c ON s.ser_titol = c.con_titol "
         "WHERE ser_data_estrena > ? "
@@ -226,10 +224,22 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_estrenes_cinefil() {
         "FROM pelicula p "
         "JOIN contingut c ON p.pel_titol = c.con_titol "
         "WHERE pel_data_estrena > ? "
+        "UNION ALL "
+        "SELECT "
+            "ser_data_estrena AS data_estrena, "
+            "'Sèrie' AS tipus, "
+            "ser_titol AS titol, "
+            "c.con_qualificacio AS qualificacio, "
+            "CONCAT('Temporada ', tem_numero) AS info "
+        "FROM serie s "
+        "JOIN contingut c ON s.ser_titol = c.con_titol "
+        "WHERE ser_data_estrena > ? "
+        "ORDER BY data_estrena DESC " 
         "LIMIT 5 "
     );
 
     pstmt->setString(1, time_t_to_datetime_string(current_time));
+    pstmt->setString(2, time_t_to_datetime_string(current_time));
 
     unique_ptr<ResultSet> result(pstmt->executeQuery());
 

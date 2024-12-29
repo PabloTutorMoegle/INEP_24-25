@@ -27,7 +27,7 @@ void consultes()
         switch (opcio)
         {
             case 1:
-                CapaDePresentacio::properes_estrenes();
+                cdp.properes_estrenes();
                 break;
             case 2:
                 cdp.ultimes_novetats();
@@ -77,6 +77,7 @@ void gestioUsuaris()
                 break;
             case 4:
                 cdp.esborra_usuari();
+                bucleG = false;
                 break;
             case 5:
                 bucleG = false;
@@ -109,13 +110,13 @@ void visualitzacions()
         switch (opcio)
         {
             case 1:
-                cout << "Visualitzant serie" << endl;
+                cdp.visualitzar_pelicula();
                 break;
             case 2:
-                cout << "Visualitzant pelicula" << endl;
+                cout << "Visualitzant serie" << endl;
                 break;
             case 3:
-                cout << "Consultant visualitzacions" << endl; 
+                cdp.consulta_visualitzacions();
                 break;
             case 4:
                 bucleV = false;
