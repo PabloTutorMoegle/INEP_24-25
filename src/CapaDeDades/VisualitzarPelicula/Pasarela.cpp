@@ -15,7 +15,7 @@ PasarelaVisualitzarPelicula::PasarelaVisualitzarPelicula(
     _qualificacio = qualificacio;
     _data_estrena = data;
     _duracio = duracio;
-    _nb_visualitzacions = 1;
+    _nb_visualitzacions = nb_visualitzacions;
 }
 
 PasarelaVisualitzarPelicula::~PasarelaVisualitzarPelicula() {}

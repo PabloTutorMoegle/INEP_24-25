@@ -12,6 +12,7 @@ using std::optional;
 class TxVisualitzarPelicula {
     private:
         optional<DTOPelicula> _resultat;
+        vector<DTOPelicula> _resultats;
 
     public:
         TxVisualitzarPelicula();

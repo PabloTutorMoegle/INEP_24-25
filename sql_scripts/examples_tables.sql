@@ -13,28 +13,28 @@ VALUES
 
 -- 10 entradas de ejemplo para la tabla 'usuaris'
 
-INSERT INTO contingut (con_titol, con_descripcio, con_qualificacio, con_tipus) 
+INSERT INTO contingut (con_titol, con_descripcio, con_qualificacio, con_tipus, con_tipus_modalitat) 
 VALUES 
-('Inception', 'A mind-bending thriller about dreams within dreams.', '12+', 'pelicula'),
-('The Lion King', 'A young lion prince flees his kingdom.', 'TP', 'pelicula'),
-('Breaking Bad', 'A high school teacher turns to cooking meth.', '16+', 'serie'),
-('The Office', 'A mockumentary sitcom about office life.', '7+', 'serie'),
-('Avengers: Endgame', 'The final showdown against Thanos.', '12+', 'pelicula'),
-('Friends', 'A group of friends navigate life and love in NYC.', '7+', 'serie'),
-('The Godfather', 'The story of a powerful crime family.', '18+', 'pelicula'),
-('Game of Thrones', 'A fantasy epic about the battle for the Iron Throne.', '18+', 'serie'),
-('Toy Story', 'Toys come to life and go on adventures.', 'TP', 'pelicula'),
-('Stranger Things', 'Kids uncover a supernatural mystery.', '12+', 'serie'),
-('Titanic', 'A love story set on the doomed Titanic.', '12+', 'pelicula'),
-('The Dark Knight', 'Batman faces off against the Joker.', '12+', 'pelicula'),
-('Forrest Gump', 'The life journey of an extraordinary yet simple man.', '12+', 'pelicula'),
-('Pulp Fiction', 'Interwoven tales of crime and redemption in Los Angeles.', '18+', 'pelicula'),
-('The Matrix', 'A hacker discovers the shocking truth about his reality.', '16+', 'pelicula'),
-('The Mandalorian', 'A bounty hunter navigates the galaxy after the fall of the Empire.', '12+', 'serie'),
-('The Crown', 'A dramatized history of Queen Elizabeth II and the British royal family.', '12+', 'serie'),
-('House of the Dragon', 'The prequel to Game of Thrones about House Targaryen.', '18+', 'serie'),
-('Sherlock', 'A modern adaptation of Arthur Conan Doyle`s detective stories.', '16+', 'serie'),
-('The Witcher', 'A monster hunter struggles to find his place in a world where people can be crueler than beasts.', '18+', 'serie');
+('Inception', 'A mind-bending thriller about dreams within dreams.', '12+', 'pelicula', 'Cinefil'),
+('The Lion King', 'A young lion prince flees his kingdom.', 'TP', 'pelicula', 'Infantil'),
+('Breaking Bad', 'A high school teacher turns to cooking meth.', '16+', 'serie', 'Completa'),
+('The Office', 'A mockumentary sitcom about office life.', '7+', 'serie', 'Completa'),
+('Avengers: Endgame', 'The final showdown against Thanos.', '12+', 'pelicula', 'Cinefil'),
+('Friends', 'A group of friends navigate life and love in NYC.', '7+', 'serie', 'Completa'),
+('The Godfather', 'The story of a powerful crime family.', '18+', 'pelicula', 'Cinefil'),
+('Game of Thrones', 'A fantasy epic about the battle for the Iron Throne.', '18+', 'serie', 'Completa'),
+('Stranger Things', 'A group of kids uncover supernatural secrets.', '12+', 'serie', 'Completa'),
+('The Mandalorian', 'A lone bounty hunter protects a mysterious child.', '12+', 'serie', 'Infantil'),
+('Toy Story', 'A story about the secret life of toys.', 'TP', 'pelicula', 'Infantil'),
+('Titanic', 'A romance set during the ill-fated voyage.', '12+', 'pelicula', 'Cinefil'),
+('The Dark Knight', 'Batman faces the Joker in Gotham City.', '12+', 'pelicula', 'Cinefil'),
+('Forrest Gump', 'The life story of a simple man with a big heart.', '12+', 'pelicula', 'Cinefil'),
+('Pulp Fiction', 'Interwoven stories of crime and redemption.', '18+', 'pelicula', 'Cinefil'),
+('The Matrix', 'A hacker discovers the reality is a simulation.', '16+', 'pelicula', 'Cinefil'),
+('The Crown', 'A drama about the reign of Queen Elizabeth II.', '16+', 'serie', 'Completa'),
+('House of the Dragon', 'A prequel to Game of Thrones.', '18+', 'serie', 'Completa'),
+('Sherlock', 'A modern update of the classic detective stories.', '16+', 'serie', 'Completa'),
+('The Witcher', 'A monster hunter navigates a world of magic and politics.', '18+', 'serie', 'Completa');
 
 -- 20 entradas de ejemplo para la tabla 'contingut'
 
@@ -110,7 +110,7 @@ VALUES
 ('Sherlock', 1, 1, 'A Study in Pink', '2010-07-25', '16+'),
 ('Sherlock', 1, 2, 'The Blind Banker', '2010-08-01', '16+'),
 ('The Witcher', 1, 1, 'The End’s Beginning', '2019-12-20', '18+'),
-('The Witcher', 1, 2, 'Four Marks', '2019-12-20', '18+');
+('The Witcher', 1, 2, 'Four Marks', '2019-12-20', '18+'),
 ('The Office', 1, 1, 'Pilot', '2005-03-24', '7+'),
 ('Friends', 1, 1, 'The One Where It All Began', '1994-09-22', '7+'),
 ('Game of Thrones', 1, 1, 'Winter is Coming', '2011-04-17', '18+'),
@@ -184,11 +184,6 @@ VALUES
 ('jane_doe', 'The Witcher', 1, 2, '2023-12-12 22:00:00', 2),
 ('mike89', 'Breaking Bad', 2, 1, '2023-12-13 20:00:00', 1),
 ('sara_smith', 'Breaking Bad', 2, 2, '2023-12-14 18:00:00', 3),
-('emily_jones', 'The Mandalorian', 2, 1, '2023-12-15 21:00:00', 2),
-('lucas_w', 'The Mandalorian', 2, 2, '2023-12-16 22:15:00', 4),
-('anna_bell', 'The Crown', 2, 1, '2023-12-17 20:30:00', 1),
-('jack_77', 'House of the Dragon', 1, 2, '2023-12-18 18:00:00', 2),
-('chloe_k', 'The Witcher', 2, 1, '2023-12-19 19:00:00', 1),
-('oliver_b', 'Sherlock', 2, 2, '2023-12-20 16:00:00', 2);
+('jack_77', 'House of the Dragon', 1, 2, '2023-12-18 18:00:00', 2);
 
 -- 20 entradas de ejemplo para la tabla 'visualitzacio_capitol'

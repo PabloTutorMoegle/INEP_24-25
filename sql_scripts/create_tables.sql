@@ -30,9 +30,13 @@ CREATE TABLE contingut (
     con_descripcio MEDIUMTEXT NOT NULL,
     con_qualificacio varchar(200) NOT NULL,
     con_tipus MEDIUMTEXT NOT NULL,
+    con_tipus_modalitat varchar(200) NOT NULL,
 
     FOREIGN KEY (con_qualificacio) 
         REFERENCES qualificacio_edat (qua_qualificacio),
+    
+    FOREIGN KEY (con_tipus_modalitat) 
+        REFERENCES modalitat_subscripcio (mod_tipus),
 
     CONSTRAINT chk_tipus_contingut 
         CHECK (con_tipus IN ('serie', 'pelicula'))
@@ -129,19 +133,16 @@ CREATE TABLE visualitzacio_pelicula (
 );
 
 CREATE TABLE visualitzacio_capitol (
-    vic_sobrenom_usuari varchar(200),
-    vic_titol_serie varchar(200),
-    vic_num_temporada INT,
-    vic_num_capitol INT,
-    vic_data DATETIME NOT NULL,
-    vic_nb_visualitzacions INT NOT NULL,
+    vic_sobrenom_usuari VARCHAR(200) NOT NULL,  
+    vic_titol_serie VARCHAR(200) NOT NULL,
+    vic_num_temporada INT NOT NULL,
+    vic_num_capitol INT NOT NULL,
+    vic_data DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    vic_nb_visualitzacions INT NOT NULL DEFAULT 1,
+    vic_ip VARCHAR(45),
+    vic_dispositivo VARCHAR(50),
 
-    PRIMARY KEY (
-        vic_sobrenom_usuari, 
-        vic_titol_serie, 
-        vic_num_temporada, 
-        vic_num_capitol
-    ),
+    PRIMARY KEY (vic_sobrenom_usuari, vic_titol_serie, vic_num_temporada, vic_num_capitol),
     
     FOREIGN KEY (vic_sobrenom_usuari) 
         REFERENCES usuari (usu_sobrenom)
@@ -151,7 +152,9 @@ CREATE TABLE visualitzacio_capitol (
         REFERENCES capitol (cap_titol_serie, cap_numero_temporada, cap_numero)
         ON DELETE CASCADE,
 
-    CONSTRAINT chk_nb_visualitzacions 
-        CHECK (vic_nb_visualitzacions > 0)
+    INDEX idx_vic_data (vic_data),
+    INDEX idx_vic_titol_serie (vic_titol_serie),
+
+    CONSTRAINT chk_nb_visualitzacions CHECK (vic_nb_visualitzacions > 0)
 );
 -- ------------------------------------------------- --

@@ -50,8 +50,8 @@ void CapaDePresentacio::registrar_usuari()
 
     cout << "** Registrar usuari **" << "\n"
         << "Nom complet: ";
-    cin >> nom;
-    cin.ignore();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, nom);    
     
     cout << "Sobrenom: ";
     cin >> sobrenom;
@@ -164,7 +164,7 @@ void CapaDePresentacio::modifica_usuari()
     DTOUsuari usuari = controlModificaUsuari.obte_usuari();
 
     string nom, sobrenom, contrasenya, correu, data;
-    int modalitat;
+    int modalitat = 0;
 
     //formatear la fecha    
     tm* tiempo_local = localtime(&usuari.data_naixement);
@@ -198,19 +198,20 @@ void CapaDePresentacio::modifica_usuari()
 
     cout << "Omplir la informacio que es vol modificar ..." << "\n"
          << "Nom complet: ";
-    cin >> nom;
-
-    cout << "Contrasenya: ";
-    cin >> contrasenya;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, nom);
     
     cout << "Sobrenom: ";
-    cin >> sobrenom;
-    
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, sobrenom);
+        
     cout << "Correu electronic: ";
-    cin >> correu;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, correu);
     
     cout << "Data de naixement (DD/MM/AAAA): ";
-    cin >> data;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, data);
     
     cout << "Modalitats de subscripcio disponibles " << "\n"
         << "  > 1. Completa " << "\n"
@@ -218,25 +219,48 @@ void CapaDePresentacio::modifica_usuari()
         << "  > 3. Infantil " << "\n"
         << "Escull modalitat: ";
 
-    if(modalitat < 1 || modalitat > 3)
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, modalitat);
+
+    if (data != "")
     {
-        cout << "Modalitat no valida" << endl;
-        return;
+        //pasar data_naixement de string a time_t
+        tm tm = {};
+        istringstream ss(data);
+        ss >> get_time(&tm, "%d/%m/%Y");
+        if (ss.fail()) {
+            throw std::runtime_error("Error al convertir la cadena a tiempo");
+        }
+        time_t data_naixement = mktime(&tm);
     }
 
-    //pasar data_naixement de string a time_t
-    tm tm = {};
-    istringstream ss(data);
-    ss >> get_time(&tm, "%d/%m/%Y");
-    if (ss.fail()) {
-        throw std::runtime_error("Error al convertir la cadena a tiempo");
+    if (modalitat != 0)
+    {
+        ModalitatSubscripcio modalitat_subs = static_cast<ModalitatSubscripcio>(modalitat);
     }
-    time_t data_naixement = mktime(&tm);
-
-    ModalitatSubscripcio modalitat_subs = static_cast<ModalitatSubscripcio>(modalitat);
 
     try
     {
+        if (nom == "")
+        {
+            nom = usuari.nom;
+        }
+        if (sobrenom == "")
+        {
+            sobrenom = usuari.sobrenom;
+        }
+        if (correu == "")
+        {
+            correu = usuari.correu_electronic;
+        }
+        if (data_naixement == 0)
+        {
+            data_naixement = usuari.data_naixement;
+        }
+        if (modalitat_subs == 0)
+        {
+            modalitat_subs = usuari.modalitat_subscripcio;
+        }
         controlModificaUsuari.modifica_usuari(
             nom,
             sobrenom,

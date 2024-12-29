@@ -44,16 +44,19 @@ void TxVisualitzarPelicula::executar(string titol_pelicula)
 
 void TxVisualitzarPelicula::buscar_visualitzacions(string sobrenom_usuari) 
 {
+    vector<DTOPelicula> results;
     vector<PasarelaVisualitzarPelicula> visualitzacions = CercadoraVisualitzarPelicula::obte_visualitzacions(sobrenom_usuari);
     for (auto visualitzacio : visualitzacions) {
-        _resultat = DTOPelicula {
-            .titol = visualitzacio.obte_titol_pelicula(),
-            .descripcio = visualitzacio.obte_descripcio(),
-            .qualificacio = visualitzacio.obte_qualificacio(),
-            .data_estrena = visualitzacio.obte_data(),
-            .duracio = visualitzacio.obte_duracio(),
-            .nb_visualitzacions = visualitzacio.obte_num_visualitzacions()
-        };
+        _resultats.push_back(
+            DTOPelicula {
+                .titol = visualitzacio.obte_titol_pelicula(),
+                .descripcio = visualitzacio.obte_descripcio(),
+                .qualificacio = visualitzacio.obte_qualificacio(),
+                .data_estrena = visualitzacio.obte_data(),
+                .duracio = visualitzacio.obte_duracio(),
+                .nb_visualitzacions = visualitzacio.obte_num_visualitzacions()
+            }
+        );
     }
 
     return;
@@ -70,15 +73,11 @@ DTOPelicula TxVisualitzarPelicula::obte_resultat() const
 
 vector<DTOPelicula> TxVisualitzarPelicula::obte_resultats() const 
 {
-    vector<DTOPelicula> resultats;
-
-    if (_resultat) {
-        resultats.push_back(*_resultat);
+    if (_resultats.size() > 0) {
+        return _resultats;
     } else {
         throw "No s'ha executat la transacció!";
     }
-
-    return resultats;
 }
 
 vector<DTOPelicula> TxVisualitzarPelicula::pelicula_relacionada(string titol_pelicula) 

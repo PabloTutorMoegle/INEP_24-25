@@ -14,8 +14,6 @@ vector<PasarelaVisualitzarSerie> CercadoraVisualitzarSerie::cerca_per_sobrenom(s
         "SELECT * FROM capitol WHERE cap_titol_serie = ? AND cap_numero_temporada = ? AND cap_numero = ?"
     );
 
-    
-
     vector<PasarelaVisualitzarSerie> visualitzacions_serie;
 
     while (result->next()) {
@@ -43,7 +41,7 @@ vector<PasarelaVisualitzarSerie> CercadoraVisualitzarSerie::cerca_per_sobrenom(s
                 sobrenom, 
                 titol_serie, 
                 qualificacio,
-                num_temporada, 
+                nb_visualitzacions, 
                 num_temporada, 
                 num_capitol, 
                 data

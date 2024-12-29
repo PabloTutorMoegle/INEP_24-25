@@ -27,7 +27,7 @@ void consultes()
         switch (opcio)
         {
             case 1:
-                CapaDePresentacio::properes_estrenes();
+                cdp.properes_estrenes();
                 break;
             case 2:
                 cdp.ultimes_novetats();
