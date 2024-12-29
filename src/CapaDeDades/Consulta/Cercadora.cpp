@@ -6,30 +6,40 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_novetats_completa() {
     
     unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
         "SELECT " 
-            "pel_data_estrena AS data_estrena, "
-            "'Pelicula' AS tipus, "
-            "pel_titol AS titol, "
-            "c.con_qualificacio AS qualificacio, "
-            "CONCAT(pel_duracio, ' min') AS info "
-        "FROM pelicula p "
-        "JOIN contingut c ON p.pel_titol = c.con_titol "
-        "WHERE pel_data_estrena < ? "
-        "UNION ALL "
-        "SELECT "
-            "ser_data_estrena AS data_estrena, "
-            "'Sèrie' AS tipus, "
-            "ser_titol AS titol, "
-            "c.con_qualificacio AS qualificacio, "
-            "CONCAT('Temporada ', tem_numero) AS info "
-        "FROM serie s "
-        "JOIN contingut c ON s.ser_titol = c.con_titol "
-        "WHERE ser_data_estrena < ? "
-        "ORDER BY data_estrena DESC " 
-        "LIMIT 5 "
+            "data_estrena, "
+            "tipus, "
+            "titol, "
+            "qualificacio, "
+            "info "
+        "FROM ("
+            "SELECT " 
+                "pel_data_estrena AS data_estrena, "
+                "'Pelicula' AS tipus, "
+                "pel_titol AS titol, "
+                "c.con_qualificacio AS qualificacio, "
+                "CONCAT(pel_duracio, ' min') AS info "
+            "FROM pelicula p "
+            "JOIN contingut c ON p.pel_titol = c.con_titol "
+            "WHERE pel_data_estrena < ? "
+            "UNION ALL "
+            "SELECT " 
+                "ser_data_estrena AS data_estrena, "
+                "'Serie' AS tipus, "
+                "ser_titol AS titol, "
+                "c.con_qualificacio AS qualificacio, "
+                "'' AS info "
+            "FROM serie s "
+            "JOIN contingut c ON s.ser_titol = c.con_titol "
+            "WHERE ser_data_estrena < ? "
+        ") AS novetats "
+        "ORDER BY data_estrena DESC "
+        "LIMIT 5"
     );
 
     pstmt->setString(1, time_t_to_datetime_string(current_time));
     pstmt->setString(2, time_t_to_datetime_string(current_time));
+
+    pstmt->setString(1, time_t_to_datetime_string(current_time));
 
     unique_ptr<ResultSet> result(pstmt->executeQuery());
 
@@ -106,28 +116,18 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_novetats_infantil() {
     
     unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
         "SELECT " 
+            "pel_data_estrena AS data_estrena, "
+            "'Pelicula' AS tipus, "
             "pel_titol AS titol, "
             "c.con_qualificacio AS qualificacio, "
             "CONCAT(pel_duracio, ' min') AS info "
         "FROM pelicula p "
         "JOIN contingut c ON p.pel_titol = c.con_titol "
         "WHERE pel_data_estrena < ? AND c.con_qualificacio = 'TP'"
-        "UNION ALL "
-        "SELECT "
-            "ser_data_estrena AS data_estrena, "
-            "'Sèrie' AS tipus, "
-            "ser_titol AS titol, "
-            "c.con_qualificacio AS qualificacio, "
-            "CONCAT('Temporada ', tem_numero) AS info "
-        "FROM serie s "
-        "JOIN contingut c ON s.ser_titol = c.con_titol "
-        "WHERE ser_data_estrena < ? AND c.con_qualificacio = 'TP'"
-        "ORDER BY data_estrena DESC " 
         "LIMIT 5 "
     );
 
     pstmt->setString(1, time_t_to_datetime_string(current_time));
-    pstmt->setString(2, time_t_to_datetime_string(current_time));
 
     unique_ptr<ResultSet> result(pstmt->executeQuery());
 
@@ -168,22 +168,10 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_estrenes_completa() {
         "FROM pelicula p "
         "JOIN contingut c ON p.pel_titol = c.con_titol "
         "WHERE pel_data_estrena > ? "
-        "UNION ALL "
-        "SELECT "
-            "ser_data_estrena AS data_estrena, "
-            "'Sèrie' AS tipus, "
-            "ser_titol AS titol, "
-            "c.con_qualificacio AS qualificacio, "
-            "CONCAT('Temporada ', tem_numero) AS info "
-        "FROM serie s "
-        "JOIN contingut c ON s.ser_titol = c.con_titol "
-        "WHERE ser_data_estrena > ? "
-        "ORDER BY data_estrena DESC " 
         "LIMIT 5 "
     );
 
     pstmt->setString(1, time_t_to_datetime_string(current_time));
-    pstmt->setString(2, time_t_to_datetime_string(current_time));
 
     unique_ptr<ResultSet> result(pstmt->executeQuery());
 
@@ -224,22 +212,10 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_estrenes_cinefil() {
         "FROM pelicula p "
         "JOIN contingut c ON p.pel_titol = c.con_titol "
         "WHERE pel_data_estrena > ? "
-        "UNION ALL "
-        "SELECT "
-            "ser_data_estrena AS data_estrena, "
-            "'Sèrie' AS tipus, "
-            "ser_titol AS titol, "
-            "c.con_qualificacio AS qualificacio, "
-            "CONCAT('Temporada ', tem_numero) AS info "
-        "FROM serie s "
-        "JOIN contingut c ON s.ser_titol = c.con_titol "
-        "WHERE ser_data_estrena > ? "
-        "ORDER BY data_estrena DESC " 
         "LIMIT 5 "
     );
 
     pstmt->setString(1, time_t_to_datetime_string(current_time));
-    pstmt->setString(2, time_t_to_datetime_string(current_time));
 
     unique_ptr<ResultSet> result(pstmt->executeQuery());
 
@@ -280,22 +256,10 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_estrenes_infantil() {
         "FROM pelicula p "
         "JOIN contingut c ON p.pel_titol = c.con_titol "
         "WHERE pel_data_estrena > ? AND c.con_qualificacio = 'TP'"
-        "UNION ALL "
-        "SELECT "
-            "ser_data_estrena AS data_estrena, "
-            "'Sèrie' AS tipus, "
-            "ser_titol AS titol, "
-            "c.con_qualificacio AS qualificacio, "
-            "CONCAT('Temporada ', ser_temporada) AS info "
-        "FROM serie s "
-        "JOIN contingut c ON s.ser_titol = c.con_titol "
-        "WHERE ser_data_estrena > ? AND c.con_qualificacio = 'TP'"
-        "ORDER BY data_estrena DESC " 
         "LIMIT 5 "
     );
 
     pstmt->setString(1, time_t_to_datetime_string(current_time));
-    pstmt->setString(2, time_t_to_datetime_string(current_time));
 
     unique_ptr<ResultSet> result(pstmt->executeQuery());
 

@@ -200,7 +200,7 @@ void CapaDePresentacio::modifica_usuari()
          << "Nom complet: ";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, nom);
-        
+    
     cout << "Correu electronic: ";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, correu);
