@@ -23,3 +23,9 @@ PASSWORD=<contrasenya>
 
 ## Com crear la base de dades:
 Al directori `sql_scripts` hi ha un arxiu `create_tables.sql` per crear totes les taules de la base de dades i un arxiu `examples_tables.sql` per a omplir las taules amb exemples.
+
+
+## Fet per
+Ariadna Vidal
+Pol Fernandez
+Pavlo de Vicente-Tutor
