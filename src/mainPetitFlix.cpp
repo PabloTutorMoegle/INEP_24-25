@@ -113,7 +113,7 @@ void visualitzacions()
                 cdp.visualitzar_pelicula();
                 break;
             case 2:
-                cout << "Visualitzant serie" << endl;
+                cdp.visualitzar_capitol();
                 break;
             case 3:
                 cdp.consulta_visualitzacions();
@@ -133,6 +133,9 @@ int main()
 {
     PetitFlix* petitFlix = PetitFlix::get_instance();
     bool bucle = true;
+
+    cout << "Benvingut a PetitFlix" << endl;
+    cout << "Avis inicial a l'hora de seleccionaruna opcio asseguri's de que prem un numero si prem una lletra el programa es trencara" << endl;
     
     while (bucle)
     {

@@ -18,6 +18,7 @@ class CtrlModificaUsuari {
         void modifica_usuari(
             optional<string> nom_usuari,
             optional<string> sobrenom_usuari,
+            optional<string> contrasenya,
             optional<string> correu_electronic_usuari,
             optional<time_t> data_naixement_usuari,
             optional<ModalitatSubscripcio> modalitat_subscripcio_usuari

@@ -45,7 +45,7 @@ void PasarelaVisualitzarPelicula::insereix() {
     stmt->setString(1, _sobrenom);
     stmt->setString(2, _titol_pelicula);
     stmt->setString(3, fecha_formateada);
-    stmt->setInt(4, 1); // Inicialitzar en 1
+    stmt->setInt(4, 1); 
         
     stmt->executeUpdate();
 }

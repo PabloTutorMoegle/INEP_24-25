@@ -144,16 +144,36 @@ pair<DTOUsuari, pair<unsigned int, unsigned int>> CapaDePresentacio::consulta_us
         break;
     }   
 
-    cout<<"** Consulta usuari **" << "\n"
-        << "Nom: " << usuari.nom << "\n"
-        << "Sobrenom: " << usuari.sobrenom << "\n"
-        << "Correu electronic: " << usuari.correu_electronic << "\n"
-        << "Data de naixement: " << fecha_formateada << "\n"
-        << "Modalitat de subscripcio: " << modalitat_subscripcio << "\n"
-        << "\n";
-        //HACER FUNCIONES 
-        //<< usuari.obte_pelis_vistes() << " pel·licules visualitzades "  << "\n"
-        //<< usuari.obte_capitols_vists() << " capitols visualitzats " << endl;
+    cout <<"** Consulta usuari **" << "\n"
+         << "Nom: " << usuari.nom << "\n"
+         << "Sobrenom: " << usuari.sobrenom << "\n"
+         << "Correu electronic: " << usuari.correu_electronic << "\n"
+         << "Data de naixement: " << fecha_formateada << "\n"
+         << "Modalitat de subscripcio: " << modalitat_subscripcio << "\n" << endl;
+
+    try {
+        TxVisualitzarPelicula txVisualitzarPelicula;
+
+        txVisualitzarPelicula.buscar_visualitzacions(usuari.sobrenom);
+        
+        vector<DTOPelicula> visualitzacionsP = txVisualitzarPelicula.obte_resultats();
+        
+        TxConsultaVisualitzacions txConsultaVisualitzacions;
+        
+        txConsultaVisualitzacions.executar(usuari.sobrenom);
+        
+        vector<DTOCapitol> visualitzacionsC = txConsultaVisualitzacions.obte_tots_resultats();
+
+        cout << visualitzacionsP.size() << " pelicules visualitzades" << "\n"
+             << visualitzacionsC.size() << " capitols visualitzats" << endl;
+
+    } catch (const char* error) {
+        cerr << "Aquest usuari encara no ha vist cap pelicula ni serie."<< endl;
+        return pair<DTOUsuari, pair<unsigned int, unsigned int>>();
+    } catch (const std::exception& e) {
+        cerr << "Exception: " << e.what() << endl;
+        return pair<DTOUsuari, pair<unsigned int, unsigned int>>();
+    }
 
     return pair<DTOUsuari, pair<unsigned int, unsigned int>>();
 }
@@ -161,20 +181,23 @@ pair<DTOUsuari, pair<unsigned int, unsigned int>> CapaDePresentacio::consulta_us
 void CapaDePresentacio::modifica_usuari()
 {
     CtrlModificaUsuari controlModificaUsuari;
-    DTOUsuari usuari = controlModificaUsuari.obte_usuari();
+    DTOUsuari usuariU = controlModificaUsuari.obte_usuari();
+
+    PasarelaUsuari usuari = CercadoraUsuari::cercaUsuari(usuariU.sobrenom);
 
     string nom, sobrenom, contrasenya, correu, data;
     char modalitat;
 
-    //formatear la fecha    
-    tm* tiempo_local = localtime(&usuari.data_naixement);
+    //formatear la fecha de nacimiento del usuario
+    time_t date = usuari.obte_data_naixement();
+    tm* tiempo_local = localtime(&date);
     char fecha[11]; // Espacio suficiente para "DD/MM/YYYY"
     strftime(fecha, 11, "%d/%m/%Y", tiempo_local);
     string fecha_formateada(fecha);
 
     //poner la modalidad en string no en int
     string modalitat_subscripcio;
-    switch (usuari.modalitat_subscripcio)
+    switch (usuari.obte_modalitat_subscripcio())
     {
     case 1:
         modalitat_subscripcio = "Completa";
@@ -190,9 +213,9 @@ void CapaDePresentacio::modifica_usuari()
     }
 
     cout<< "** Modifica usuari **" << "\n"
-        << "Nom complet: " << usuari.nom << "\n"
-        << "Sobrenom: " << usuari.sobrenom << "\n"
-        << "Correu electronic: " << usuari.correu_electronic << "\n"
+        << "Nom complet: " << usuari.obte_nom() << "\n"
+        << "Sobrenom: " << usuari.obte_sobrenom() << "\n"
+        << "Correu electronic: " << usuari.obte_correu_electronic() << "\n"
         << "Data de naixement (DD/MM/AAAA): " << fecha_formateada << "\n"
         << "Modalitat de subscripcio  " << modalitat_subscripcio << endl;
 
@@ -200,7 +223,7 @@ void CapaDePresentacio::modifica_usuari()
          << "Nom complet: ";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, nom);
-        
+    
     cout << "Correu electronic: ";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, correu);
@@ -216,9 +239,9 @@ void CapaDePresentacio::modifica_usuari()
         << "Escull modalitat: ";
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin >> modalitat;
+    cin.get(modalitat);
 
-    time_t data_naixement = usuari.data_naixement;
+    time_t data_naixement = usuari.obte_data_naixement();
 
     if (data != "")
     {
@@ -232,14 +255,30 @@ void CapaDePresentacio::modifica_usuari()
         data_naixement = mktime(&tm);
     }
 
-    ModalitatSubscripcio modalitat_subs = usuari.modalitat_subscripcio;
+    ModalitatSubscripcio modalitat_subs = usuari.obte_modalitat_subscripcio();
 
-    //modalitat es un string, hay que convertirlo a int
-    int mod = modalitat - 48;
-
-    if (mod != 0 && mod >= 1 && mod <= 3)
+    if (modalitat != '\n')
     {
-        modalitat_subs = static_cast<ModalitatSubscripcio>(mod);
+        //modalitat es un string, hay que convertirlo a int
+        int mod = modalitat - 48;
+
+        if (mod != 0 && mod >= 1 && mod <= 3)
+        {
+            modalitat_subs = static_cast<ModalitatSubscripcio>(mod);
+        }
+    }
+
+    if (nom == "")
+    {
+        nom = usuari.obte_nom();
+    }
+    if(correu == "")
+    {
+        correu = usuari.obte_correu_electronic();
+    }
+    if(sobrenom == "")
+    {
+        sobrenom = usuari.obte_sobrenom();
     }
 
     try
@@ -247,6 +286,7 @@ void CapaDePresentacio::modifica_usuari()
         controlModificaUsuari.modifica_usuari(
             nom,
             sobrenom,
+            usuari.obte_contrasenya(),
             correu,
             data_naixement,
             modalitat_subs
@@ -255,21 +295,53 @@ void CapaDePresentacio::modifica_usuari()
     catch(const std::exception& e)
     {
         std::cerr << "El correu electronic ja existeix." << '\n';
+        return;
     }
     
-    usuari = controlModificaUsuari.obte_usuari();
+    usuari = CercadoraUsuari::cercaUsuari(sobrenom);
     
     cout << "** Dades usuari modificades **" << "\n"
-         << "Nom complet: " << usuari.nom << "\n"
-         << "Sobrenom: " << usuari.sobrenom << "\n"
-         << "Correu electronic: " << usuari.correu_electronic << "\n"
-         << "Data de naixement: " << time_t_to_datetime_string(usuari.data_naixement) << "\n"
-         << "Modalitat de subscripcio: " << usuari.modalitat_subscripcio << endl;
+         << "Nom complet: " << usuari.obte_nom() << "\n"
+         << "Sobrenom: " << usuari.obte_sobrenom() << "\n"
+         << "Correu electronic: " << usuari.obte_correu_electronic() << "\n"
+         << "Data de naixement: " << time_t_to_datetime_string(usuari.obte_data_naixement()) << "\n"
+         << "Modalitat de subscripcio: " << usuari.obte_modalitat_subscripcio() << endl;
 }
 
 void CapaDePresentacio::modifica_contrasenya()
 {
-    cout << "hello" << endl;
+    cout << "** Modifica contrasenya **" << "\n"
+         << "Per confirmar el canvi de contrasenya, s'ha d'entrar la contrasenya actual..." << "\n"
+         << "Contrasenya actual: ";
+    string contrasenya;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, contrasenya);
+
+    CtrlModificaUsuari controlModificaUsuari;
+    DTOUsuari usuariU = controlModificaUsuari.obte_usuari();
+
+    PasarelaUsuari usuari = CercadoraUsuari::cercaUsuari(usuariU.sobrenom);
+
+    if (usuari.obte_contrasenya() != contrasenya)
+    {
+        cout << "Contrasenya incorrecta" << endl;
+        return;
+    }
+
+    cout << "Escriu la nova contrasenya: ";
+    string nova_contrasenya;
+    cin >> nova_contrasenya;
+
+    controlModificaUsuari.modifica_usuari(
+        usuari.obte_nom(),
+        usuari.obte_sobrenom(),
+        nova_contrasenya,
+        usuari.obte_correu_electronic(),
+        usuari.obte_data_naixement(),
+        usuari.obte_modalitat_subscripcio()
+    );
+
+    cout << "Contrasenya modificada correctament!" << endl;
 }
 
 void CapaDePresentacio::esborra_usuari()
@@ -560,6 +632,12 @@ void CapaDePresentacio::pelicules_mes_vistes()
 
         vector<DTOContingut> mesVistes = txConsultaMesVistes.obte_resultat();
 
+        if(mesVistes.size() == 0)
+        {
+            cout << "No hi ha pel·licules visualitzades en aquesta modalitat." << endl;
+            return;
+        }
+
         for (int i = 0; i < mesVistes.size(); i++)
         {
             DTOContingut mesVista = mesVistes[i];
@@ -615,6 +693,12 @@ void CapaDePresentacio::pelicules_mes_vistes()
         txConsultaMesVistes.executar();
 
         vector<DTOContingut> mesVistes = txConsultaMesVistes.obte_resultat();
+
+        if(mesVistes.size() == 0)
+        {
+            cout << "No hi ha pel·licules visualitzades en aquesta modalitat." << endl;
+            return;
+        }
 
         for (int i = 0; i < mesVistes.size(); i++)
         {
@@ -726,7 +810,119 @@ void CapaDePresentacio::visualitzar_pelicula()
 
 void CapaDePresentacio::visualitzar_capitol()
 {
+    cout << "** Visualitzant capitol **" << "\n"
+         << "Nom de la serie: ";
+    string nom_serie;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, nom_serie);
 
+    TxVisualitzarCapitol txVisualitzarCapitol;
+    int num_temporades = 0;
+
+    try {
+        txVisualitzarCapitol.buscar_temporades(nom_serie);
+
+        num_temporades = txVisualitzarCapitol.obte_num_temporades();
+
+    } catch (const char* error) {
+        cerr << "La serie no existeix" << endl;
+        return;
+    }
+
+    if (num_temporades == 0)
+    {
+        cout << "La serie no existeix." << endl;
+        return;
+    }
+
+    cout << "La serie te " << num_temporades << " temporades. " << "\n"
+         << "Escull la temporada: ";
+    int num_temporada;
+    cin >> num_temporada;
+
+    if (num_temporada < 1 || num_temporada > num_temporades)
+    {
+        cout << "Aquesta temporada no existeix." << endl;
+        return;
+    }
+
+    vector<DTOCapitol> capitols;
+
+    try
+    {
+        txVisualitzarCapitol.buscar(nom_serie, num_temporada);
+        capitols = txVisualitzarCapitol.obte_resultats();
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return;
+    }
+    
+    cout << "Llista de capitols: " << "\n";
+
+    for (int i = 0; i < capitols.size(); i++)
+    {
+        DTOCapitol capitol = capitols[i];
+
+        //falta mirar si el capitol ja ha estat visualitzat
+        txVisualitzarCapitol.buscar_visualitzacions(PetitFlix::get_instance()->obte_usuari()->obte_sobrenom());
+        vector<DTOCapitol> visualitzacions = txVisualitzarCapitol.obte_resultats(); 
+
+        int num_visualitzacions = 0;
+
+        for (int j = 0; j < visualitzacions.size(); j++)
+        {
+            DTOCapitol visualitzacio = visualitzacions[j];
+
+            if (visualitzacio.titol == capitol.titol && visualitzacio.num_temporada == capitol.num_temporada && visualitzacio.num_capitol == capitol.num_capitol)
+            {
+                num_visualitzacions = visualitzacio.num_visualitzacions;
+                break;
+            }
+        }
+
+        cout << i + 1 << ".- " << capitol.titol << "; "
+             << time_t_to_datetime_string(capitol.data) << "; "
+             << "Capitol visualitzat " << num_visualitzacions << " vegades." << endl;
+    }
+    
+    cout << "Numero de capitol a visualitzar: ";
+    int num_capitol;
+    cin >> num_capitol;
+
+    if (num_capitol < 1 || num_capitol > capitols.size())
+    {
+        cout << "Aquest capitol no existeix." << endl;
+        return;
+    }
+
+    cout << "Vols continuar amb la visualitzacio? (S/N): ";
+    string resposta;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, resposta);
+    
+    //fecha actual
+    time_t hora_acual = time(0);
+
+    if (resposta == "S" || resposta == "s")
+    {
+
+        TxVisualitzarCapitol txVisualitzarCapitol;
+        txVisualitzarCapitol.executar(nom_serie, num_temporada, num_capitol, hora_acual);
+    }
+    else
+    {
+        return;
+    }
+
+    //formatear la fecha
+    tm* tiempo_local = localtime(&hora_acual);
+    char fecha[11]; // Espacio suficiente para "DD/MM/YYYY"
+    strftime(fecha, 11, "%d/%m/%Y", tiempo_local);
+    string fecha_formateada(fecha);
+
+    cout << "Visualitzacio registrada ... " << fecha_formateada << endl;
 }
 
 void CapaDePresentacio::consulta_visualitzacions()

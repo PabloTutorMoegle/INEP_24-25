@@ -34,6 +34,8 @@ class PasarelaVisualitzarSerie {
         void insereix();
         void modifica();
         void esborra();
+        void modifica_data(time_t data);
+        void set_sobrenom(string sobrenom);
 
         string obte_sobrenom();
         string obte_titol_serie();
