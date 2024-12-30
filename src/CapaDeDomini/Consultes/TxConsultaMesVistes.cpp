@@ -8,7 +8,7 @@ TxConsultaMesVistes::TxConsultaMesVistes(ModalitatSubscripcio modalitat) {
 TxConsultaMesVistes::~TxConsultaMesVistes() {}
 
 void TxConsultaMesVistes::executar() {
-    vector<PasarelaConsulta> pasareles_consulta = CercadoraConsulta::cerca_mes_vistes();
+    vector<PasarelaConsulta> pasareles_consulta = CercadoraConsulta::cerca_mes_vistes(_modalitat);
 
     vector<DTOContingut> continguts;
     for (auto pasarela : pasareles_consulta) {

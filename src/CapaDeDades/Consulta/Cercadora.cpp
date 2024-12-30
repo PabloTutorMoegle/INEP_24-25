@@ -20,7 +20,7 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_novetats_completa() {
                 "CONCAT(pel_duracio, ' min') AS info "
             "FROM pelicula p "
             "JOIN contingut c ON p.pel_titol = c.con_titol "
-            "WHERE pel_data_estrena < ? "
+            "WHERE pel_data_estrena < ? AND c.con_tipus_modalitat = 'completa' "
             "UNION ALL "
             "SELECT " 
                 "ser_data_estrena AS data_estrena, "
@@ -30,7 +30,7 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_novetats_completa() {
                 "'' AS info "
             "FROM serie s "
             "JOIN contingut c ON s.ser_titol = c.con_titol "
-            "WHERE ser_data_estrena < ? "
+            "WHERE ser_data_estrena < ? AND c.con_tipus_modalitat = 'completa' "
         ") AS novetats "
         "ORDER BY data_estrena DESC "
         "LIMIT 5"
@@ -38,8 +38,6 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_novetats_completa() {
 
     pstmt->setString(1, time_t_to_datetime_string(current_time));
     pstmt->setString(2, time_t_to_datetime_string(current_time));
-
-    pstmt->setString(1, time_t_to_datetime_string(current_time));
 
     unique_ptr<ResultSet> result(pstmt->executeQuery());
 
@@ -72,18 +70,38 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_novetats_cinefil() {
     
     unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
         "SELECT " 
-            "pel_data_estrena AS data_estrena, "
-            "'Pelicula' AS tipus, "
-            "pel_titol AS titol, "
-            "c.con_qualificacio AS qualificacio, "
-            "CONCAT(pel_duracio, ' min') AS info "
-        "FROM pelicula p "
-        "JOIN contingut c ON p.pel_titol = c.con_titol "
-        "WHERE pel_data_estrena < ? "
-        "LIMIT 5 "
+            "data_estrena, "
+            "tipus, "
+            "titol, "
+            "qualificacio, "
+            "info "
+        "FROM ("
+            "SELECT " 
+                "pel_data_estrena AS data_estrena, "
+                "'Pelicula' AS tipus, "
+                "pel_titol AS titol, "
+                "c.con_qualificacio AS qualificacio, "
+                "CONCAT(pel_duracio, ' min') AS info "
+            "FROM pelicula p "
+            "JOIN contingut c ON p.pel_titol = c.con_titol "
+            "WHERE pel_data_estrena < ? AND c.con_tipus_modalitat = 'cinefil' "
+            "UNION ALL "
+            "SELECT " 
+                "ser_data_estrena AS data_estrena, "
+                "'Serie' AS tipus, "
+                "ser_titol AS titol, "
+                "c.con_qualificacio AS qualificacio, "
+                "'' AS info "
+            "FROM serie s "
+            "JOIN contingut c ON s.ser_titol = c.con_titol "
+            "WHERE ser_data_estrena < ? AND c.con_tipus_modalitat = 'cinefil' "
+        ") AS novetats "
+        "ORDER BY data_estrena DESC "
+        "LIMIT 5"
     );
 
     pstmt->setString(1, time_t_to_datetime_string(current_time));
+    pstmt->setString(2, time_t_to_datetime_string(current_time));
 
     unique_ptr<ResultSet> result(pstmt->executeQuery());
 
@@ -116,18 +134,38 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_novetats_infantil() {
     
     unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
         "SELECT " 
-            "pel_data_estrena AS data_estrena, "
-            "'Pelicula' AS tipus, "
-            "pel_titol AS titol, "
-            "c.con_qualificacio AS qualificacio, "
-            "CONCAT(pel_duracio, ' min') AS info "
-        "FROM pelicula p "
-        "JOIN contingut c ON p.pel_titol = c.con_titol "
-        "WHERE pel_data_estrena < ? AND c.con_qualificacio = 'TP'"
-        "LIMIT 5 "
+            "data_estrena, "
+            "tipus, "
+            "titol, "
+            "qualificacio, "
+            "info "
+        "FROM ("
+            "SELECT " 
+                "pel_data_estrena AS data_estrena, "
+                "'Pelicula' AS tipus, "
+                "pel_titol AS titol, "
+                "c.con_qualificacio AS qualificacio, "
+                "CONCAT(pel_duracio, ' min') AS info "
+            "FROM pelicula p "
+            "JOIN contingut c ON p.pel_titol = c.con_titol "
+            "WHERE pel_data_estrena < ? AND c.con_tipus_modalitat = 'infantil' "
+            "UNION ALL "
+            "SELECT " 
+                "ser_data_estrena AS data_estrena, "
+                "'Serie' AS tipus, "
+                "ser_titol AS titol, "
+                "c.con_qualificacio AS qualificacio, "
+                "'' AS info "
+            "FROM serie s "
+            "JOIN contingut c ON s.ser_titol = c.con_titol "
+            "WHERE ser_data_estrena < ? AND c.con_tipus_modalitat = 'infantil' "
+        ") AS novetats "
+        "ORDER BY data_estrena DESC "
+        "LIMIT 5"
     );
 
     pstmt->setString(1, time_t_to_datetime_string(current_time));
+    pstmt->setString(2, time_t_to_datetime_string(current_time));
 
     unique_ptr<ResultSet> result(pstmt->executeQuery());
 
@@ -160,18 +198,38 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_estrenes_completa() {
     
     unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
         "SELECT " 
-            "pel_data_estrena AS data_estrena, "
-            "'Pelicula' AS tipus, "
-            "pel_titol AS titol, "
-            "c.con_qualificacio AS qualificacio, "
-            "CONCAT(pel_duracio, ' min') AS info "
-        "FROM pelicula p "
-        "JOIN contingut c ON p.pel_titol = c.con_titol "
-        "WHERE pel_data_estrena > ? "
-        "LIMIT 5 "
+            "data_estrena, "
+            "tipus, "
+            "titol, "
+            "qualificacio, "
+            "info "
+        "FROM ("
+            "SELECT " 
+                "pel_data_estrena AS data_estrena, "
+                "'Pelicula' AS tipus, "
+                "pel_titol AS titol, "
+                "c.con_qualificacio AS qualificacio, "
+                "CONCAT(pel_duracio, ' min') AS info "
+            "FROM pelicula p "
+            "JOIN contingut c ON p.pel_titol = c.con_titol "
+            "WHERE pel_data_estrena > ? AND c.con_tipus_modalitat = 'completa' "
+            "UNION ALL "
+            "SELECT " 
+                "ser_data_estrena AS data_estrena, "
+                "'Serie' AS tipus, "
+                "ser_titol AS titol, "
+                "c.con_qualificacio AS qualificacio, "
+                "'' AS info "
+            "FROM serie s "
+            "JOIN contingut c ON s.ser_titol = c.con_titol "
+            "WHERE ser_data_estrena > ? AND c.con_tipus_modalitat = 'completa' "
+        ") AS estrenes "
+        "ORDER BY data_estrena ASC "
+        "LIMIT 5"
     );
 
     pstmt->setString(1, time_t_to_datetime_string(current_time));
+    pstmt->setString(2, time_t_to_datetime_string(current_time));
 
     unique_ptr<ResultSet> result(pstmt->executeQuery());
 
@@ -204,18 +262,38 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_estrenes_cinefil() {
     
     unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
         "SELECT " 
-            "pel_data_estrena AS data_estrena, "
-            "'Pelicula' AS tipus, "
-            "pel_titol AS titol, "
-            "c.con_qualificacio AS qualificacio, "
-            "CONCAT(pel_duracio, ' min') AS info "
-        "FROM pelicula p "
-        "JOIN contingut c ON p.pel_titol = c.con_titol "
-        "WHERE pel_data_estrena > ? "
-        "LIMIT 5 "
+            "data_estrena, "
+            "tipus, "
+            "titol, "
+            "qualificacio, "
+            "info "
+        "FROM ("
+            "SELECT " 
+                "pel_data_estrena AS data_estrena, "
+                "'Pelicula' AS tipus, "
+                "pel_titol AS titol, "
+                "c.con_qualificacio AS qualificacio, "
+                "CONCAT(pel_duracio, ' min') AS info "
+            "FROM pelicula p "
+            "JOIN contingut c ON p.pel_titol = c.con_titol "
+            "WHERE pel_data_estrena > ? AND c.con_tipus_modalitat = 'cinefil' "
+            "UNION ALL "
+            "SELECT " 
+                "ser_data_estrena AS data_estrena, "
+                "'Serie' AS tipus, "
+                "ser_titol AS titol, "
+                "c.con_qualificacio AS qualificacio, "
+                "'' AS info "
+            "FROM serie s "
+            "JOIN contingut c ON s.ser_titol = c.con_titol "
+            "WHERE ser_data_estrena > ? AND c.con_tipus_modalitat = 'cinefil' "
+        ") AS estrenes "
+        "ORDER BY data_estrena ASC "
+        "LIMIT 5"
     );
 
     pstmt->setString(1, time_t_to_datetime_string(current_time));
+    pstmt->setString(2, time_t_to_datetime_string(current_time));
 
     unique_ptr<ResultSet> result(pstmt->executeQuery());
 
@@ -248,18 +326,38 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_estrenes_infantil() {
     
     unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
         "SELECT " 
-            "pel_data_estrena AS data_estrena, "
-            "'Pelicula' AS tipus, "
-            "pel_titol AS titol, "
-            "c.con_qualificacio AS qualificacio, "
-            "CONCAT(pel_duracio, ' min') AS info "
-        "FROM pelicula p "
-        "JOIN contingut c ON p.pel_titol = c.con_titol "
-        "WHERE pel_data_estrena > ? AND c.con_qualificacio = 'TP'"
-        "LIMIT 5 "
+            "data_estrena, "
+            "tipus, "
+            "titol, "
+            "qualificacio, "
+            "info "
+        "FROM ("
+            "SELECT " 
+                "pel_data_estrena AS data_estrena, "
+                "'Pelicula' AS tipus, "
+                "pel_titol AS titol, "
+                "c.con_qualificacio AS qualificacio, "
+                "CONCAT(pel_duracio, ' min') AS info "
+            "FROM pelicula p "
+            "JOIN contingut c ON p.pel_titol = c.con_titol "
+            "WHERE pel_data_estrena > ? AND c.con_tipus_modalitat = 'infantil' "
+            "UNION ALL "
+            "SELECT " 
+                "ser_data_estrena AS data_estrena, "
+                "'Serie' AS tipus, "
+                "ser_titol AS titol, "
+                "c.con_qualificacio AS qualificacio, "
+                "'' AS info "
+            "FROM serie s "
+            "JOIN contingut c ON s.ser_titol = c.con_titol "
+            "WHERE ser_data_estrena > ? AND c.con_tipus_modalitat = 'infantil' "
+        ") AS estrenes "
+        "ORDER BY data_estrena ASC "
+        "LIMIT 5"
     );
 
     pstmt->setString(1, time_t_to_datetime_string(current_time));
+    pstmt->setString(2, time_t_to_datetime_string(current_time));
 
     unique_ptr<ResultSet> result(pstmt->executeQuery());
 
@@ -286,7 +384,7 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_estrenes_infantil() {
     return pelicules;
 }
 
-vector<PasarelaConsulta> CercadoraConsulta::cerca_mes_vistes() {
+vector<PasarelaConsulta> CercadoraConsulta::cerca_mes_vistes(ModalitatSubscripcio modalitat) {
     ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
     
     unique_ptr<PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
@@ -302,12 +400,16 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_mes_vistes() {
             "contingut c ON pel.pel_titol = c.con_titol "
         "JOIN "
             "visualitzacio_pelicula vip ON pel.pel_titol = vip.vip_titol_pelicula "
+        "WHERE "
+            "c.con_tipus_modalitat = ? "
         "GROUP BY "
             "pel.pel_titol "
         "ORDER BY "
             "visualitzacions DESC "
         "LIMIT 5"
     );
+   
+    pstmt->setString(1, modalitat_subscripcio_to_string(modalitat));
 
     unique_ptr<ResultSet> result(pstmt->executeQuery());
 

@@ -113,7 +113,7 @@ void visualitzacions()
                 cdp.visualitzar_pelicula();
                 break;
             case 2:
-                cout << "Visualitzant serie" << endl;
+                cdp.visualitzar_capitol();
                 break;
             case 3:
                 cdp.consulta_visualitzacions();

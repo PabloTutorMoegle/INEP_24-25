@@ -560,6 +560,12 @@ void CapaDePresentacio::pelicules_mes_vistes()
 
         vector<DTOContingut> mesVistes = txConsultaMesVistes.obte_resultat();
 
+        if(mesVistes.size() == 0)
+        {
+            cout << "No hi ha pel·licules visualitzades en aquesta modalitat." << endl;
+            return;
+        }
+
         for (int i = 0; i < mesVistes.size(); i++)
         {
             DTOContingut mesVista = mesVistes[i];
@@ -615,6 +621,12 @@ void CapaDePresentacio::pelicules_mes_vistes()
         txConsultaMesVistes.executar();
 
         vector<DTOContingut> mesVistes = txConsultaMesVistes.obte_resultat();
+
+        if(mesVistes.size() == 0)
+        {
+            cout << "No hi ha pel·licules visualitzades en aquesta modalitat." << endl;
+            return;
+        }
 
         for (int i = 0; i < mesVistes.size(); i++)
         {
@@ -726,7 +738,101 @@ void CapaDePresentacio::visualitzar_pelicula()
 
 void CapaDePresentacio::visualitzar_capitol()
 {
+    cout << "** Visualitzant capitol **" << "\n"
+         << "Nom de la serie: ";
+    string nom_serie;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, nom_serie);
 
+    TxVisualitzarCapitol txVisualitzarCapitol;
+    int num_temporades = 0;
+
+    try {
+        txVisualitzarCapitol.buscar_temporades(nom_serie);
+
+        num_temporades = txVisualitzarCapitol.obte_num_temporades();
+
+    } catch (const char* error) {
+        cerr << "La serie no existeix" << endl;
+        return;
+    }
+
+    if (num_temporades == 0)
+    {
+        cout << "La serie no existeix." << endl;
+        return;
+    }
+
+    cout << "La serie te " << num_temporades << " temporades. " << "\n"
+         << "Escull la temporada: ";
+    int num_temporada;
+    cin >> num_temporada;
+
+    if (num_temporada < 1 || num_temporada > num_temporades)
+    {
+        cout << "Aquesta temporada no existeix." << endl;
+        return;
+    }
+
+    vector<DTOCapitol> capitols;
+
+    try
+    {
+        txVisualitzarCapitol.buscar(nom_serie, num_temporada);
+        capitols = txVisualitzarCapitol.obte_resultats();
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return;
+    }
+    
+    cout << "Llista de capitols: " << "\n";
+
+    for (int i = 0; i < capitols.size(); i++)
+    {
+        DTOCapitol capitol = capitols[i];
+
+        cout << i + 1 << ".- " << capitol.titol << "; "
+             << time_t_to_datetime_string(capitol.data) << "; "
+             << "Capitol visualitzat " << capitol.num_visualitzacions << " vegades." << endl;
+    }
+    cout << "Numero de capitol a visualitzar: ";
+    int num_capitol;
+    cin >> num_capitol;
+
+    if (num_capitol < 1 || num_capitol > capitols.size())
+    {
+        cout << "Aquest capitol no existeix." << endl;
+        return;
+    }
+
+    cout << "Vols continuar amb la visualitzacio? (S/N): ";
+    string resposta;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, resposta);
+    
+    //fecha actual
+    time_t hora_acual = time(0);
+
+    if (resposta == "S" || resposta == "s")
+    {
+
+        TxVisualitzarCapitol txVisualitzarCapitol;
+        txVisualitzarCapitol.executar(nom_serie, num_temporada, num_capitol, hora_acual);
+    }
+    else
+    {
+        return;
+    }
+
+    //formatear la fecha
+    tm* tiempo_local = localtime(&hora_acual);
+    char fecha[11]; // Espacio suficiente para "DD/MM/YYYY"
+    strftime(fecha, 11, "%d/%m/%Y", tiempo_local);
+    string fecha_formateada(fecha);
+
+    cout << "Visualitzacio registrada ... " << fecha_formateada << endl;
 }
 
 void CapaDePresentacio::consulta_visualitzacions()

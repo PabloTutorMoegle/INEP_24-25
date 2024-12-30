@@ -24,7 +24,7 @@ class CercadoraConsulta {
         static vector<PasarelaConsulta> cerca_estrenes_completa();
         static vector<PasarelaConsulta> cerca_estrenes_cinefil();
         static vector<PasarelaConsulta> cerca_estrenes_infantil();
-        static vector<PasarelaConsulta> cerca_mes_vistes();
+        static vector<PasarelaConsulta> cerca_mes_vistes(ModalitatSubscripcio modalitat);
 };
 
 #endif

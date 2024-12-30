@@ -23,15 +23,27 @@ PasarelaVisualitzarSerie::~PasarelaVisualitzarSerie() {}
 void PasarelaVisualitzarSerie::insereix() {
     ConnexioBDD* connexio_bdd = ConnexioBDD::getInstance();
 
+    // Check if user exists in the usuari table
+    std::unique_ptr<sql::PreparedStatement> check_user_pstmt = connexio_bdd->get_prepared_statement(
+        "SELECT COUNT(*) FROM usuari WHERE usu_sobrenom = ?"
+    );
+    check_user_pstmt->setString(1, _sobrenom);
+    std::unique_ptr<sql::ResultSet> res(check_user_pstmt->executeQuery());
+    res->next();
+    if (res->getInt(1) == 0) {
+        throw std::runtime_error("User does not exist in the usuari table");
+    }
+
     std::unique_ptr<sql::PreparedStatement> pstmt = connexio_bdd->get_prepared_statement(
         "INSERT INTO visualitzacio_capitol ("
             "vic_sobrenom_usuari,"
             "vic_titol_serie,"
             "vic_num_temporada,"
             "vic_num_capitol,"
-            "vic_data,"
-            "vic_nb_vicialitzacions,"
-        ") VALUES (?, ?, ?, ?, ?, ?)"
+            "vic_data"
+        ") VALUES (?, ?, ?, ?, ?) "
+        "ON DUPLICATE KEY UPDATE "
+            "vic_nb_visualitzacions = vic_nb_visualitzacions + 1"
     );
 
     pstmt->setString(1, _sobrenom);
@@ -39,7 +51,6 @@ void PasarelaVisualitzarSerie::insereix() {
     pstmt->setInt(3, _num_temporada);
     pstmt->setInt(4, _num_capitol);
     pstmt->setString(5, time_t_to_datetime_string(_data));
-    pstmt->setInt(6, _nb_visualitzacions);
 
     pstmt->executeUpdate();
 }
@@ -80,6 +91,14 @@ void PasarelaVisualitzarSerie::esborra() {
     pstmt->setInt(4, _num_capitol);
 
     pstmt->executeUpdate();
+}
+
+void PasarelaVisualitzarSerie::modifica_data(time_t data) {
+    _data = data;
+}
+
+void PasarelaVisualitzarSerie::set_sobrenom(string sobrenom) {
+    _sobrenom = sobrenom;
 }
 
 string PasarelaVisualitzarSerie::obte_sobrenom() {
