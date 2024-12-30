@@ -144,16 +144,27 @@ pair<DTOUsuari, pair<unsigned int, unsigned int>> CapaDePresentacio::consulta_us
         break;
     }   
 
-    cout<<"** Consulta usuari **" << "\n"
-        << "Nom: " << usuari.nom << "\n"
-        << "Sobrenom: " << usuari.sobrenom << "\n"
-        << "Correu electronic: " << usuari.correu_electronic << "\n"
-        << "Data de naixement: " << fecha_formateada << "\n"
-        << "Modalitat de subscripcio: " << modalitat_subscripcio << "\n"
-        << "\n";
-        //HACER FUNCIONES 
-        //<< usuari.obte_pelis_vistes() << " pel·licules visualitzades "  << "\n"
-        //<< usuari.obte_capitols_vists() << " capitols visualitzats " << endl;
+    cout <<"** Consulta usuari **" << "\n"
+         << "Nom: " << usuari.nom << "\n"
+         << "Sobrenom: " << usuari.sobrenom << "\n"
+         << "Correu electronic: " << usuari.correu_electronic << "\n"
+         << "Data de naixement: " << fecha_formateada << "\n"
+         << "Modalitat de subscripcio: " << modalitat_subscripcio << "\n" << endl;
+
+    TxVisualitzarPelicula txVisualitzarPelicula;
+
+    txVisualitzarPelicula.buscar_visualitzacions(usuari.sobrenom);
+    
+    vector<DTOPelicula> visualitzacionsP = txVisualitzarPelicula.obte_resultats();
+    
+    TxConsultaVisualitzacions txConsultaVisualitzacions;
+    
+    txConsultaVisualitzacions.executar(usuari.sobrenom);
+    
+    vector<DTOCapitol> visualitzacionsC = txConsultaVisualitzacions.obte_tots_resultats();
+
+    cout << visualitzacionsP.size() << " pelicules visualitzades" << "\n"
+         << visualitzacionsC.size() << " capitols visualitzats" << endl;
 
     return pair<DTOUsuari, pair<unsigned int, unsigned int>>();
 }
@@ -161,20 +172,23 @@ pair<DTOUsuari, pair<unsigned int, unsigned int>> CapaDePresentacio::consulta_us
 void CapaDePresentacio::modifica_usuari()
 {
     CtrlModificaUsuari controlModificaUsuari;
-    DTOUsuari usuari = controlModificaUsuari.obte_usuari();
+    DTOUsuari usuariU = controlModificaUsuari.obte_usuari();
+
+    PasarelaUsuari usuari = CercadoraUsuari::cercaUsuari(usuariU.sobrenom);
 
     string nom, sobrenom, contrasenya, correu, data;
     char modalitat;
 
-    //formatear la fecha    
-    tm* tiempo_local = localtime(&usuari.data_naixement);
+    //formatear la fecha de nacimiento del usuario
+    time_t date = usuari.obte_data_naixement();
+    tm* tiempo_local = localtime(&date);
     char fecha[11]; // Espacio suficiente para "DD/MM/YYYY"
     strftime(fecha, 11, "%d/%m/%Y", tiempo_local);
     string fecha_formateada(fecha);
 
     //poner la modalidad en string no en int
     string modalitat_subscripcio;
-    switch (usuari.modalitat_subscripcio)
+    switch (usuari.obte_modalitat_subscripcio())
     {
     case 1:
         modalitat_subscripcio = "Completa";
@@ -190,9 +204,9 @@ void CapaDePresentacio::modifica_usuari()
     }
 
     cout<< "** Modifica usuari **" << "\n"
-        << "Nom complet: " << usuari.nom << "\n"
-        << "Sobrenom: " << usuari.sobrenom << "\n"
-        << "Correu electronic: " << usuari.correu_electronic << "\n"
+        << "Nom complet: " << usuari.obte_nom() << "\n"
+        << "Sobrenom: " << usuari.obte_sobrenom() << "\n"
+        << "Correu electronic: " << usuari.obte_correu_electronic() << "\n"
         << "Data de naixement (DD/MM/AAAA): " << fecha_formateada << "\n"
         << "Modalitat de subscripcio  " << modalitat_subscripcio << endl;
 
@@ -216,9 +230,9 @@ void CapaDePresentacio::modifica_usuari()
         << "Escull modalitat: ";
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin >> modalitat;
+    cin.get(modalitat);
 
-    time_t data_naixement = usuari.data_naixement;
+    time_t data_naixement = usuari.obte_data_naixement();
 
     if (data != "")
     {
@@ -232,14 +246,30 @@ void CapaDePresentacio::modifica_usuari()
         data_naixement = mktime(&tm);
     }
 
-    ModalitatSubscripcio modalitat_subs = usuari.modalitat_subscripcio;
+    ModalitatSubscripcio modalitat_subs = usuari.obte_modalitat_subscripcio();
 
-    //modalitat es un string, hay que convertirlo a int
-    int mod = modalitat - 48;
-
-    if (mod != 0 && mod >= 1 && mod <= 3)
+    if (modalitat != '\n')
     {
-        modalitat_subs = static_cast<ModalitatSubscripcio>(mod);
+        //modalitat es un string, hay que convertirlo a int
+        int mod = modalitat - 48;
+
+        if (mod != 0 && mod >= 1 && mod <= 3)
+        {
+            modalitat_subs = static_cast<ModalitatSubscripcio>(mod);
+        }
+    }
+
+    if (nom == "")
+    {
+        nom = usuari.obte_nom();
+    }
+    if(correu == "")
+    {
+        correu = usuari.obte_correu_electronic();
+    }
+    if(sobrenom == "")
+    {
+        sobrenom = usuari.obte_sobrenom();
     }
 
     try
@@ -247,6 +277,7 @@ void CapaDePresentacio::modifica_usuari()
         controlModificaUsuari.modifica_usuari(
             nom,
             sobrenom,
+            usuari.obte_contrasenya(),
             correu,
             data_naixement,
             modalitat_subs
@@ -255,21 +286,29 @@ void CapaDePresentacio::modifica_usuari()
     catch(const std::exception& e)
     {
         std::cerr << "El correu electronic ja existeix." << '\n';
+        return;
     }
     
-    usuari = controlModificaUsuari.obte_usuari();
+    usuari = CercadoraUsuari::cercaUsuari(sobrenom);
     
     cout << "** Dades usuari modificades **" << "\n"
-         << "Nom complet: " << usuari.nom << "\n"
-         << "Sobrenom: " << usuari.sobrenom << "\n"
-         << "Correu electronic: " << usuari.correu_electronic << "\n"
-         << "Data de naixement: " << time_t_to_datetime_string(usuari.data_naixement) << "\n"
-         << "Modalitat de subscripcio: " << usuari.modalitat_subscripcio << endl;
+         << "Nom complet: " << usuari.obte_nom() << "\n"
+         << "Sobrenom: " << usuari.obte_sobrenom() << "\n"
+         << "Correu electronic: " << usuari.obte_correu_electronic() << "\n"
+         << "Data de naixement: " << time_t_to_datetime_string(usuari.obte_data_naixement()) << "\n"
+         << "Modalitat de subscripcio: " << usuari.obte_modalitat_subscripcio() << endl;
 }
 
 void CapaDePresentacio::modifica_contrasenya()
 {
-    cout << "hello" << endl;
+    cout << "** Modifica contrasenya **" << "\n"
+         << "Per confirmar el canvi de contrasenya, s'ha d'entrar la contrasenya actual..." << "\n"
+         << "Contrasenya actual: ";
+    string contrasenya;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, contrasenya);
+
+    //TERMINAR DE IMPLEMENTAR
 }
 
 void CapaDePresentacio::esborra_usuari()

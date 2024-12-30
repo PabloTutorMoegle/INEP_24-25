@@ -13,6 +13,7 @@ enum ModalitatSubscripcio {
 #include <chrono>
 #include <string>
 #include <iomanip>
+
 time_t time_t_from_string(std::string datetime);
 
 std::string time_t_to_datetime_string(time_t datetime);
