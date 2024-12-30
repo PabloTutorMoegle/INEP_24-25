@@ -27,7 +27,7 @@ vector<PasarelaConsulta> CercadoraConsulta::cerca_novetats_completa() {
                 "'Serie' AS tipus, "
                 "ser_titol AS titol, "
                 "c.con_qualificacio AS qualificacio, "
-                "'' AS info "
+                "'' AS info "  //La info adicional de les sèries es la temporada que te la data en cuastio
             "FROM serie s "
             "JOIN contingut c ON s.ser_titol = c.con_titol "
             "WHERE ser_data_estrena < ? AND c.con_tipus_modalitat = 'completa' "

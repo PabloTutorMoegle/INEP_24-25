@@ -151,20 +151,29 @@ pair<DTOUsuari, pair<unsigned int, unsigned int>> CapaDePresentacio::consulta_us
          << "Data de naixement: " << fecha_formateada << "\n"
          << "Modalitat de subscripcio: " << modalitat_subscripcio << "\n" << endl;
 
-    TxVisualitzarPelicula txVisualitzarPelicula;
+    try {
+        TxVisualitzarPelicula txVisualitzarPelicula;
 
-    txVisualitzarPelicula.buscar_visualitzacions(usuari.sobrenom);
-    
-    vector<DTOPelicula> visualitzacionsP = txVisualitzarPelicula.obte_resultats();
-    
-    TxConsultaVisualitzacions txConsultaVisualitzacions;
-    
-    txConsultaVisualitzacions.executar(usuari.sobrenom);
-    
-    vector<DTOCapitol> visualitzacionsC = txConsultaVisualitzacions.obte_tots_resultats();
+        txVisualitzarPelicula.buscar_visualitzacions(usuari.sobrenom);
+        
+        vector<DTOPelicula> visualitzacionsP = txVisualitzarPelicula.obte_resultats();
+        
+        TxConsultaVisualitzacions txConsultaVisualitzacions;
+        
+        txConsultaVisualitzacions.executar(usuari.sobrenom);
+        
+        vector<DTOCapitol> visualitzacionsC = txConsultaVisualitzacions.obte_tots_resultats();
 
-    cout << visualitzacionsP.size() << " pelicules visualitzades" << "\n"
-         << visualitzacionsC.size() << " capitols visualitzats" << endl;
+        cout << visualitzacionsP.size() << " pelicules visualitzades" << "\n"
+             << visualitzacionsC.size() << " capitols visualitzats" << endl;
+
+    } catch (const char* error) {
+        cerr << "Aquest usuari encara no ha vist cap pelicula ni serie."<< endl;
+        return pair<DTOUsuari, pair<unsigned int, unsigned int>>();
+    } catch (const std::exception& e) {
+        cerr << "Exception: " << e.what() << endl;
+        return pair<DTOUsuari, pair<unsigned int, unsigned int>>();
+    }
 
     return pair<DTOUsuari, pair<unsigned int, unsigned int>>();
 }
@@ -308,7 +317,31 @@ void CapaDePresentacio::modifica_contrasenya()
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, contrasenya);
 
-    //TERMINAR DE IMPLEMENTAR
+    CtrlModificaUsuari controlModificaUsuari;
+    DTOUsuari usuariU = controlModificaUsuari.obte_usuari();
+
+    PasarelaUsuari usuari = CercadoraUsuari::cercaUsuari(usuariU.sobrenom);
+
+    if (usuari.obte_contrasenya() != contrasenya)
+    {
+        cout << "Contrasenya incorrecta" << endl;
+        return;
+    }
+
+    cout << "Escriu la nova contrasenya: ";
+    string nova_contrasenya;
+    cin >> nova_contrasenya;
+
+    controlModificaUsuari.modifica_usuari(
+        usuari.obte_nom(),
+        usuari.obte_sobrenom(),
+        nova_contrasenya,
+        usuari.obte_correu_electronic(),
+        usuari.obte_data_naixement(),
+        usuari.obte_modalitat_subscripcio()
+    );
+
+    cout << "Contrasenya modificada correctament!" << endl;
 }
 
 void CapaDePresentacio::esborra_usuari()
@@ -832,10 +865,28 @@ void CapaDePresentacio::visualitzar_capitol()
     {
         DTOCapitol capitol = capitols[i];
 
+        //falta mirar si el capitol ja ha estat visualitzat
+        txVisualitzarCapitol.buscar_visualitzacions(PetitFlix::get_instance()->obte_usuari()->obte_sobrenom());
+        vector<DTOCapitol> visualitzacions = txVisualitzarCapitol.obte_resultats(); 
+
+        int num_visualitzacions = 0;
+
+        for (int j = 0; j < visualitzacions.size(); j++)
+        {
+            DTOCapitol visualitzacio = visualitzacions[j];
+
+            if (visualitzacio.titol == capitol.titol && visualitzacio.num_temporada == capitol.num_temporada && visualitzacio.num_capitol == capitol.num_capitol)
+            {
+                num_visualitzacions = visualitzacio.num_visualitzacions;
+                break;
+            }
+        }
+
         cout << i + 1 << ".- " << capitol.titol << "; "
              << time_t_to_datetime_string(capitol.data) << "; "
-             << "Capitol visualitzat " << capitol.num_visualitzacions << " vegades." << endl;
+             << "Capitol visualitzat " << num_visualitzacions << " vegades." << endl;
     }
+    
     cout << "Numero de capitol a visualitzar: ";
     int num_capitol;
     cin >> num_capitol;
