@@ -27,8 +27,10 @@ Al directori `sql_scripts` hi ha un arxiu `create_tables.sql` per crear totes le
 
 ## Fet per
 Ariadna Vidal
+
 Pol Fernandez
-Pavlo de Vicente-Tutor
+
+Pablo de Vicente-Tutor
 
 ## Logo de la aplicacion
 <img alt="logo" src="https://github.com/user-attachments/assets/4d8fedc1-72a0-4255-8645-f7aee7894582" width=400 />
